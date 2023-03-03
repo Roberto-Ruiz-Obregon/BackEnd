@@ -15,7 +15,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController.controller');
 
 // ROUTERS
-// const restanteRouter = require('./routes/restante.route');
+const userRouter = require('./routes/user.route');
 
 const app = express();
 
@@ -93,7 +93,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // ROUTES
-// app.use('/restantes', restanteRouter);
+app.use('/user', userRouter);
 
 // ERROR HANDLER FOR UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
