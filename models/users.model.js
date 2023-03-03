@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Por favor provee una contraseña.'],
-        // con el select no vuelve a aparecer
+        // Using select prevents the field from being retrieved
         minlength: [8, 'Tu contraseña debe contar con al menos 8 caracteres.'],
         select: false,
     },

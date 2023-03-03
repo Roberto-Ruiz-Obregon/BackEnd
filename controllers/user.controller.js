@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIFeatures = require(`../utils/apiFeatures`);
+const factory = require('./handlerFactory.controller');
 const User = require('../models/users.model');
 
 exports.getAllUsers = factory.getAll(User);
