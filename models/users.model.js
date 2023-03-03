@@ -10,8 +10,11 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: [true, 'Debes de contar con un correo!'],
+        required: [true, 'Por favor dinos tu correo!'],
+        lowercase: true,
         unique: true,
+        trim: true,
+        validate: [validator.isEmail, 'Necesitas un correo vallido.'],
     },
     password: {
         type: String,

@@ -22,19 +22,23 @@ exports.deleteOne = (Model) =>
 /* A function that updates a document in the database. */
 exports.updateOne = (Model) =>
     catchAsync(async (req, res, next) => {
-        const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true,
-        });
+        const document = await Model.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
 
-        if (!doc) {
+        if (!document) {
             const error = new AppError('No document found with that ID', 404);
             return next(error);
         }
 
         res.status(200).json({
             status: 'success',
-            data: { data: doc },
+            data: { document },
         });
     });
 
@@ -46,7 +50,7 @@ exports.createOne = (Model) =>
         res.status(201).json({
             status: 'success',
             data: {
-                tour: document,
+                document,
             },
         });
     });
