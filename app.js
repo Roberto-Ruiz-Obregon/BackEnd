@@ -12,7 +12,7 @@ const compression = require('compression');
 
 // APP ERROR
 const AppError = require('./utils/appError');
-const globalErrorHandler = require('./controllers/errorController');
+const globalErrorHandler = require('./controllers/errorController.controller');
 
 // ROUTERS
 // const restanteRouter = require('./routes/restante.route');

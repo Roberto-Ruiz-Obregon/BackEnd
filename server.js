@@ -41,6 +41,7 @@ const server = app.listen(port, () => {
 });
 
 // UNHANDLED REJECTION
+/* Catching unhandled rejections. */
 process.on('unhandledRejection', (err) => {
     console.log(err.name, err.message);
     console.log('UNHANDLED REJECTION!: SHUTTING DOWN');
@@ -50,6 +51,7 @@ process.on('unhandledRejection', (err) => {
 });
 
 // SERVER SHUTDOWN
+/* A signal that is sent to the process to tell it to terminate. */
 process.on('SIGTERM', () => {
     console.log('SIGTERM received. Shutting down.');
     server.close(() => {
