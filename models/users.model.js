@@ -9,10 +9,11 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Por favor dinos tu nombre!'],
     },
     age: {
-        type: Number,
+        type: Number, 
+        min: 0,
         required: [true, 'Por favor, escribe tu edad']
     },
-    sex: {
+    gender: {
         type: String,
         required: [true, 'Por favor, selecciona tu sexo']
     },
@@ -31,7 +32,7 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     postalCode: {
-        type: String,
+        type: Number,
     },
     password: {
         type: String,
