@@ -2,6 +2,7 @@ const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('./../models/users.model');
+const Admin = require('./../models/admins.model');
 
 const catchAsync = require('./../utils/catchAsync');
 // const Email = require('./../utils/email');
@@ -105,7 +106,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 /* Creating a new user. */
-exports.signUp = catchAsync(async (req, res, next) => {
+exports.signUpUser = catchAsync(async (req, res, next) => {
     const newUser = await User.create({
         name: req.body.name,
         age: req.body.age,
@@ -123,10 +124,24 @@ exports.signUp = catchAsync(async (req, res, next) => {
     return createSendToken(newUser, 201, req, res);
 });
 
+/* Creating a new admin. */
+exports.signUpAdmin = catchAsync(async (req, res, next) => {
+    const newUser = await Admin.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+        passwordConfirm: req.body.passwordConfirm,
+    });
+
+    // TODO - send welcome email
+
+    return createSendToken(newUser, 201, req, res);
+});
+
 /* Checking if the user is logged in. If the user is logged in, the user is allowed
 to access the protected route. If the user is not logged in, the user is not allowed to access the
 protected route. */
-exports.login = catchAsync(async (req, res, next) => {
+exports.loginUser = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -141,6 +156,33 @@ exports.login = catchAsync(async (req, res, next) => {
 
     // 2 Check is user exists.
     const user = await User.findOne({ email }).select('+password'); // adding a + to the field set as selected false means we will retrieve it
+
+    if (!user || !(await user.correctPassword(password, user.password))) {
+        return next(new AppError('Email o contraseña incorrectos.', 401));
+    }
+
+    // 3 Send JWT to user.
+    createSendToken(user, 201, req, res);
+});
+
+/* Checking if the admin is logged in. If the user is logged in, the user is allowed
+to access the protected route. If the user is not logged in, the user is not allowed to access the
+protected route. */
+exports.loginAdmin = catchAsync(async (req, res, next) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        // After calling next we want the function to end and send an error.
+        return next(
+            new AppError(
+                'Por favor ingrese un email y contraseña validos.',
+                400
+            )
+        );
+    }
+
+    // 2 Check is user exists.
+    const user = await Admin.findOne({ email }).select('+password'); // adding a + to the field set as selected false means we will retrieve it
 
     if (!user || !(await user.correctPassword(password, user.password))) {
         return next(new AppError('Email o contraseña incorrectos.', 401));

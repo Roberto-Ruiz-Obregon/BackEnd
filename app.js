@@ -16,7 +16,7 @@ const globalErrorHandler = require('./controllers/errorController.controller');
 
 // ROUTERS
 const userRouter = require('./routes/user.route');
-const userRouter = require('./routes/admin.route');
+const adminRouter = require('./routes/admin.route');
 
 const app = express();
 
