@@ -97,6 +97,7 @@ app.use('/api', limiter);
 // ROUTES
 app.use('/user', userRouter);
 app.use('/course', courseRouter);
+app.use('/topics', topicsRouter);
 
 // ERROR HANDLER FOR UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
