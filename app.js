@@ -17,6 +17,7 @@ const globalErrorHandler = require('./controllers/errorController.controller');
 // ROUTERS
 const userRouter = require('./routes/user.route');
 const courseRouter = require('./routes/course.route');
+const topicsRouter = require('./routes/topics.route');
 
 const app = express();
 

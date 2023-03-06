@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
     },
     educationLevel: {
         type: String,
+        enum: { values: ['Ninguno','Primaria', 'Secundaria', 'Preparatoria', 'Universidad']}
     },
     postalCode: {
         type: Number,
