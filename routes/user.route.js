@@ -19,8 +19,8 @@ const {
     editMe,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
 
-router.post('/signup', signUpUser);
-router.post('/login', loginUser);
+router.post('/auth/signup', signUpUser);
+router.post('/auth/login', loginUser);
 
 router.use('/auth', protect);
 router.get('/auth/me', getMe, getUser);

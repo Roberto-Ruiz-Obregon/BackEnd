@@ -19,8 +19,8 @@ const {
     protect,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
 
-router.post('/signup', signUpAdmin);
-router.post('/login', loginAdmin);
+router.post('/auth/signup', signUpAdmin);
+router.post('/auth/login', loginAdmin);
 
 router.use('/auth', protect);
 router.get('/auth/me', getMe, getAdmin);
