@@ -191,3 +191,71 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
     // 3 Send JWT to user.
     createSendToken(user, 201, req, res);
 });
+
+/* The above code is checking if the user is logged in. If the user is logged in, the user is allowed
+to access the protected route. If the user is not logged in, the user is not allowed to access the
+protected route. */
+exports.protect = catchAsync(async (req, res, next) => {
+    // 1) Getting the token and check if its there
+    let token;
+    if (
+        // es un estandard que el token vaya con este header y con el Bearer antes
+        req.headers.authorization &&
+        req.headers.authorization.startsWith('Bearer')
+    ) {
+        token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
+    }
+    // console.log('Token used: ', token);
+
+    if (!token) {
+        return next(
+            new AppError(
+                'No haz iniciado sesion, por favor inicia sesion para obtener acceso.',
+                401
+            )
+        );
+    }
+    // 2) Verification: Validate the token to view if the signature is valid
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    // decoded will be the JWT payload
+
+    // 3) Check if user or admin exists
+    const user = await User.findById(decoded.id);
+    const admin = await Amin.findById(decoded.id);
+    if (!user && !admin) {
+        return next(
+            new AppError(
+                'El usuario con el que intentas ingresar ta no existe.',
+                401
+            )
+        );
+    }
+
+    // 4) Check if user changed passwords after the token was issued
+    // PARA ESTE CREAREMOS UN nuevo metodo de INSTANCIA
+    if (
+        user.changedPasswordAfter(decoded.iat) ||
+        admin.changedPasswordAfter(decoded.iat)
+    ) {
+        // iat - issued at
+        return next(
+            new AppError(
+                'haz cambiado recientemente tu contraseña. Inicia sesion de nuevo.',
+                401
+            )
+        );
+    }
+    // 5) Next is called and the req accesses the protected route
+    if (user) {
+        req.userType = 'User';
+        req.user = user;
+        req.locals.user = user;
+    } else if (admin) {
+        req.userType = 'Admin';
+        req.admin = admin;
+        req.locals.admin = admin;
+    }
+    next();
+});
