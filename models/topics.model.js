@@ -4,8 +4,9 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
 const topicsSchema = new mongoose.Schema({
-    topics: {
+    topic: {
         type: String,
+        required: [true, 'Se necesita al menos un interés']
     }
 });
 

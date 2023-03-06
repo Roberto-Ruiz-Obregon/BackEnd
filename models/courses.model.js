@@ -76,18 +76,12 @@ const courseSchema = new mongoose.Schema({
         type: String,
         enum: {values: ['Remoto', 'Presencial']},
         required: [true, 'Modalidad del curso debe ser presencial o remoto'],
-        validate: {
-            message: 'El curso debe ser presencial o remoto'
-        }
     },
     // free or paid
     status:{
         type: String,
         required: [true, 'El curso debe ser gratuito o de pago'],
         enum: {values: ['Gratuito','De pago']},
-        validate: {
-            message: 'El curso debe ser gratuito o de pago'
-        }
     },
     // inscription cost for course access
     cost:{
