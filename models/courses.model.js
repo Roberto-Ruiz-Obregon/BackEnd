@@ -27,7 +27,7 @@ const courseSchema = new mongoose.Schema({
     schedule: {
         type: String,
     },
-    // session time span
+    // session time span in minutes
     duration: {
         type: Number,
     },
@@ -43,7 +43,7 @@ const courseSchema = new mongoose.Schema({
     zoomLink: {
         type: String,
     },
-    // remote, hybrid, presential, etc.
+    // remote, presential, etc.
     modality: {
         type: String,
     }

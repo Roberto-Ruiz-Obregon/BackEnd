@@ -5,7 +5,7 @@ const crypto = require('crypto');
 
 const topicsSchema = new mongoose.Schema({
     topics: {
-        type: [String],
+        type: String,
     }
 });
 
