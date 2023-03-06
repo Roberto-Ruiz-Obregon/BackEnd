@@ -3,7 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const userSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Por favor dinos tu nombre!'],
@@ -66,6 +66,6 @@ userSchema.pre('save', async function (next) {
 
 
 
-const Admin = mongoose.model('Admin', userSchema);
+const Admin = mongoose.model('Admin', adminSchema);
 
 module.exports = Admin;
