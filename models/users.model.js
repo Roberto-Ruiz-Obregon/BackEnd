@@ -10,13 +10,13 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Por favor dinos tu nombre!'],
     },
     age: {
-        type: Number, 
+        type: Number,
         min: 0,
-        required: [true, 'Por favor, escribe tu edad']
+        required: [true, 'Por favor, escribe tu edad'],
     },
     gender: {
         type: String,
-        required: [true, 'Por favor, selecciona tu sexo']
+        required: [true, 'Por favor, selecciona tu sexo'],
     },
     email: {
         type: String,
@@ -53,8 +53,12 @@ const userSchema = new mongoose.Schema({
             message: 'Por favor ingresa la misma contraseña.',
         },
     },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
 });
 
+// MIDDLEWARES
 /* This is a middleware that runs before the save() or create() method. It hashes the password and sets
 the passwordConfirm to undefined. */
 userSchema.pre('save', async function (next) {
@@ -65,6 +69,45 @@ userSchema.pre('save', async function (next) {
     }
     return next();
 });
+
+/* This is a middleware that runs before the save() or create() method. Checks if the password has changed
+and updates the passwordChangedAt attribute. */
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password') || this.isNew) return next();
+    else {
+        this.passwordChangedAt = Date.now() - 1000;
+        next();
+    }
+});
+
+// INSTANCE METHODS
+// Instance methods will be available in all document instances.
+
+/* This is a method that compares the candidate password with the user password. */
+userSchema.methods.correctPassword = async function (
+    candidatePassword,
+    userPassword
+) {
+    // This refers to the document. Since select is false we dont have access to password.
+    return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+/* Creating a password reset token and saving it in the database. */
+userSchema.methods.createPasswordResetToken = function () {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    // We save the password reset token in the database.
+    this.passwordResetToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+
+    // 10 hours
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+    // We return the reset token encrypted.
+    return resetToken;
+};
 
 const User = mongoose.model('User', userSchema);
 
