@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const AppError = require('../utils/appError')
 
 const courseSchema = new mongoose.Schema({
     courseName: {
@@ -93,7 +94,7 @@ const courseSchema = new mongoose.Schema({
 // date validation
 courseSchema.pre('validate', function() {
     if (this.endDate < this.startDate) {
-        throw new Error("La fecha final debe ser menor a la fecha inicial")
+        throw new AppError("La fecha final debe ser menor a la fecha inicial", 400)
     }
 })
 
