@@ -1,7 +1,7 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const User = require('./../models/userModel');
+const User = require('./../models/users.model');
 
 const catchAsync = require('./../utils/catchAsync');
 // const Email = require('./../utils/email');
@@ -35,7 +35,7 @@ const createSendToken = (user, statusCode, req, res) => {
             Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 60 * 1000
         ),
         httpOnly: true,
-        secure: req.secure || req.headders('x-forwarded-proto') === 'https',
+        secure: req.secure,
     };
 
     res.cookie('jwt', token, cookieOptions);
@@ -108,11 +108,11 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.signUp = catchAsync(async (req, res, next) => {
     const newUser = await User.create({
         name: req.body.name,
-        age: req.params.age,
-        gender: req.params.gender,
-        job: req.params.job,
-        educationLevel: req.params.educationLevel,
-        postalCode: req.params.postalCode,
+        age: req.body.age,
+        gender: req.body.gender,
+        job: req.body.job,
+        educationLevel: req.body.educationLevel,
+        postalCode: req.body.postalCode,
         email: req.body.email,
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
