@@ -15,6 +15,7 @@ const {
     signUpAdmin,
     logout,
     getMe,
+    editMe,
     protect,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
 
@@ -23,6 +24,7 @@ router.post('/login', loginAdmin);
 
 router.use(protect);
 router.get('/me', getMe, getAdmin);
+router.patch('/updateme', editMe);
 router.get('/logout', logout);
 
 router.route('/').get(getAllAdmins).post(createAdmin);

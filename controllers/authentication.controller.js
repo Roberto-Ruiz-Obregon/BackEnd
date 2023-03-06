@@ -274,3 +274,32 @@ exports.getMe = catchAsync(async (req, res, next) => {
     req.params.id = userActive._id;
     next();
 });
+
+exports.editMe = catchAsync(async (req, res, next) => {
+    // 1 Check for password
+    if (req.body.password || req.body.passwordConfirm) {
+        return next(
+            new AppError(
+                'Para cambiar tu contraseña debes usar otra ruta. Usa esta funcion solo para cabiar tu perfil.',
+                400
+            )
+        );
+    }
+
+    let userActive = req.userType == 'User' ? req.user : req.admin;
+    let Model = req.userType == 'User' ? User : Admin;
+    // 2 Update document
+    const user = await Model.findByIdAndUpdate(userActive._id, req.body, {
+        // queremos que regrese el viejo
+        new: true,
+        runValidators: true,
+    });
+
+    // 3 respond with update
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user,
+        },
+    });
+});

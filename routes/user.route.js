@@ -16,6 +16,7 @@ const {
     logout,
     protect,
     getMe,
+    editMe,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
 
 router.post('/signup', signUpUser);
@@ -23,6 +24,7 @@ router.post('/login', loginUser);
 
 router.use(protect);
 router.get('/me', getMe, getUser);
+router.patch('/updateme', editMe);
 router.get('/logout', logout);
 
 router.route('/').get(getAllUsers).post(createUser);
