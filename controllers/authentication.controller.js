@@ -275,6 +275,7 @@ exports.getMe = catchAsync(async (req, res, next) => {
     next();
 });
 
+/* Updating the user or admin. */
 exports.editMe = catchAsync(async (req, res, next) => {
     // 1 Check for password
     if (req.body.password || req.body.passwordConfirm) {
@@ -303,3 +304,18 @@ exports.editMe = catchAsync(async (req, res, next) => {
         },
     });
 });
+
+/* Restricting the user to a certain role. */
+exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.userType)) {
+            next(
+                new AppError(
+                    'No cuentas con los permisos para realizar esta accion.',
+                    403
+                )
+            );
+        }
+        next();
+    };
+};
