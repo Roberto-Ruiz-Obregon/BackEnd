@@ -30,10 +30,6 @@ const courseSchema = new mongoose.Schema({
     endDate: {
         type: Date,
         required: [true, 'Fecha fin requerida'],
-        validate: {
-            validator: endDate => endDate >= this.startDate,
-            message: 'La fecha fin no puede ser antes de la fecha de inicio'
-        }
     },
     // // TO-DO? course hours do they change schedules?
     // schedule: {
@@ -81,7 +77,7 @@ const courseSchema = new mongoose.Schema({
     status:{
         type: String,
         required: [true, 'El curso debe ser gratuito o de pago'],
-        enum: {values: ['Gratuito','De pago']},
+        enum: {values: ['Gratuito','Pagado']},
     },
     // inscription cost for course access
     cost:{
@@ -93,6 +89,13 @@ const courseSchema = new mongoose.Schema({
     },
     
 });
+
+// date validation
+courseSchema.pre('validate', function() {
+    if (this.endDate < this.startDate) {
+        throw new Error("La fecha final debe ser menor a la fecha inicial")
+    }
+})
 
 const Course = mongoose.model('Course', courseSchema);
 
