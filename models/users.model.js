@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
+        enum: {values: ['Femenino', 'Masculino', 'Prefiero no decir']},
         required: [true, 'Por favor, selecciona tu sexo']
     },
     email: {
@@ -24,6 +25,10 @@ const userSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         validate: [validator.isEmail, 'Necesitas un correo vallido.'],
+    },
+    topics:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
     },
     job: {
         type: String,
