@@ -9,7 +9,7 @@ const {
     getAllAdmins,
     updateAdmin,
     deleteAdmin,
-} = require(`${__dirname}/../controllers/Admin.controller.js`);
+} = require(`${__dirname}/../controllers/admin.controller.js`);
 
 router.route('/').get(getAllAdmins).post(createAdmin);
 router.route('/:id').get(getAdmin).patch(updateAdmin).delete(deleteAdmin);
