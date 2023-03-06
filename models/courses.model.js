@@ -35,10 +35,10 @@ const courseSchema = new mongoose.Schema({
             message: 'La fecha fin no puede ser antes de la fecha de inicio'
         }
     },
-    // TODO! course hours do they change schedules?
-    schedule: {
-        type: String,
-    },
+    // // TO-DO? course hours do they change schedules?
+    // schedule: {
+    //     type: String,
+    // },
     // session time span in minutes
     duration: {
         type: Number,
@@ -74,7 +74,30 @@ const courseSchema = new mongoose.Schema({
     // remote, presential, etc.
     modality: {
         type: String,
-    }
+        enum: {values: ['Remoto', 'Presencial']},
+        required: [true, 'Modalidad del curso debe ser presencial o remoto'],
+        validate: {
+            message: 'El curso debe ser presencial o remoto'
+        }
+    },
+    // free or paid
+    status:{
+        type: String,
+        required: [true, 'El curso debe ser gratuito o de pago'],
+        enum: {values: ['Gratuito','De pago']},
+        validate: {
+            message: 'El curso debe ser gratuito o de pago'
+        }
+    },
+    // inscription cost for course access
+    cost:{
+        type: Number,
+        validate:{
+            validator: cost => cost >= 0 && Number.isInteger(cost),
+            message: 'El curso debe costar 0 o más'
+        }
+    },
+    
 });
 
 const Course = mongoose.model('Course', courseSchema);
