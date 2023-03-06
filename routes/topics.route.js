@@ -4,14 +4,14 @@ const router = express.Router();
 
 // RUTAS
 const {
-    getAllTopicss,
-    getTopics,
-    createTopics,
-    updateTopics,
-    deleteTopics,
+    getAllTopics,
+    getTopic,
+    createTopic,
+    updateTopic,
+    deleteTopic,
 } = require(`${__dirname}/../controllers/topics.controller.js`);
 
-router.route('/').get(getAllTopicss).post(createTopics);
-router.route('/:id').get(getTopics).patch(updateTopics).delete(deleteTopics);
+router.route('/').get(getAllTopics).post(createTopic);
+router.route('/:id').get(getTopic).patch(updateTopic).delete(deleteTopic);
 
 module.exports = router;
