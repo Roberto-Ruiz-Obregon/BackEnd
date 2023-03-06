@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
+/* Creating a schema for the user model. */
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
