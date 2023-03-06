@@ -13,10 +13,17 @@ const {
 const {
     loginAdmin,
     signUpAdmin,
+    logout,
+    getMe,
+    protect,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
 
 router.post('/signup', signUpAdmin);
 router.post('/login', loginAdmin);
+
+router.use(protect);
+router.get('/me', getMe, getAdmin);
+router.get('/logout', logout);
 
 router.route('/').get(getAllAdmins).post(createAdmin);
 router.route('/:id').get(getAdmin).patch(updateAdmin).delete(deleteAdmin);

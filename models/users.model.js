@@ -110,6 +110,20 @@ userSchema.methods.createPasswordResetToken = function () {
     return resetToken;
 };
 
+/* This method checks if the password has been changed after the token was issued. */
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
+        const changedTimestamp = parseInt(
+            this.passwordChangedAt.getTime() / 1000,
+            10
+        );
+        return JWTTimestamp < changedTimestamp;
+    }
+
+    // false means the password did not change
+    return false;
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

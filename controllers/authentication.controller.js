@@ -192,6 +192,14 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
     createSendToken(user, 201, req, res);
 });
 
+/* Setting the cookie to loggedout and then sending a response. */
+exports.logout = (req, res, next) => {
+    res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() + 10 * 1000),
+    });
+    res.status(200).json({ status: 'success' });
+};
+
 /* The above code is checking if the user is logged in. If the user is logged in, the user is allowed
 to access the protected route. If the user is not logged in, the user is not allowed to access the
 protected route. */
@@ -223,7 +231,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     // 3) Check if user or admin exists
     const user = await User.findById(decoded.id);
-    const admin = await Amin.findById(decoded.id);
+    const admin = await Admin.findById(decoded.id);
     if (!user && !admin) {
         return next(
             new AppError(
@@ -236,26 +244,33 @@ exports.protect = catchAsync(async (req, res, next) => {
     // 4) Check if user changed passwords after the token was issued
     // PARA ESTE CREAREMOS UN nuevo metodo de INSTANCIA
     if (
-        user.changedPasswordAfter(decoded.iat) ||
-        admin.changedPasswordAfter(decoded.iat)
+        (user && user.changedPasswordAfter(decoded.iat)) ||
+        (admin && admin.changedPasswordAfter(decoded.iat))
     ) {
         // iat - issued at
         return next(
             new AppError(
-                'haz cambiado recientemente tu contraseña. Inicia sesion de nuevo.',
+                'Haz cambiado recientemente tu contraseña. Inicia sesion de nuevo.',
                 401
             )
         );
     }
+
     // 5) Next is called and the req accesses the protected route
     if (user) {
         req.userType = 'User';
         req.user = user;
-        req.locals.user = user;
     } else if (admin) {
         req.userType = 'Admin';
         req.admin = admin;
-        req.locals.admin = admin;
     }
+    next();
+});
+
+/* Setting the user id to the params id. */
+exports.getMe = catchAsync(async (req, res, next) => {
+    // Using this route before getOne lets us leverage the already created endpoint.
+    let userActive = req.userType == 'User' ? req.user : req.admin;
+    req.params.id = userActive._id;
     next();
 });
