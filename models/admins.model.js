@@ -3,18 +3,16 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-/* Creating a schema for the user model. */
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Por favor dinos tu nombre!'],
     },
     age: {
-        type: Number, 
-        min: 0,
+        type: Number,
         required: [true, 'Por favor, escribe tu edad']
     },
-    gender: {
+    sex: {
         type: String,
         required: [true, 'Por favor, selecciona tu sexo']
     },
@@ -33,7 +31,7 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     postalCode: {
-        type: Number,
+        type: String,
     },
     password: {
         type: String,
@@ -66,6 +64,8 @@ userSchema.pre('save', async function (next) {
     return next();
 });
 
-const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+
+const Admin = mongoose.model('Admin', userSchema);
+
+module.exports = Admin;
