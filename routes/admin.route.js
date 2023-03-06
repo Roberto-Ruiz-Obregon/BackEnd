@@ -22,10 +22,10 @@ const {
 router.post('/signup', signUpAdmin);
 router.post('/login', loginAdmin);
 
-router.use(protect);
-router.get('/me', getMe, getAdmin);
-router.patch('/updateme', editMe);
-router.get('/logout', logout);
+router.use('/auth', protect);
+router.get('/auth/me', getMe, getAdmin);
+router.patch('/auth/updateme', editMe);
+router.get('/auth/logout', logout);
 
 router.route('/').get(getAllAdmins).post(createAdmin);
 router.route('/:id').get(getAdmin).patch(updateAdmin).delete(deleteAdmin);
