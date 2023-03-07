@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+/*  This is the model for a payment receipt, not an invoice nor a bill
+      invoice: request for payment (contización)
+      receipt: proof that the invoice was fulfilled
+      bill: proof that a payment was made, normally issued by the billing platform
+*/
 const paymentSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -23,6 +28,7 @@ const paymentSchema = new mongoose.Schema({
     type: Date,
     required: [true, 'La fecha de pago es necesaria']
   }
+  // TODO: see how integrating with Stripe will affect this model
 }, { timestamps: true });
 
 const Payment = mongoose.model('Payment', paymentSchema);
