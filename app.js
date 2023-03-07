@@ -18,6 +18,8 @@ const globalErrorHandler = require('./controllers/errorController.controller');
 const userRouter = require('./routes/user.route');
 const courseRouter = require('./routes/course.route');
 const topicsRouter = require('./routes/topics.route');
+const programRouter = require('./routes/program.route');
+const adminRouter = require('./routes/admin.route');
 
 const app = express();
 
@@ -98,6 +100,8 @@ app.use('/api', limiter);
 app.use('/user', userRouter);
 app.use('/course', courseRouter);
 app.use('/topics', topicsRouter);
+app.use('/program', programRouter);
+app.use('/admin', adminRouter);
 
 // ERROR HANDLER FOR UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
