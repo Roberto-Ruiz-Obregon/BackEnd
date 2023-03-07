@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node server.js",
         "start:dev": "nodemon server.js",
-        "start:prod": "NODE_ENV=production nodemon server.js",
+        "start:prod": "cross-env NODE_ENV=production nodemon server.js",
         "debug": "ndb server.js"
     },
     "repository": {
@@ -42,5 +42,8 @@
     "bugs": {
         "url": "https://github.com/Roberto-Ruiz-Obregon/BackEnd/issues"
     },
-    "homepage": "https://github.com/Roberto-Ruiz-Obregon/BackEnd#readme"
+    "homepage": "https://github.com/Roberto-Ruiz-Obregon/BackEnd#readme",
+    "devDependencies": {
+        "cross-env": "^7.0.3"
+    }
 }

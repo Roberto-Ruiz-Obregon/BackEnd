@@ -16,6 +16,8 @@ const globalErrorHandler = require('./controllers/errorController.controller');
 
 // ROUTERS
 const userRouter = require('./routes/user.route');
+const courseRouter = require('./routes/course.route');
+const topicsRouter = require('./routes/topics.route');
 const programRouter = require('./routes/program.route');
 const adminRouter = require('./routes/admin.route');
 
@@ -96,6 +98,8 @@ app.use('/api', limiter);
 
 // ROUTES
 app.use('/user', userRouter);
+app.use('/course', courseRouter);
+app.use('/topics', topicsRouter);
 app.use('/program', programRouter);
 app.use('/admin', adminRouter);
 
