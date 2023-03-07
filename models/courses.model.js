@@ -63,7 +63,7 @@ const courseSchema = new mongoose.Schema({
         type: String,
         validate: {
             validator: value => (
-                /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(v)
+                /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value)
             ),
             message: props => `${props.value} no es una URL válida`
         }
