@@ -12,7 +12,7 @@ global.XMLHttpRequest = require('xhr2');
 /**
  *
  * @param { File } object file object that will be uploaded
- * @param { resource } string name of object property to set URL
+ * @param { resource } string name of the type of resource
  * @description - This function does the following
  * - It uploads a file to storage on Firebase
  * - It accepts an object as an argument with the
@@ -26,7 +26,7 @@ const uploadImage = async (file, resource) => {
     const timestamp = Date.now();
     const name = originalname.split('.')[0];
     const type = originalname.split('.')[1];
-    const fileName = `${name}_${timestamp}.${type}`;
+    const fileName = `${name}_${resource}_${timestamp}.${type}`;
     // Step 1. Create reference for file name in cloud storage
     const imageRef = storage.child(fileName);
     // Step 2. Upload the file in the bucket storage
@@ -64,7 +64,7 @@ exports.formatCourseImage = catchAsync(async (req, res, next) => {
     if (!req.file) return next();
 
     // FORMAT file
-    req.body[resource] = await uploadImage(req.file, 'course');
+    req.body.imageUrl = await uploadImage(req.file, 'course');
 
     next();
 });
@@ -82,7 +82,7 @@ exports.formatPaymentImage = catchAsync(async (req, res, next) => {
     if (!req.file) return next();
 
     // FORMAT file
-    req.body.billImageURL = await uploadImage(req.file, 'billImageURL');
+    req.body.billImageURL = await uploadImage(req.file, 'bill');
 
     next();
 });
