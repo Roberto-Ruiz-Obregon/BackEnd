@@ -17,6 +17,7 @@ const globalErrorHandler = require('./controllers/errorController.controller');
 // ROUTERS
 const userRouter = require('./routes/user.route');
 const programRouter = require('./routes/program.route');
+const adminRouter = require('./routes/admin.route');
 
 const app = express();
 
@@ -96,6 +97,7 @@ app.use('/api', limiter);
 // ROUTES
 app.use('/user', userRouter);
 app.use('/program', programRouter);
+app.use('/admin', adminRouter);
 
 // ERROR HANDLER FOR UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
