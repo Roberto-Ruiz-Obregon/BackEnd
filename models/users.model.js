@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     },
     topics:{
         type: mongoose.Schema.ObjectId,
-        ref: 'User',
+        ref: 'Topics',
     },
     job: {
         type: String,
