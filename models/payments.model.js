@@ -27,6 +27,21 @@ const paymentSchema = new mongoose.Schema({
   paymentDate: {
     type: Date,
     required: [true, 'La fecha de pago es necesaria']
+  },
+  // TODO: que este campo sea read_only desde el front ybi que lo rellene el controlador dependiendo de lo que diga Stripe
+  status: {
+    type: String,
+    enum: {values: ['Pendiente', 'Rechazado', 'Aceptado']},
+    required: [true, 'Status required'],
+  },
+  billImageURL: {
+    type: String,
+    validate: {
+      validator: value => (
+          /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value)
+      ),
+      message: props => `${props.value} no es una URL válida`
+  }
   }
   // TODO: see how integrating with Stripe will affect this model
 }, { timestamps: true });
