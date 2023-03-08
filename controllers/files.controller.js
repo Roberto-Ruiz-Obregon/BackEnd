@@ -4,7 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const { format } = require('util');
 
-const firebase = require('../db'); // reference to our db
+const firebase = require('../config/db'); // reference to our db
 require('firebase/storage'); // must be required for this to work
 const storage = firebase.storage().ref(); // create a reference to storage
 global.XMLHttpRequest = require('xhr2');
@@ -21,6 +21,12 @@ global.XMLHttpRequest = require('xhr2');
 
 const uploadImage = async (file, resource) => {
     let { originalname, buffer } = file;
+
+    // Format image
+    buffer = await sharp(buffer)
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toBuffer();
 
     // Format the filename
     const timestamp = Date.now();
@@ -87,6 +93,6 @@ exports.formatPaymentImage = catchAsync(async (req, res, next) => {
     next();
 });
 
-exports.uploadCourseImage = createUpload().single('course_image');
-exports.uploadProgramImage = createUpload().single('program_image');
-exports.uploadPaymentImage = createUpload().single('payment_image');
+exports.uploadCourseImage = createUpload().single('courseImage');
+exports.uploadProgramImage = createUpload().single('programImage');
+exports.uploadPaymentImage = createUpload().single('paymentImage');

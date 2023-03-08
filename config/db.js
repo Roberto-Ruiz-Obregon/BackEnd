@@ -5,4 +5,5 @@ const config = require('./config');
 
 // Creates and initializes a Firebase app instance. Pass options as param
 const db = firebase.initializeApp(config.firebaseConfig);
+
 module.exports = db;

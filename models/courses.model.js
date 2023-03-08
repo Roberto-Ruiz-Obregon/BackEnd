@@ -15,12 +15,12 @@ const courseSchema = new mongoose.Schema(
             type: String,
         },
         topics: {
-            type: mongoose.Schema.ObjectId,
+            type: [mongoose.Schema.ObjectId],
             ref: 'Course',
         },
         // people/corps who are teaching the course
         teachers: {
-            type: String,
+            type: [String],
             required: [true, 'Es necesario asignar profesores al curso'],
         },
         // course beginning date
@@ -76,6 +76,9 @@ const courseSchema = new mongoose.Schema(
                 'Modalidad del curso debe ser presencial o remoto',
             ],
         },
+        postalCode: {
+            type: String,
+        },
         // free or paid
         status: {
             type: String,
@@ -92,9 +95,10 @@ const courseSchema = new mongoose.Schema(
         },
         imageUrl: {
             type: String,
+            required: [true, 'Tu curso debe contar con una portada'],
             validate: {
                 validator: (value) =>
-                    /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(v),
+                    /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value),
             },
         },
     },
