@@ -10,7 +10,8 @@
         "start:dev": "nodemon index.js",
         "start:prod": "cross-env NODE_ENV=production nodemon index.js",
         "debug": "ndb index.js",
-        "deploy": "firebase deploy --only functions"
+        "deploy": "firebase deploy --only functions",
+        "serve": "firebase emulators:start --only functions"
     },
     "repository": {
         "type": "git",
