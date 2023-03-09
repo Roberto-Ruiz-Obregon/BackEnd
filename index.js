@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const functions = require('firebase-functions');
 const mongoose = require('mongoose');
 
 // Read env variables and save them
@@ -33,7 +34,7 @@ mongoose
 
 const app = require(`${__dirname}/app.js`);
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 // app.listen nos regresa un objeto de
 const server = app.listen(port, () => {
@@ -58,3 +59,5 @@ process.on('SIGTERM', () => {
         console.log('Process terminated.');
     });
 });
+
+exports.api = functions.https.onRequest(app);

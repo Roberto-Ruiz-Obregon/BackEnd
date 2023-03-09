@@ -96,16 +96,16 @@ const limiter = rateLimit({
     // message: 'Too many requests from the same IP, please try again in an hour.',
     // skipSuccessfulRequests: true,
 });
-app.use('/api', limiter);
 
 // ROUTES
-app.use('/user', userRouter);
-app.use('/inscription', inscriptionRouter);
-app.use('/payment', paymentRouter);
-app.use('/course', courseRouter);
-app.use('/topics', topicsRouter);
-app.use('/program', programRouter);
-app.use('/admin', adminRouter);
+app.use('/', limiter);
+app.use('/v1/user', userRouter);
+app.use('/v1/inscription', inscriptionRouter);
+app.use('/v1/payment', paymentRouter);
+app.use('/v1/course', courseRouter);
+app.use('/v1/topics', topicsRouter);
+app.use('/v1/program', programRouter);
+app.use('/v1/admin', adminRouter);
 
 // ERROR HANDLER FOR UNHANDLED ROUTES
 app.all('*', (req, res, next) => {

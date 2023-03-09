@@ -1,5 +1,5 @@
 const factory = require('./handlerFactory.controller');
-const Inscription = require('../models/Inscriptions.model');
+const Inscription = require('../models/inscriptions.model');
 
 exports.getAllInscriptions = factory.getAll(Inscription);
 exports.getInscription = factory.getOne(Inscription, ['user', 'course']);

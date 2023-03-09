@@ -7,7 +7,7 @@ const {
     getInscription,
     getAllInscriptions,
     deleteInscription,
-} = require(`${__dirname}/../controllers/Inscription.controller.js`);
+} = require(`${__dirname}/../controllers/inscription.controller.js`);
 
 router.route('/').get(getAllInscriptions).post(createInscription);
 router.route('/:id').get(getInscription).delete(deleteInscription);
