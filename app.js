@@ -22,6 +22,7 @@ const courseRouter = require('./routes/course.route');
 const topicsRouter = require('./routes/topics.route');
 const programRouter = require('./routes/program.route');
 const adminRouter = require('./routes/admin.route');
+const viewRouter = require('./routes/views.route');
 
 const app = express();
 
@@ -99,6 +100,7 @@ const limiter = rateLimit({
 
 // ROUTES
 app.use('/', limiter);
+app.use('/', viewRouter);
 app.use('/v1/user', userRouter);
 app.use('/v1/inscription', inscriptionRouter);
 app.use('/v1/payment', paymentRouter);
