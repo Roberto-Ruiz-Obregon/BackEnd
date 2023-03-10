@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const pug = require('pug');
-const htmlToText = require('html-to-text');
+const { htmlToText } = require('html-to-text');
 
 /* The above code is creating a class called Email. The constructor is taking in two parameters, user
 and url. The constructor is also setting the to, firstName, url, and from properties. The
@@ -70,7 +70,7 @@ module.exports = class Email {
             subject,
             html,
             // npm i html-to-text
-            text: htmlToText.fromString(html),
+            text: htmlToText(html, { wordwrap: 130 }),
         };
 
         //  create transport and send email
@@ -84,7 +84,7 @@ module.exports = class Email {
         // esto va a ser una pug template
         await this.send(
             'welcome',
-            'Bienvenido a la fmailia Roberto Ruiz obregon!'
+            'Bienvenido a la familia Roberto Ruiz Obregon!'
         );
     }
 

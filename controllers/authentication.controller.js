@@ -5,7 +5,7 @@ const User = require('./../models/users.model');
 const Admin = require('./../models/admins.model');
 
 const catchAsync = require('./../utils/catchAsync');
-// const Email = require('./../utils/email');
+const Email = require('./../utils/email');
 const AppError = require('./../utils/appError');
 
 /**
@@ -119,7 +119,7 @@ exports.signUpUser = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm,
     });
 
-    // TODO - send welcome email
+    await new Email(newUser, process.env.LANDING_URL).sendWelcome();
 
     return createSendToken(newUser, 201, req, res);
 });
@@ -133,7 +133,7 @@ exports.signUpAdmin = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm,
     });
 
-    // TODO - send welcome email
+    await new Email(newUser, process.env.LANDING_URL).sendWelcome();
 
     return createSendToken(newUser, 201, req, res);
 });
