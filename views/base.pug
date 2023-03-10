@@ -8,8 +8,16 @@ html
             link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
             link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,400,400i,700')
             title Roberto Ruiz Obregon | #{title}
+
+            include _style
     body
+        // HEADER
+        include _header
+
         // CONTENT
         block content
             h1 This is a place holder heading
             //- Everything inside the block will be overwritten
+        
+        // FOOTER
+        include _footer
