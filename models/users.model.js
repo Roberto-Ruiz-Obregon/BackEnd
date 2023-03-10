@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         min: 0,
         required: [true, 'Por favor, escribe tu edad'],
     },
+    emailAgreement: {
+        type: Boolean,
+        default: true,
+    },
     gender: {
         type: String,
         required: [true, 'Por favor, selecciona tu sexo'],
