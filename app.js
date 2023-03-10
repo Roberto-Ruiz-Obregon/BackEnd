@@ -28,8 +28,8 @@ const app = express();
 app.enable('trust proxy');
 
 // ENGINE IN CASE WE DECIDE TO USE A TEMPLATE ENGINE
-// app.set('view engine', 'pug');
-// app.set('views', path.join(__dirname, 'views')); // -> ./views
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(
     cors({
