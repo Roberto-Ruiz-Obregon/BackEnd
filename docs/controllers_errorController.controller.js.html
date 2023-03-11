@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/errorController.controller.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/errorController.controller.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const AppError = require('../utils/appError');
+
+/**
+ * It sends the error to the client in a JSON format.
+ * @param err - The error object
+ * @param req - The request object
+ * @param res - The response object
+ */
+const sendErrorDev = (err, req, res) => {
+    res.status(err.statusCode).json({
+        status: err.status,
+        error: err,
+        message: err.message,
+        stack: err.stack,
+    });
+
+    console.log(err);
+};
+/**
+ * If the error is operational, send the error message to the client. If the error is not operational,
+ * log the error and send a generic error message to the client
+ * @param err - the error object
+ * @param req - The request object
+ * @param res - The response object.
+ * @returns the response.
+ */
+const sendErrorProduction = (err, req, res) => {
+    // Operational
+    if (err.isOperational) {
+        return res.status(err.statusCode).json({
+            status: err.status,
+            message: err.message,
+        });
+        // Programming error
+    } else {
+        // 1 log error
+        console.error('Error', err);
+
+        // 2 send generic response
+        res.status(500).json({
+            status: 'error',
+            error: 'Something went very wrong',
+        });
+    }
+};
+
+/**
+ * If the error is a JsonWebTokenError, then return a new AppError with a message of 'Token invalida.
+ * Inicie sesion de nuevo.' and a status of 401.
+ * @param err - The error object that was thrown by the JWT library.
+ */
+const handleJWTError = (err) =>
+    new AppError('Token invalida. Inicie sesion de nuevo.', 401);
+
+/**
+ * If the error is a JWT error, then return a new AppError with a message of 'Tu sesion ha expirado.
+ * Inicia sesion de nuevo.' and a status code of 401.
+ * @param err - The error object that was thrown.
+ */
+const handleJWTExpiredError = (err) =>
+    new AppError('Tu sesion ha expirado. Inicia sesion de nuevo.', 401);
+
+/**
+ * It takes an error object, and returns a new AppError object with a message that is a concatenation
+ * of a string and the second word of the error message.
+ * @param err - The error object that was thrown by the database.
+ */
+const handleBadField = (err) =>
+    new AppError(
+        `Parametro de busqueda invalido ${err.sqlMessage.split(' ')[2]}.`,
+        404
+    );
+
+/**
+ * catch all errors and send a personalized reponse depending on the error name
+ * @param {Obj} error - The error caught by the middleware.
+ * @param {Obj} req - The req object.
+ * @param {Obj} res - The res object.
+ * @param {function} next - The next function.
+ */
+module.exports = (err, req, res, next) => {
+    res.locals.error = err;
+    err.status = err.status || 'error';
+    err.statusCode = err.statusCode || 500;
+
+    if (process.env.NODE_ENV === 'development') {
+        return sendErrorDev(err, req, res);
+    } else if (process.env.NODE_ENV === 'production') {
+        // con esto identificaremos los errores de validación
+        let error = Object.create(err);
+        if (err.name === 'JsonWebTokenError') error = handleJWTError(err);
+        if (err.name === 'TokenExpiredError')
+            error = handleJWTExpiredError(err);
+        if (err.code === 'ER_BAD_FIELD_ERROR') error = handleBadField(err);
+        return sendErrorProduction(error, req, res);
+    }
+    next(err);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="APIFeatures.html">APIFeatures</a></li><li><a href="AppError.html">AppError</a></li><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createSendToken">createSendToken</a></li><li><a href="global.html#createUpload">createUpload</a></li><li><a href="global.html#forgotPassword">forgotPassword</a></li><li><a href="global.html#handleBadField">handleBadField</a></li><li><a href="global.html#handleJWTError">handleJWTError</a></li><li><a href="global.html#handleJWTExpiredError">handleJWTExpiredError</a></li><li><a href="global.html#resetPassword">resetPassword</a></li><li><a href="global.html#sendErrorDev">sendErrorDev</a></li><li><a href="global.html#sendErrorProduction">sendErrorProduction</a></li><li><a href="global.html#signToken">signToken</a></li><li><a href="global.html#uploadImage">uploadImage</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Mar 11 2023 15:02:51 GMT-0600 (GMT-06:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

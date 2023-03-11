@@ -1,0 +1,17 @@
+extends baseEmail
+
+block content
+  p Hola #{firstName},
+  p Bienvenido a la familia de la Fundacion Roberto Ruiz Obregon, nos alegra que nos acompañes 🎉🙏
+  p Somos una gran familia con muchos cursos y oportunidades de aprendizaje que ofrecer. Empieza revisando nuestra pagina oficial!
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  a(href=`${url}`, target='_blank') Conocer sobre la fundacion
+  p Si necesitas ayuda descargando la aplicacion o aplicando a alguno de nuestros programas no dudes en contactarme!
+  p - Fundacion Roberto Ruiz Obregon

@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         min: 0,
         required: [true, 'Por favor, escribe tu edad'],
     },
+    emailAgreement: {
+        type: Boolean,
+        default: true,
+    },
     gender: {
         type: String,
         required: [true, 'Por favor, selecciona tu sexo'],
@@ -23,11 +27,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Por favor dinos tu correo!'],
         lowercase: true,
-        unique: true,
+        unique: [true, 'Este correo ya esta en uso. Elige otro.'],
         trim: true,
         validate: [validator.isEmail, 'Necesitas un correo vallido.'],
     },
-    topics:{
+    topics: {
         type: mongoose.Schema.ObjectId,
         ref: 'Topics',
     },
@@ -36,7 +40,15 @@ const userSchema = new mongoose.Schema({
     },
     educationLevel: {
         type: String,
-        enum: { values: ['Ninguno','Primaria', 'Secundaria', 'Preparatoria', 'Universidad']}
+        enum: {
+            values: [
+                'Ninguno',
+                'Primaria',
+                'Secundaria',
+                'Preparatoria',
+                'Universidad',
+            ],
+        },
     },
     postalCode: {
         type: Number,
