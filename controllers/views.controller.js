@@ -7,3 +7,10 @@ exports.getOverview = catchAsync(async (req, res, next) => {
         title: 'Inicio',
     });
 });
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+    // 3 render template
+    res.status(200).render('passwordreset', {
+        title: 'Inicio',
+    });
+});

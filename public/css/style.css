@@ -145,7 +145,7 @@ body {
         from(#7dd56f),
         to(#28b487)
     );
-    background-image: linear-gradient(to right, #7dd56f, #28b487);
+    background-image: linear-gradient(to right, #eb4d4b, #eb4d4b);
     -webkit-background-clip: text;
     color: transparent;
     letter-spacing: 0.1rem;
@@ -260,6 +260,13 @@ body {
 }
 .btn--green::after {
     background-color: #55c57a;
+}
+.btn--red {
+    background-color: #eb4d4b;
+    color: #fff;
+}
+.btn--red::after {
+    background-color: #ab3a38;
 }
 
 .btn--small {
