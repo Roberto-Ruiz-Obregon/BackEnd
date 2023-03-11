@@ -2248,7 +2248,7 @@ var reset = /*#__PURE__*/function () {
           _context.next = 3;
           return (0, _axios.default)({
             method: 'PATCH',
-            url: "/api/v1/users/resetpassword/".concat(token),
+            url: "/v1/user/resetpassword/".concat(token),
             data: {
               email: email,
               password: password,

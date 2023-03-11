@@ -1,6 +1,5 @@
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
 const User = require('./../models/users.model');
 const Admin = require('./../models/admins.model');
 
