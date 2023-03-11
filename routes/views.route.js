@@ -7,6 +7,6 @@ const {
 } = require('../controllers/views.controller');
 
 router.get('/', getOverview);
-router.get('/retrievePassword/:id', resetPassword);
+router.get('/retrievePassword/:user/:id', resetPassword);
 
 module.exports = router;

@@ -14,7 +14,8 @@ if (loginForm) {
 
         // Get the token associated to the link
         const resetToken = loginForm.dataset.token;
+        const userType = loginForm.dataset.user;
 
-        reset(email, password, passwordConfirm, resetToken);
+        reset(email, password, passwordConfirm, resetToken, userType);
     });
 }

@@ -12,5 +12,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     res.status(200).render('passwordreset', {
         title: 'Inicio',
         resetToken: req.params.id,
+        userType: req.params.user,
     });
 });

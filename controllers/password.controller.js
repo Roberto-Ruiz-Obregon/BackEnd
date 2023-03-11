@@ -6,14 +6,18 @@ const catchAsync = require('./../utils/catchAsync');
 const Email = require('./../utils/email');
 const AppError = require('./../utils/appError');
 
-/* The above code is sending an email to the user with a link to reset their password. */
-exports.forgotPasswordAdmin = catchAsync(async (req, res, next) => {
+/**
+ * It takes a user's email, creates a reset token, saves it to the user, and sends an email with a link
+ * to reset the password.
+ * @param Model - The model you want to use.
+ * @param email - the email of the user who wants to reset their password
+ * @returns Nothing.
+ */
+const forgotPassword = async (Model, email, req, userType) => {
     // 1 get user based on posted email
-    const user = await Admin.findOne({ email: req.body.email });
+    const user = await Model.findOne({ email });
     if (!user) {
-        return next(
-            new AppError('No existe un usuario con esa contraseña.', 404)
-        );
+        throw new AppError('No existe un usuario con ese correo.', 404);
     }
     // 2 generate random token
     const resetToken = user.createPasswordResetToken();
@@ -22,22 +26,25 @@ exports.forgotPasswordAdmin = catchAsync(async (req, res, next) => {
     // 3 send it back as an email
     const resetURL = `${req.protocol}://${req.get(
         'host'
-    )}/retrievePassword/${resetToken}`;
+    )}/retrievePassword/${userType}/${resetToken}`;
 
     // si falla queremos eliminar la token
     try {
         await new Email(user, resetURL).sendPasswordReset();
     } catch (err) {
-        user.createPasswordResetToken = undefined;
-        user.createPasswordResetExpires = undefined;
+        user.passwordResetExpires = undefined;
+        user.passwordResetToken = undefined;
         await user.save({ validateBeforeSave: false });
-        return next(
-            new AppError(
-                'Hubo un error enviando el correo de confirmacion. Intenta de nuevo',
-                500
-            )
+        throw new AppError(
+            'Hubo un error enviando el correo de confirmacion. Intenta de nuevo',
+            500
         );
     }
+};
+
+/* The above code is sending an email to the user with a link to reset their password. */
+exports.forgotPasswordAdmin = catchAsync(async (req, res, next) => {
+    await forgotPassword(Admin, req.body.email, req, 'admin');
 
     res.status(200).json({
         status: 'success',
@@ -81,36 +88,7 @@ exports.resetPasswordAdmin = catchAsync(async (req, res, next) => {
 
 /* The above code is sending an email to the user with a link to reset their password. */
 exports.forgotPasswordUser = catchAsync(async (req, res, next) => {
-    // 1 get user based on posted email
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-        return next(
-            new AppError('No existe un usuario con esa contraseña.', 404)
-        );
-    }
-    // 2 generate random token
-    const resetToken = user.createPasswordResetToken();
-    await user.save({ validateBeforeSave: false }); // we save the new resetToken at user
-
-    // 3 send it back as an email
-    const resetURL = `${req.protocol}://${req.get(
-        'host'
-    )}/retrievePassword/${resetToken}`;
-
-    // si falla queremos eliminar la token
-    try {
-        await new Email(user, resetURL).sendPasswordReset();
-    } catch (err) {
-        user.createPasswordResetToken = undefined;
-        user.createPasswordResetExpires = undefined;
-        await user.save({ validateBeforeSave: false });
-        return next(
-            new AppError(
-                'Hubo un error enviando el correo de confirmacion. Intenta de nuevo',
-                500
-            )
-        );
-    }
+    await forgotPassword(User, req.body.email, req, 'user');
 
     res.status(200).json({
         status: 'success',

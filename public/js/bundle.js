@@ -2239,7 +2239,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  * @param token - the token that was sent to the user's email
  */
 var reset = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(email, password, passwordConfirm, token) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(email, password, passwordConfirm, token, userType) {
     var res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -2248,7 +2248,7 @@ var reset = /*#__PURE__*/function () {
           _context.next = 3;
           return (0, _axios.default)({
             method: 'PATCH',
-            url: "/v1/user/resetpassword/".concat(token),
+            url: "/v1/".concat(userType, "/resetpassword/").concat(token),
             data: {
               email: email,
               password: password,
@@ -2275,7 +2275,7 @@ var reset = /*#__PURE__*/function () {
       }
     }, _callee, null, [[0, 7]]);
   }));
-  return function reset(_x, _x2, _x3, _x4) {
+  return function reset(_x, _x2, _x3, _x4, _x5) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -2297,7 +2297,8 @@ if (loginForm) {
 
     // Get the token associated to the link
     var resetToken = loginForm.dataset.token;
-    (0, _reset.reset)(email, password, passwordConfirm, resetToken);
+    var userType = loginForm.dataset.user;
+    (0, _reset.reset)(email, password, passwordConfirm, resetToken, userType);
   });
 }
 },{"./reset.js":"reset.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -2325,7 +2326,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50829" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63528" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

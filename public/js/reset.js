@@ -11,11 +11,17 @@ import { showAlert } from './alert';
  * @param passwordConfirm - "123456789"
  * @param token - the token that was sent to the user's email
  */
-export const reset = async (email, password, passwordConfirm, token) => {
+export const reset = async (
+    email,
+    password,
+    passwordConfirm,
+    token,
+    userType
+) => {
     try {
         const res = await axios({
             method: 'PATCH',
-            url: `/v1/user/resetpassword/${token}`,
+            url: `/v1/${userType}/resetpassword/${token}`,
             data: {
                 email,
                 password,
