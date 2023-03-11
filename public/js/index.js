@@ -1,4 +1,4 @@
-// import '@babel/polyfill';
+import { reset } from './reset.js';
 
 // DOM ELEMENTS
 const loginForm = document.querySelector('.form--passwordreset');
@@ -11,5 +11,10 @@ if (loginForm) {
         const password = document.getElementById('password').value;
         const passwordConfirm =
             document.getElementById('passwordConfirm').value;
+
+        // Get the token associated to the link
+        const resetToken = loginForm.dataset.token;
+
+        reset(email, password, passwordConfirm, resetToken);
     });
 }

@@ -18,9 +18,13 @@ const {
     getMe,
     editMe,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
+const {
+    forgotPasswordUser,
+} = require(`${__dirname}/../controllers/password.controller.js`);
 
 router.post('/auth/signup', signUpUser);
 router.post('/auth/login', loginUser);
+router.post('/forgotPassword', forgotPasswordUser);
 
 router.use('/auth', protect);
 router.get('/auth/me', getMe, getUser);

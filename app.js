@@ -100,7 +100,6 @@ const limiter = rateLimit({
 
 // ROUTES
 app.use('/', limiter);
-app.use('/', viewRouter);
 app.use('/v1/user', userRouter);
 app.use('/v1/inscription', inscriptionRouter);
 app.use('/v1/payment', paymentRouter);
@@ -108,6 +107,7 @@ app.use('/v1/course', courseRouter);
 app.use('/v1/topics', topicsRouter);
 app.use('/v1/program', programRouter);
 app.use('/v1/admin', adminRouter);
+app.use('/', viewRouter);
 
 // ERROR HANDLER FOR UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
