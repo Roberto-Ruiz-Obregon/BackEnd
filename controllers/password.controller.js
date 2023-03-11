@@ -6,6 +6,7 @@ const catchAsync = require('./../utils/catchAsync');
 const Email = require('./../utils/email');
 const AppError = require('./../utils/appError');
 
+/* The above code is sending an email to the user with a link to reset their password. */
 exports.forgotPasswordAdmin = catchAsync(async (req, res, next) => {
     // 1 get user based on posted email
     const user = await Admin.findOne({ email: req.body.email });
@@ -44,6 +45,9 @@ exports.forgotPasswordAdmin = catchAsync(async (req, res, next) => {
     });
 });
 
+/* This is the code that is executed when the user clicks on the link in the email. It is a GET request
+to the server. The server then checks if the token is valid and if it is, it allows the user to
+change their password. */
 exports.resetPasswordAdmin = catchAsync(async (req, res, next) => {
     // 1 get user based on token
     const hashedToken = crypto
@@ -74,6 +78,8 @@ exports.resetPasswordAdmin = catchAsync(async (req, res, next) => {
             'Contraseña cambiada con exito. Quiza debas iniciar sesion de nuevo',
     });
 });
+
+/* The above code is sending an email to the user with a link to reset their password. */
 exports.forgotPasswordUser = catchAsync(async (req, res, next) => {
     // 1 get user based on posted email
     const user = await User.findOne({ email: req.body.email });
@@ -112,6 +118,9 @@ exports.forgotPasswordUser = catchAsync(async (req, res, next) => {
     });
 });
 
+/* This is the code that is executed when the user clicks on the link in the email. It is a GET request
+to the server. The server then checks if the token is valid and if it is, it allows the user to
+change their password. */
 exports.resetPasswordUser = catchAsync(async (req, res, next) => {
     // 1 get user based on token
     const hashedToken = crypto
