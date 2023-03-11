@@ -42,6 +42,14 @@ const forgotPassword = async (Model, email, req, userType) => {
     }
 };
 
+/**
+ * It takes a token, a user model, a password, and a password confirmation, and then it updates the
+ * user's password
+ * @param token - The token that was sent to the user's email address.
+ * @param Model - The model that you want to update.
+ * @param password - the new password
+ * @param passwordConfirm - The password confirmation field.
+ */
 const resetPassword = async (token, Model, password, passwordConfirm) => {
     // 1 get user based on token
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
