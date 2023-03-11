@@ -42,6 +42,26 @@ const forgotPassword = async (Model, email, req, userType) => {
     }
 };
 
+const resetPassword = async (token, Model, password, passwordConfirm) => {
+    // 1 get user based on token
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    // get user based on reset token and expiration date
+    const user = await Model.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gte: Date.now() },
+    });
+
+    // 2 if token has not expired and there is user set new password
+    if (!user) throw new AppError('Token expirado o correo incorrecto', 400);
+    // 3 update changedPasswordAt property for the user
+    user.password = password;
+    user.passwordConfirm = passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    await user.save();
+};
+
 /* The above code is sending an email to the user with a link to reset their password. */
 exports.forgotPasswordAdmin = catchAsync(async (req, res, next) => {
     await forgotPassword(Admin, req.body.email, req, 'admin');
@@ -56,29 +76,13 @@ exports.forgotPasswordAdmin = catchAsync(async (req, res, next) => {
 to the server. The server then checks if the token is valid and if it is, it allows the user to
 change their password. */
 exports.resetPasswordAdmin = catchAsync(async (req, res, next) => {
-    // 1 get user based on token
-    const hashedToken = crypto
-        .createHash('sha256')
-        .update(req.params.id)
-        .digest('hex');
-    // get user based on reset token and expiration date
-    const user = await Admin.findOne({
-        passwordResetToken: hashedToken,
-        passwordResetExpires: { $gte: Date.now() },
-    });
+    await resetPassword(
+        req.params.id,
+        Admin,
+        req.body.password,
+        req.body.passwordConfirm
+    );
 
-    // 2 if token has not expired and there is user set new password
-    if (!user)
-        return next(new AppError('Token invalida o correo incorrecto', 400));
-    // 3 update changedPasswordAt property for the user
-    user.password = req.body.password;
-    user.passwordConfirm = req.body.passwordConfirm;
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-
-    await user.save();
-
-    // 4 log the user in and send jwt
     res.status(200).json({
         status: 'success',
         message:
@@ -100,29 +104,13 @@ exports.forgotPasswordUser = catchAsync(async (req, res, next) => {
 to the server. The server then checks if the token is valid and if it is, it allows the user to
 change their password. */
 exports.resetPasswordUser = catchAsync(async (req, res, next) => {
-    // 1 get user based on token
-    const hashedToken = crypto
-        .createHash('sha256')
-        .update(req.params.id)
-        .digest('hex');
-    // get user based on reset token and expiration date
-    const user = await User.findOne({
-        passwordResetToken: hashedToken,
-        passwordResetExpires: { $gte: Date.now() },
-    });
+    await resetPassword(
+        req.params.id,
+        User,
+        req.body.password,
+        req.body.passwordConfirm
+    );
 
-    // 2 if token has not expired and there is user set new password
-    if (!user)
-        return next(new AppError('Token invalida o correo incorrecto', 400));
-    // 3 update changedPasswordAt property for the user
-    user.password = req.body.password;
-    user.passwordConfirm = req.body.passwordConfirm;
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-
-    await user.save();
-
-    // 4 log the user in and send jwt
     res.status(200).json({
         status: 'success',
         message:
