@@ -22,14 +22,15 @@ const courseRouter = require('./routes/course.route');
 const topicsRouter = require('./routes/topics.route');
 const programRouter = require('./routes/program.route');
 const adminRouter = require('./routes/admin.route');
+const viewRouter = require('./routes/views.route');
 
 const app = express();
 
 app.enable('trust proxy');
 
 // ENGINE IN CASE WE DECIDE TO USE A TEMPLATE ENGINE
-// app.set('view engine', 'pug');
-// app.set('views', path.join(__dirname, 'views')); // -> ./views
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(
     cors({
@@ -106,6 +107,7 @@ app.use('/v1/course', courseRouter);
 app.use('/v1/topics', topicsRouter);
 app.use('/v1/program', programRouter);
 app.use('/v1/admin', adminRouter);
+app.use('/', viewRouter);
 
 // ERROR HANDLER FOR UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
