@@ -101,6 +101,13 @@ const courseSchema = new mongoose.Schema(
                     /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value),
             },
         },
+        capacity: {
+            type: Number,
+            default: 10,
+            validate: {
+                validator: (value) => value > 0,
+            },
+        },
     },
     { timestamps: true }
 );
