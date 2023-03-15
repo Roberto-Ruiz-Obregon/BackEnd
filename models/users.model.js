@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
         validate: [validator.isEmail, 'Necesitas un correo vallido.'],
     },
     topics: {
-        type: mongoose.Schema.ObjectId,
+        type: [mongoose.Schema.ObjectId],
         ref: 'Topics',
     },
     job: {
