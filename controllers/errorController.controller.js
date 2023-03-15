@@ -39,7 +39,7 @@ const sendErrorProduction = (err, req, res) => {
         // 2 send generic response
         res.status(500).json({
             status: 'error',
-            error: 'Something went very wrong',
+            error: 'Lo sentimos, algo salio muy mal. Intenta mas tarde.',
         });
     }
 };
@@ -72,6 +72,43 @@ const handleBadField = (err) =>
     );
 
 /**
+ * If the error is a CastError, then return a new AppError with the message "Invalido ${err.path}:
+ * ${err.value}" and a status code of 400.
+ * @param err - The error object that was thrown by Mongoose.
+ * @returns A new instance of AppError with the message and status code.
+ */
+const handleCastErrorDB = (err) => {
+    const message = `Invalido ${err.path}: ${err.value}`;
+    // 400 stands for bad request
+    return new AppError(message, 400);
+};
+
+/**
+ * It takes an error object and returns a new error object with a custom message
+ * @param err - The error object that was thrown by Mongoose.
+ * @returns The value of the duplicate field.
+ */
+const handleDuplicateFieldsDB = (err) => {
+    // To remove it we use a regular expression.
+    const value = err.errmsg.match(/(["'])(\\?.)*?\1/); // nos matchea todos
+    const message = `Valor duplicado: ${value[0]}. Por favor use otro valor.`;
+    return new AppError(message, 400);
+};
+
+/**
+ * It takes an error object as an argument, and returns a new AppError object with a message and a
+ * status code.
+ * @param err - The error object that was thrown
+ * @returns A new AppError object with the message and status code.
+ */
+const handleValidationErrorDB = (err) => {
+    // Mongoose gives us an array of errors to go through
+    const errors = Object.values(err.errors).map((err) => err.message);
+    const message = `Datos invalidos: ${errors.join('. ')}`;
+    return new AppError(message, 400);
+};
+
+/**
  * catch all errors and send a personalized reponse depending on the error name
  * @param {Obj} error - The error caught by the middleware.
  * @param {Obj} req - The req object.
@@ -88,6 +125,10 @@ module.exports = (err, req, res, next) => {
     } else if (process.env.NODE_ENV === 'production') {
         // con esto identificaremos los errores de validación
         let error = Object.create(err);
+        if (err.name === 'CastError') error = handleCastErrorDB(err);
+        if (err.code === 11000) error = handleDuplicateFieldsDB(err);
+        if (err.name === 'ValidationError')
+            error = handleValidationErrorDB(err);
         if (err.name === 'JsonWebTokenError') error = handleJWTError(err);
         if (err.name === 'TokenExpiredError')
             error = handleJWTExpiredError(err);
