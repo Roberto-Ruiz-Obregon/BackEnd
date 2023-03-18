@@ -14,10 +14,12 @@ const courseSchema = new mongoose.Schema(
         description: {
             type: String,
         },
-        topics: {
-            type: [mongoose.Schema.ObjectId],
-            ref: 'Course',
-        },
+        topics: [
+            {
+                type: [mongoose.Schema.ObjectId],
+                ref: 'Course',
+            },
+        ],
         // people/corps who are teaching the course
         teachers: {
             type: [String],
@@ -105,7 +107,7 @@ const courseSchema = new mongoose.Schema(
             type: Number,
             default: 10,
             validate: {
-                validator: (value) => value > 0,
+                validator: (value) => value >= 0,
             },
         },
     },
