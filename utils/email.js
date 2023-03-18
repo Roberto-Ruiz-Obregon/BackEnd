@@ -16,11 +16,12 @@ module.exports = class Email {
      * @param user - The user object that contains the email and name of the user.
      * @param url - The URL that the user will be sent to in order to reset their password.
      */
-    constructor(user, url) {
+    constructor(user, url, course = {}) {
         this.to = user.email;
         this.firstName = user.name.split(' ')[0];
         this.url = url;
         this.from = `Asociacion Roberto Ruiz Obregon <${process.env.EMAIL_FROM}>`;
+        this.course = course;
     }
 
     /**
@@ -60,6 +61,7 @@ module.exports = class Email {
             {
                 firstName: this.firstName,
                 url: this.url,
+                course: this.course,
                 subject,
             }
         );
@@ -96,6 +98,16 @@ module.exports = class Email {
         await this.send(
             'passwordReset',
             'Recuperar contraseña (valido por solo 10 minutos)'
+        );
+    }
+
+    /**
+     * It sends an email for inscription alerts
+     */
+    async sendInscriptonAlert() {
+        await this.send(
+            'inscriptionAlert',
+            `Gracias por inscribirte al curso ${this.course.courseName}`
         );
     }
 };
