@@ -38,6 +38,15 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
         );
     }
 
+    if (course.cost > 0) {
+        return next(
+            new AppError(
+                'Necesitas pagar por este curso! Inicia tu proceso de pago.',
+                404
+            )
+        );
+    }
+
     // Check if this user has inscribed to this course
     const inscription = await Inscription.find({
         course: courseId,
