@@ -11,17 +11,21 @@ welcome template and subject. The sendPasswordReset method is calling the send m
 the passwordReset template */
 module.exports = class Email {
     /**
-     * The constructor function is a special method for creating and initializing an object created
-     * within a class.
-     * @param user - The user object that contains the email and name of the user.
-     * @param url - The URL that the user will be sent to in order to reset their password.
+     * It takes in a user object, a url, a course object, and an image, and then sets the to, image,
+     * firstName, url, from, and course properties of the object to the values of the arguments passed
+     * in.
+     * @param user - The user object that contains the email address of the recipient.
+     * @param url - The URL of the course
+     * @param [course] - {
+     * @param [image] - the image to be displayed in the email
      */
-    constructor(user, url, course = {}) {
+    constructor(user, url, course = {}, image = '') {
         this.to = user.email;
         this.firstName = user.name.split(' ')[0];
         this.url = url;
-        this.from = `Asociacion Roberto Ruiz Obregon <${process.env.EMAIL_FROM}>`;
         this.course = course;
+        this.image = image;
+        this.from = `Asociacion Roberto Ruiz Obregon <${process.env.EMAIL_FROM}>`;
     }
 
     /**
@@ -109,5 +113,29 @@ module.exports = class Email {
             'inscriptionAlert',
             `Gracias por inscribirte al curso ${this.course.courseName}`
         );
+    }
+
+    /**
+     * It sends a message to the client
+     * @param message - The message to send to the client.
+     */
+    async sendAnnouncement(message) {
+        await this.send('inscriptionAlert', message);
+    }
+
+    /**
+     * It takes an array of users, a url, an image, and a message, and sends an email to each user in
+     * the array.
+     * @param users - an array of user objects
+     * @param url - The url of the announcement
+     * @param image - the image to be displayed in the email
+     * @param message - The message you want to send to the user
+     */
+    static async sendMultipleAnnouncement(users, url, image, message) {
+        const promises = users.map((user) => {
+            const email = new Email(user, url, {}, image);
+            return email.sendAnnouncement(message);
+        });
+        await Promise.all(promises);
     }
 };
