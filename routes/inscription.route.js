@@ -15,7 +15,7 @@ const {
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
 
 router.use(protect);
-router.route('/incribeTo').post(restrictTo('User'), inscribeTo);
+router.route('/inscribeTo').post(restrictTo('User'), inscribeTo);
 
 router.use(restrictTo('Admin'));
 router.route('/').get(getAllInscriptions).post(createInscription);
