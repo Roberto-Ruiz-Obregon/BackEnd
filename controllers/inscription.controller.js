@@ -5,7 +5,14 @@ const catchAsync = require('../utils/catchAsync');
 const Email = require('../utils/email');
 const AppError = require('../utils/appError');
 
-exports.getAllInscriptions = factory.getAll(Inscription);
+exports.getAllInscriptions = factory.getAll(Inscription, [
+    { path: 'user', select: 'email name postalCode' },
+    {
+        path: 'course',
+        select: 'courseName teachers modality description',
+        populate: 'topics',
+    },
+]);
 exports.getInscription = factory.getOne(Inscription, ['user', 'course']);
 
 // TODO: CREATE CUSTOM MIDDLEWARE TO TAKE INTO ACCOUNT BUSINESS RULES
