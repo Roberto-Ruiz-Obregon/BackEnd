@@ -20,6 +20,7 @@ exports.getInscription = factory.getOne(Inscription, ['user', 'course']);
 exports.createInscription = factory.createOne(Inscription);
 exports.deleteInscription = factory.deleteOne(Inscription);
 
+/* A function that is being exported. */
 exports.inscribeTo = catchAsync(async (req, res, next) => {
     const courseId = req.body.courseId;
     if (!courseId) {
@@ -83,5 +84,23 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         data: { document: course },
+    });
+});
+
+exports.myInscriptions = catchAsync(async (req, res, next) => {
+    const inscriptions = await Inscription.find({
+        user: req.user._id,
+    }).populate(
+        { path: 'user', populate: 'topics' },
+        {
+            path: 'course',
+            populate: 'topics',
+        }
+    );
+
+    res.status(200).json({
+        status: 'success',
+        results: inscriptions.length,
+        data: { document: inscriptions },
     });
 });

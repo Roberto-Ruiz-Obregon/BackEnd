@@ -8,6 +8,7 @@ const {
     getAllInscriptions,
     deleteInscription,
     inscribeTo,
+    myInscriptions,
 } = require(`${__dirname}/../controllers/inscription.controller.js`);
 const {
     protect,
@@ -16,6 +17,7 @@ const {
 
 router.use(protect);
 router.route('/inscribeTo').post(restrictTo('User'), inscribeTo);
+router.route('/myInscriptions').get(restrictTo('User'), myInscriptions);
 
 router.use(restrictTo('Admin'));
 router.route('/').get(getAllInscriptions).post(createInscription);
