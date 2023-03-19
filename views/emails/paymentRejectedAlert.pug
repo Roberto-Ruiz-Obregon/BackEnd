@@ -1,0 +1,16 @@
+extends baseEmail
+
+block content
+  p Hola #{firstName},
+  p Lamentamos informarte que no hemos podido aceptar tu pago para #{course.courseName}.
+  p #{course.description}
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  img(src=`${course.imageUrl}`, style='width:100%')
+  p Si crees que hay un problema no dudes en contactarnos o iniciar el proceso de pago de nuevo!

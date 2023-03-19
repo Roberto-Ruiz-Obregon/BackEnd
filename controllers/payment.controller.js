@@ -38,11 +38,15 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     }
 
     // Check if this user has started payment process to this course
-    const payment = await Payment.find({
+    const existingPayment = await Payment.find({
         course: courseId,
         user: req.user._id,
+        // if there is a payment process pending or the user has been accepted they should not be able to start a new process
+        status: {
+            $or: ['Pendiente', 'Aceptado'],
+        },
     });
-    if (payment) {
+    if (existingPayment) {
         return next(
             new AppError(
                 'Ya haz empezado tu proceso de pago para este curso.',
@@ -55,17 +59,13 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     course.capacity = course.capacity - 1;
     await course.save();
 
-    await Payment.create(req.body);
+    const payment = await Payment.create(req.body);
 
-    await new Email(
-        req.user,
-        process.env.LANDING_URL,
-        course
-    ).sendInscriptonAlert();
+    // Send payment notification email
 
     res.status(200).json({
         status: 'success',
-        data: { document: course },
+        data: { document: payment },
     });
 });
 
