@@ -1,5 +1,10 @@
 const factory = require('./handlerFactory.controller');
 const Payment = require('../models/payments.model');
+const Course = require('../models/courses.model');
+const Inscription = require('../models/inscriptions.model');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
+const Email = require('../utils/email');
 
 exports.getAllPayments = factory.getAll(Payment);
 exports.getPayment = factory.getOne(Payment, ['user', 'course']);
@@ -12,7 +17,7 @@ exports.createPayment = factory.createOne(Payment);
 // When a payment is created email is sent
 
 exports.startPayment = catchAsync(async (req, res, next) => {
-    const course = await Course.findById(req.body.course);
+    const course = await Course.findById(req.body.courseId);
     if (!course) {
         return next(
             new AppError('No se encontro ningun curso con esta clave.', 404)
@@ -39,14 +44,14 @@ exports.startPayment = catchAsync(async (req, res, next) => {
 
     // Check if this user has started payment process to this course
     const existingPayment = await Payment.find({
-        course: courseId,
+        course: course._id,
         user: req.user._id,
         // if there is a payment process pending or the user has been accepted they should not be able to start a new process
         status: {
-            $or: ['Pendiente', 'Aceptado'],
+            $in: ['Pendiente', 'Aceptado'],
         },
     });
-    if (existingPayment) {
+    if (existingPayment.length > 0) {
         return next(
             new AppError(
                 'Ya haz empezado tu proceso de pago para este curso.',
@@ -58,12 +63,15 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     // Update course capacity
     course.capacity = course.capacity - 1;
     await course.save();
-
-    const payment = await Payment.create(req.body);
+    const payment = await Payment.create({
+        course: course._id,
+        user: req.user._id,
+        billImageURL: req.body.billImageURL,
+    });
 
     // Send payment notification email
     payment.populate(['user', 'course']);
-    await new Email(payment.user, '', payment.course).sendPaymentStartedAlert();
+    await new Email(req.user, '', course).sendPaymentStartedAlert();
 
     res.status(200).json({
         status: 'success',

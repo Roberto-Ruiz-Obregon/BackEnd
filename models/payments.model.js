@@ -31,6 +31,7 @@ const paymentSchema = new mongoose.Schema(
                     /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value),
                 message: (props) => `${props.value} no es una URL válida`,
             },
+            required: [true, 'Se necesita un comprobante de pago.'],
         },
         // TODO: see how integrating with Stripe will affect this model
     },

@@ -157,7 +157,7 @@ module.exports = class Email {
     /**
      * It sends a message to the user that their payment has been accepted.
      */
-    async sendPaymentAcceptedAlert() {
+    async sendPaymentRejectedAlert() {
         await this.send(
             'paymentRejectedAlert',
             'No hemos podido confirmar tu informacion de pago para el curso. Contactanos si crees que es un error.'

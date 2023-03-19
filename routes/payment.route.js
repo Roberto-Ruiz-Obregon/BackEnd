@@ -12,6 +12,10 @@ const {
     acceptPayment,
     declinePayment,
 } = require(`${__dirname}/../controllers/payment.controller.js`);
+const {
+    protect,
+    restrictTo,
+} = require(`${__dirname}/../controllers/authentication.controller.js`);
 
 router.use(protect);
 router

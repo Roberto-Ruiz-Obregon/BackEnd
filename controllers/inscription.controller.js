@@ -62,7 +62,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
         course: courseId,
         user: req.user._id,
     });
-    if (inscription) {
+    if (inscription.length > 0) {
         return next(new AppError('Ya te haz inscrito a este curso.', 400));
     }
 
