@@ -70,7 +70,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
     course.capacity = course.capacity - 1;
     await course.save();
 
-    Inscription.create({
+    await Inscription.create({
         course: courseId,
         user: req.user._id,
     });

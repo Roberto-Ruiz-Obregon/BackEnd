@@ -8,7 +8,23 @@ const {
     createPayment,
     getPayment,
     getAllPayments,
+    startPayment,
+    acceptPayment,
+    declinePayment,
 } = require(`${__dirname}/../controllers/payment.controller.js`);
+
+router.use(protect);
+router
+    .route('/startPayment')
+    .post(
+        restrictTo('User'),
+        filesController.uploadPaymentImage,
+        filesController.formatPaymentImage,
+        startPayment
+    );
+router.use(restrictTo('Admin'));
+router.route('/acceptPayment').post(acceptPayment);
+router.route('/declinePayment').post(declinePayment);
 
 router
     .route('/')
