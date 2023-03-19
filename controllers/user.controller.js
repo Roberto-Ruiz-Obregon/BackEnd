@@ -5,7 +5,7 @@ const factory = require('./handlerFactory.controller');
 const User = require('../models/users.model');
 
 exports.getAllUsers = factory.getAll(User);
-exports.getUser = factory.getOne(User);
+exports.getUser = factory.getOne(User, ['topics']);
 exports.createUser = factory.createOne(User);
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);

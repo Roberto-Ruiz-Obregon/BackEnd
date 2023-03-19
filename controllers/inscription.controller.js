@@ -90,13 +90,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
 exports.myInscriptions = catchAsync(async (req, res, next) => {
     const inscriptions = await Inscription.find({
         user: req.user._id,
-    }).populate(
-        { path: 'user', populate: 'topics' },
-        {
-            path: 'course',
-            populate: 'topics',
-        }
-    );
+    }).populate(['course']);
 
     res.status(200).json({
         status: 'success',

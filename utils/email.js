@@ -122,6 +122,16 @@ module.exports = class Email {
     async sendAnnouncement(message) {
         await this.send('inscriptionAlert', message);
     }
+    /**
+     * It sends a message to the client
+     * @param message - The message to send to the client.
+     */
+    async sendNewCourse(message) {
+        await this.send(
+            'newCourseAlert',
+            'Hemos creado este curso nuevo para ti!'
+        );
+    }
 
     /**
      * It takes an array of users, a url, an image, and a message, and sends an email to each user in
@@ -135,6 +145,19 @@ module.exports = class Email {
         const promises = users.map((user) => {
             const email = new Email(user, url, {}, image);
             return email.sendAnnouncement(message);
+        });
+        await Promise.all(promises);
+    }
+
+    /**
+     * It takes an array of users and a course, creates an email for each user, and sends the email.
+     * @param users - an array of users
+     * @param course - the course the announcement will be based on
+     */
+    static async sendMultipleNewCourseAlert(users, course) {
+        const promises = users.map((user) => {
+            const email = new Email(user, '', course);
+            return email.sendNewCourse();
         });
         await Promise.all(promises);
     }

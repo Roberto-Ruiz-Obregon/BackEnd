@@ -54,6 +54,7 @@ const userSchema = new mongoose.Schema({
     },
     postalCode: {
         type: Number,
+        required: [true, 'Por favor ingresa un codigo postal.'],
     },
     password: {
         type: String,
