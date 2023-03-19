@@ -134,6 +134,37 @@ module.exports = class Email {
     }
 
     /**
+     * We are sending a message to the user that we have received their payment request and we are
+     * reviewing it.
+     */
+    async sendPaymentStartedAlert() {
+        await this.send(
+            'paymentStartedAlert',
+            'Hemos recibido tu peticion de pago y la estamos revisando!'
+        );
+    }
+
+    /**
+     * This function sends a message to the user that their payment has been accepted.
+     */
+    async sendPaymentAcceptedAlert() {
+        await this.send(
+            'paymentAcceptedAlert',
+            'Hemos confirmado tu informacion de pago para el curso!'
+        );
+    }
+
+    /**
+     * It sends a message to the user that their payment has been accepted.
+     */
+    async sendPaymentAcceptedAlert() {
+        await this.send(
+            'paymentRejectedAlert',
+            'No hemos podido confirmar tu informacion de pago para el curso. Contactanos si crees que es un error.'
+        );
+    }
+
+    /**
      * It takes an array of users, a url, an image, and a message, and sends an email to each user in
      * the array.
      * @param users - an array of user objects

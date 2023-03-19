@@ -62,6 +62,8 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     const payment = await Payment.create(req.body);
 
     // Send payment notification email
+    payment.populate(['user', 'course']);
+    await new Email(payment.user, '', payment.course).sendPaymentStartedAlert();
 
     res.status(200).json({
         status: 'success',
@@ -104,6 +106,11 @@ exports.acceptPayment = catchAsync(async (req, res, next) => {
     });
 
     // Send payment accepted confirmation email
+    await new Email(
+        payment.user,
+        '',
+        payment.course
+    ).sendPaymentAcceptedAlert();
 
     // Send inscription confirmation email
     await new Email(
@@ -152,6 +159,11 @@ exports.declinePayment = catchAsync(async (req, res, next) => {
     });
 
     // Send payment rejected confirmation email
+    await new Email(
+        payment.user,
+        '',
+        payment.course
+    ).sendPaymentRejectedAlert();
 
     res.status(200).json({
         status: 'success',
