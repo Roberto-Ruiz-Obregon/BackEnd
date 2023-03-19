@@ -12,27 +12,17 @@ exports.createPayment = factory.createOne(Payment);
 // When a payment is created email is sent
 
 exports.startPayment = catchAsync(async (req, res, next) => {
-    const courseId = req.body.courseId;
-    if (!courseId) {
-        return next(
-            new AppError(
-                'Envia la clave del curso para poderte inscribir.',
-                400
-            )
-        );
-    }
-
-    const course = await Course.findById(courseId);
+    const course = await Course.findById(req.body.course);
     if (!course) {
         return next(
             new AppError('No se encontro ningun curso con esta clave.', 404)
         );
     }
 
-    if (course.cost > 0) {
+    if (course.cost == 0) {
         return next(
             new AppError(
-                'Necesitas pagar por este curso! Inicia tu proceso de pago.',
+                'No necesitas pagar por este curso, inscribete directamente en /inscribeTo.',
                 404
             )
         );
@@ -41,29 +31,31 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     if (course.startDate < Date.now()) {
         return next(
             new AppError(
-                'Necesitas pagar por este curso! Inicia tu proceso de pago.',
-                404
+                'Este curso ya ha empezado, no puedes inscribirte a el.',
+                400
             )
         );
     }
 
-    // Check if this user has inscribed to this course
-    const inscription = await Inscription.find({
+    // Check if this user has started payment process to this course
+    const payment = await Payment.find({
         course: courseId,
         user: req.user._id,
     });
-    if (inscription) {
-        return next(new AppError('Ya te haz inscrito a este curso.', 400));
+    if (payment) {
+        return next(
+            new AppError(
+                'Ya haz empezado tu proceso de pago para este curso.',
+                400
+            )
+        );
     }
 
     // Update course capacity
     course.capacity = course.capacity - 1;
     await course.save();
 
-    Inscription.create({
-        course: courseId,
-        user: req.user._id,
-    });
+    await Payment.create(req.body);
 
     await new Email(
         req.user,
@@ -111,6 +103,8 @@ exports.acceptPayment = catchAsync(async (req, res, next) => {
         user: payment.user,
     });
 
+    // Send payment accepted confirmation email
+
     // Send inscription confirmation email
     await new Email(
         payment.user,
@@ -124,4 +118,43 @@ exports.acceptPayment = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.declinePayment = catchAsync(async (req, res, next) => {});
+exports.declinePayment = catchAsync(async (req, res, next) => {
+    const paymentId = req.body.paymentId;
+
+    // Check if payment exists
+    let payment = await Payment.findById(paymentId).populate([
+        'user',
+        'course',
+    ]);
+    if (!payment) {
+        return next(
+            new AppError(
+                'No se encontro ninguna solicitud de pago con este id.',
+                404
+            )
+        );
+    }
+
+    // Check if payment is pending
+    if (payment.status != 'Pendiente') {
+        return next(
+            new AppError('La solicitud de este pago ya fue procesada.', 400)
+        );
+    }
+
+    // Save payment new status
+    payment.status = 'Rechazado';
+    await payment.save();
+
+    // Update course
+    await Course.findByIdAndUpdate(payment.course._id, {
+        capacity: payment.course.capacity + 1,
+    });
+
+    // Send payment rejected confirmation email
+
+    res.status(200).json({
+        status: 'success',
+        data: { document: payment },
+    });
+});

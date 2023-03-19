@@ -17,18 +17,6 @@ const paymentSchema = new mongoose.Schema(
             ref: 'Course',
             required: [true, 'Curso necesario'],
         },
-        amount: {
-            type: Number,
-            required: [true, 'Cantidad pagada necesaria'],
-            validate: {
-                validator: (value) => value > 0,
-                message: 'La cantidad pagada debe de ser un número positivo',
-            },
-        },
-        paymentDate: {
-            type: Date,
-            required: [true, 'La fecha de pago es necesaria'],
-        },
         // TODO: que este campo sea read_only desde el front ybi que lo rellene el controlador dependiendo de lo que diga Stripe
         status: {
             type: String,

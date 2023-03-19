@@ -43,7 +43,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
         return next(
             new AppError(
                 'Necesitas pagar por este curso! Inicia tu proceso de pago.',
-                404
+                400
             )
         );
     }
@@ -51,7 +51,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
     if (course.startDate < Date.now()) {
         return next(
             new AppError(
-                'Necesitas pagar por este curso! Inicia tu proceso de pago.',
+                'Este curso ya ha iniciado, no puedes inscribirte.',
                 404
             )
         );
