@@ -87,6 +87,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
     });
 });
 
+/* A function that is being exported. */
 exports.myInscriptions = catchAsync(async (req, res, next) => {
     const inscriptions = await Inscription.find({
         user: req.user._id,

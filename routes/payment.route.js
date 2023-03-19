@@ -14,9 +14,9 @@ router
     .route('/')
     .get(getAllPayments)
     .post(
-        createPayment,
         filesController.uploadPaymentImage,
-        filesController.formatPaymentImage
+        filesController.formatPaymentImage,
+        createPayment
     );
 router.route('/:id').get(getPayment);
 
