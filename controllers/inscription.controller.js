@@ -52,8 +52,14 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
         return next(
             new AppError(
                 'Este curso ya ha iniciado, no puedes inscribirte.',
-                404
+                400
             )
+        );
+    }
+
+    if (course.capacity == 0) {
+        return next(
+            new AppError('Ya no hay espacio disponible en este curso.', 400)
         );
     }
 

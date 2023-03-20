@@ -28,7 +28,7 @@ exports.startPayment = catchAsync(async (req, res, next) => {
         return next(
             new AppError(
                 'No necesitas pagar por este curso, inscribete directamente en /inscribeTo.',
-                404
+                400
             )
         );
     }
@@ -39,6 +39,12 @@ exports.startPayment = catchAsync(async (req, res, next) => {
                 'Este curso ya ha empezado, no puedes inscribirte a el.',
                 400
             )
+        );
+    }
+
+    if (course.capacity == 0) {
+        return next(
+            new AppError('Ya no hay espacio disponible en este curso.', 400)
         );
     }
 
