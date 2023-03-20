@@ -26,7 +26,16 @@ exports.createCourse = catchAsync(async (req, res, next) => {
         emailAgreement: true,
     });
 
-    await Email.sendMultipleNewCourseAlert(usersToAlert, document);
+    try {
+        await Email.sendMultipleNewCourseAlert(usersToAlert, document);
+    } catch (error) {
+        return next(
+            new AppError(
+                'Hemos tenido problemas enviando los correos de notificacion.',
+                500
+            )
+        );
+    }
 
     res.status(201).json({
         status: 'success',

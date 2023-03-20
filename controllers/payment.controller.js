@@ -77,7 +77,16 @@ exports.startPayment = catchAsync(async (req, res, next) => {
 
     // Send payment notification email
     payment.populate(['user', 'course']);
-    await new Email(req.user, '', course).sendPaymentStartedAlert();
+    try {
+        await new Email(req.user, '', course).sendPaymentStartedAlert();
+    } catch (error) {
+        return next(
+            new AppError(
+                'Hemos tenido problemas enviando un correo de confirmacion.',
+                500
+            )
+        );
+    }
 
     res.status(200).json({
         status: 'success',
@@ -119,19 +128,28 @@ exports.acceptPayment = catchAsync(async (req, res, next) => {
         user: payment.user,
     });
 
-    // Send payment accepted confirmation email
-    await new Email(
-        payment.user,
-        '',
-        payment.course
-    ).sendPaymentAcceptedAlert();
+    try {
+        // Send payment accepted confirmation email
+        await new Email(
+            payment.user,
+            '',
+            payment.course
+        ).sendPaymentAcceptedAlert();
 
-    // Send inscription confirmation email
-    await new Email(
-        payment.user,
-        process.env.LANDING_URL,
-        payment.course
-    ).sendInscriptonAlert();
+        // Send inscription confirmation email
+        await new Email(
+            payment.user,
+            process.env.LANDING_URL,
+            payment.course
+        ).sendInscriptonAlert();
+    } catch (error) {
+        return next(
+            new AppError(
+                'Hemos tenido problemas enviando un correo de confirmacion.',
+                500
+            )
+        );
+    }
 
     res.status(200).json({
         status: 'success',
@@ -172,12 +190,21 @@ exports.declinePayment = catchAsync(async (req, res, next) => {
         capacity: payment.course.capacity + 1,
     });
 
+    try {
+        await new Email(
+            payment.user,
+            '',
+            payment.course
+        ).sendPaymentRejectedAlert();
+    } catch (error) {
+        return next(
+            new AppError(
+                'Hemos tenido problemas enviando un correo de confirmacion.',
+                500
+            )
+        );
+    }
     // Send payment rejected confirmation email
-    await new Email(
-        payment.user,
-        '',
-        payment.course
-    ).sendPaymentRejectedAlert();
 
     res.status(200).json({
         status: 'success',

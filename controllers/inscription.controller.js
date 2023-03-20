@@ -81,11 +81,20 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
         user: req.user._id,
     });
 
-    await new Email(
-        req.user,
-        process.env.LANDING_URL,
-        course
-    ).sendInscriptonAlert();
+    try {
+        await new Email(
+            req.user,
+            process.env.LANDING_URL,
+            course
+        ).sendInscriptonAlert();
+    } catch (error) {
+        return next(
+            new AppError(
+                'Hemos tenido problemas enviando un correo de confirmacion.',
+                500
+            )
+        );
+    }
 
     res.status(200).json({
         status: 'success',
