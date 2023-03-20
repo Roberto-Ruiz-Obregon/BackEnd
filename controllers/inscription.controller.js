@@ -97,7 +97,9 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
 exports.myInscriptions = catchAsync(async (req, res, next) => {
     const inscriptions = await Inscription.find({
         user: req.user._id,
-    }).populate(['course']);
+    })
+        .populate(['course'])
+        .sort({ updatedAt: -1 }); // most recent courses first
 
     res.status(200).json({
         status: 'success',
