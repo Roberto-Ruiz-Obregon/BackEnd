@@ -8,15 +8,35 @@ const {
     createPayment,
     getPayment,
     getAllPayments,
+    startPayment,
+    acceptPayment,
+    declinePayment,
 } = require(`${__dirname}/../controllers/payment.controller.js`);
+const {
+    protect,
+    restrictTo,
+} = require(`${__dirname}/../controllers/authentication.controller.js`);
+
+router.use(protect);
+router
+    .route('/startPayment')
+    .post(
+        restrictTo('User'),
+        filesController.uploadPaymentImage,
+        filesController.formatPaymentImage,
+        startPayment
+    );
+router.use(restrictTo('Admin'));
+router.route('/acceptPayment').post(acceptPayment);
+router.route('/declinePayment').post(declinePayment);
 
 router
     .route('/')
     .get(getAllPayments)
     .post(
-        createPayment,
         filesController.uploadPaymentImage,
-        filesController.formatPaymentImage
+        filesController.formatPaymentImage,
+        createPayment
     );
 router.route('/:id').get(getPayment);
 

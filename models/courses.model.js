@@ -14,10 +14,12 @@ const courseSchema = new mongoose.Schema(
         description: {
             type: String,
         },
-        topics: {
-            type: [mongoose.Schema.ObjectId],
-            ref: 'Course',
-        },
+        topics: [
+            {
+                type: [mongoose.Schema.ObjectId],
+                ref: 'Course',
+            },
+        ],
         // people/corps who are teaching the course
         teachers: {
             type: [String],
@@ -78,6 +80,7 @@ const courseSchema = new mongoose.Schema(
         },
         postalCode: {
             type: String,
+            required: [true, 'Un curso debe tener un codigo postal.'],
         },
         // free or paid
         status: {
@@ -99,6 +102,13 @@ const courseSchema = new mongoose.Schema(
             validate: {
                 validator: (value) =>
                     /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value),
+            },
+        },
+        capacity: {
+            type: Number,
+            default: 10,
+            validate: {
+                validator: (value) => value >= 0,
             },
         },
     },

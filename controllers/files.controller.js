@@ -18,7 +18,6 @@ global.XMLHttpRequest = require('xhr2');
  * - It accepts an object as an argument with the
  *   "originalname" and "buffer" as keys
  */
-
 const uploadImage = async (file, resource) => {
     let { originalname, buffer } = file;
 

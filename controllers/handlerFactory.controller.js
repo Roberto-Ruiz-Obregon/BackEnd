@@ -77,11 +77,15 @@ exports.getOne = (Model, popOptions) =>
         });
     });
 
-exports.getAll = (Model) =>
+/* This is a function that gets all documents from the database. */
+exports.getAll = (Model, popOptions) =>
     catchAsync(async (req, res) => {
         let filter = {};
-
-        const features = new APIFeatures(Model.find(filter), req.query)
+        let query = Model.find(filter);
+        if (popOptions) {
+            query.populate(popOptions);
+        }
+        const features = new APIFeatures(query, req.query)
             .filter()
             .sort()
             .limitFields()

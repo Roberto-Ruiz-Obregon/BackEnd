@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
 
 const topicsSchema = new mongoose.Schema({
     topic: {
         type: String,
         required: [true, 'Se necesita al menos un interés'],
-    }
+        unique: [true, 'Este interes ya existe. Elige otro.'],
+    },
 });
 
 const Topics = mongoose.model('Topics', topicsSchema);

@@ -118,7 +118,16 @@ exports.signUpUser = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm,
     });
 
-    await new Email(newUser, process.env.LANDING_URL).sendWelcome();
+    try {
+        await new Email(newUser, process.env.LANDING_URL).sendWelcome();
+    } catch (error) {
+        return next(
+            new AppError(
+                'Hemos tenido problemas enviando un correo de bienvenida.',
+                500
+            )
+        );
+    }
 
     return createSendToken(newUser, 201, req, res);
 });
@@ -132,7 +141,16 @@ exports.signUpAdmin = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm,
     });
 
-    await new Email(newUser, process.env.LANDING_URL).sendWelcome();
+    try {
+        await new Email(newUser, process.env.LANDING_URL).sendWelcome();
+    } catch (error) {
+        return next(
+            new AppError(
+                'Hemos tenido problemas enviando un correo de bienvenida.',
+                500
+            )
+        );
+    }
 
     return createSendToken(newUser, 201, req, res);
 });
