@@ -152,7 +152,12 @@ exports.signUpAdmin = catchAsync(async (req, res, next) => {
         );
     }
 
-    return createSendToken(newUser, 201, req, res);
+    // After signup a verified admin must approve the new admin
+    res.status(200).json({
+        status: 'success',
+        message:
+            'Te has registrado con éxito, espera a que un administrador verifique tu perfil.',
+    });
 });
 
 /* Checking if the user is logged in. If the user is logged in, the user is allowed
@@ -198,13 +203,21 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
         );
     }
 
-    // 2 Check is user exists.
+    // 2 Check is user exists and has been verified.
     const user = await Admin.findOne({ email }).select('+password'); // adding a + to the field set as selected false means we will retrieve it
 
     if (!user || !(await user.correctPassword(password, user.password))) {
         return next(new AppError('Email o contraseña incorrectos.', 401));
     }
 
+    if (!user.hasVerification) {
+        return next(
+            new AppError(
+                'No haz sido verificado, espera a que un administrador verifique tu perfil.',
+                401
+            )
+        );
+    }
     // 3 Send JWT to user.
     createSendToken(user, 201, req, res);
 });
