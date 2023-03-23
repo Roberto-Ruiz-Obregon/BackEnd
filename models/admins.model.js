@@ -34,6 +34,11 @@ const adminSchema = new mongoose.Schema({
             message: 'Por favor ingresa la misma contraseña.',
         },
     },
+    hasVerification: {
+        type: Boolean,
+        select: false,
+        default: false,
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
