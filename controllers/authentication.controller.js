@@ -204,7 +204,9 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
     }
 
     // 2 Check is user exists and has been verified.
-    const user = await Admin.findOne({ email }).select('+password'); // adding a + to the field set as selected false means we will retrieve it
+    const user = await Admin.findOne({ email }).select(
+        '+password +hasVerification'
+    ); // adding a + to the field set as selected false means we will retrieve it
 
     if (!user || !(await user.correctPassword(password, user.password))) {
         return next(new AppError('Email o contraseña incorrectos.', 401));
