@@ -10,7 +10,6 @@ const { request } = require('express');
 const { populate } = require('../models/inscriptions.model');
 const { user } = require('firebase-functions/v1/auth');
 
-
 exports.getAllCourses = factory.getAll(Course);
 exports.getCourse = factory.getOne(Course, ['topics']);
 exports.updateCourse = factory.updateOne(Course);
@@ -58,25 +57,20 @@ exports.inscriptionByCourse = catchAsync(async (req, res, next) => {
 
     // there's no course with that id
     // 500 is a server problem, 400 user error
-    if(!course){
-        return next(
-            new AppError(
-                'No se encontro un curso con ese ID.',
-                400
-            )
-        ); 
+    if (!course) {
+        return next(new AppError('No se encontro un curso con ese ID.', 400));
     }
-    
+
     // return all the inscription with the same courseID
     // .populate exchange id for the document, course has ref with user model
     const inscriptions = await Inscription.find({
-        course: courseID
-    }).populate("user");
+        course: courseID,
+    }).populate('user');
 
     res.status(201).json({
         status: 'success',
         data: {
-            document:inscriptions,
+            document: inscriptions,
         },
     });
 });

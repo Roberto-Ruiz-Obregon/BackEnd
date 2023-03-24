@@ -12,10 +12,7 @@ const {
     inscriptionByCourse,
 } = require(`${__dirname}/../controllers/course.controller.js`);
 
-router
-    .route("/getInscriptions/:id")
-    .get(inscriptionByCourse
-    );
+router.route('/getInscriptions/:id').get(inscriptionByCourse);
 
 router
     .route('/')
