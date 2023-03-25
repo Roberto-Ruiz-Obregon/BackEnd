@@ -49,10 +49,6 @@ const courseSchema = new mongoose.Schema(
                 message: (props) => `${props.value} no es una URL válida`,
             },
         },
-        // access code/password assigned to the course
-        accessCode: {
-            type: String,
-        },
         // remote, presential, etc.
         modality: {
             type: String,
