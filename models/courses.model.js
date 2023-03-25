@@ -21,8 +21,8 @@ const courseSchema = new mongoose.Schema(
             },
         ],
         // people/corps who are teaching the course
-        teachers: {
-            type: [String],
+        teacher: {
+            type: String,
             required: [true, 'Es necesario asignar profesores al curso'],
         },
         // course beginning date
