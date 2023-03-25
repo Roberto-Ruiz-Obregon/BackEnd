@@ -62,6 +62,9 @@ const courseSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Un curso debe tener un codigo postal.'],
         },
+        address: {
+            type: String,
+        },
         // free or paid
         status: {
             type: String,
