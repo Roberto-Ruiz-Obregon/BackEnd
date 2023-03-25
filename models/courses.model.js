@@ -35,17 +35,10 @@ const courseSchema = new mongoose.Schema(
             type: Date,
             required: [true, 'Fecha fin requerida'],
         },
-        // // TO-DO? course hours do they change schedules?
-        // schedule: {
-        //     type: String,
-        // },
-        // session time span in minutes
-        duration: {
-            type: Number,
-            validate: {
-                validator: (value) => value > 0 && Number.isInteger(value),
-                message: 'La duración debe de ser un número entero positivo',
-            },
+        // TO-DO? course hours do they change schedules?
+        schedule: {
+            type: String,
+            required: [true, 'Necesitas ingresar el horario del curso'],
         },
         // additional class material
         accessLink: {
@@ -59,15 +52,6 @@ const courseSchema = new mongoose.Schema(
         // access code/password assigned to the course
         accessCode: {
             type: String,
-        },
-        // link to zoom meeting
-        zoomLink: {
-            type: String,
-            validate: {
-                validator: (value) =>
-                    /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value),
-                message: (props) => `${props.value} no es una URL válida`,
-            },
         },
         // remote, presential, etc.
         modality: {
