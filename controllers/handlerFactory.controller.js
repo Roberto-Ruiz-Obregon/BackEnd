@@ -56,9 +56,9 @@ exports.createOne = (Model) =>
     });
 
 /* This is a function that gets a single document from the database. */
-exports.getOne = (Model, popOptions) =>
+exports.getOne = (Model, popOptions = []) =>
     catchAsync(async (req, res, next) => {
-        let query = Model.findById(req.params.id);
+        let query = Model.findOne({ _id: req.params.id });
         if (popOptions) {
             query.populate(popOptions);
         }

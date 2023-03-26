@@ -16,8 +16,8 @@ const courseSchema = new mongoose.Schema(
         },
         topics: [
             {
-                type: [mongoose.Schema.ObjectId],
-                ref: 'Course',
+                type: mongoose.Schema.ObjectId,
+                ref: 'Topics',
             },
         ],
         // people/corps who are teaching the course

@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
     },
     topics: [
         {
-            type: [mongoose.Schema.ObjectId],
+            type: mongoose.Schema.ObjectId,
             ref: 'Topics',
         },
     ],
