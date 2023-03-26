@@ -1,0 +1,16 @@
+extends baseEmail
+
+block content
+  p Hola #{firstName},
+  p Contamos con información que puede ser de tu interés.
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  img(src=`${email.imageUrl}`, style='width:100%')
+  p Esperamos que te haya sido de utilidad esta infromación.
+  p No dudes en contactarnos si tienes dudas.

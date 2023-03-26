@@ -165,6 +165,13 @@ module.exports = class Email {
     }
 
     /**
+     * It sends a message to all their users
+     */
+    async sendEmailEveryone(message) {
+        await this.send('emailToEveryone', message);
+    }
+    
+    /**
      * It takes an array of users, a url, an image, and a message, and sends an email to each user in
      * the array.
      * @param users - an array of user objects
@@ -192,4 +199,21 @@ module.exports = class Email {
         });
         await Promise.all(promises);
     }
+
+    /**
+     * It takes an array of users, a url, an image, and a message, and sends an email to each user in
+     * the array.
+     * @param users - an array of user objects
+     * @param url - The url of the announcement
+     * @param image - the image to be displayed in the email
+     * @param message - The message you want to send to the user
+     */
+    static async sendAnnouncementToEveryone(users, url, image, message) {
+        const promises = users.map((user) => {
+            const email = new Email(user, url, {}, image);
+            return email.sendEmailEveryone(message);
+        });
+        await Promise.all(promises);
+    }
+    
 };
