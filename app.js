@@ -23,6 +23,7 @@ const topicsRouter = require('./routes/topics.route');
 const programRouter = require('./routes/program.route');
 const adminRouter = require('./routes/admin.route');
 const viewRouter = require('./routes/views.route');
+const emailRouter = require('./routes/emails.route');
 
 const app = express();
 
@@ -107,6 +108,7 @@ app.use('/v1/course', courseRouter);
 app.use('/v1/topics', topicsRouter);
 app.use('/v1/program', programRouter);
 app.use('/v1/admin', adminRouter);
+app.use('/v1/emails', emailRouter);
 app.use('/', viewRouter);
 
 // ERROR HANDLER FOR UNHANDLED ROUTES
