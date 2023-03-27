@@ -10,8 +10,9 @@ const {
 router
     .route('/emailToEveryone')
     .post(
-        //filesController.uploadEmailImage,
-        //filesController.formatEmailImage,
-        sendToEveryone);
+        filesController.formatCourseImage,
+        filesController.uploadCourseImage,
+        sendToEveryone
+    );
 
 module.exports = router;
