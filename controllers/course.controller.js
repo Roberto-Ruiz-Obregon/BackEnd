@@ -70,7 +70,7 @@ exports.inscriptionByCourse = catchAsync(async (req, res, next) => {
     res.status(201).json({
         status: 'success',
         data: {
-            document: inscriptions,
+            documents: inscriptions,
         },
     });
 });
