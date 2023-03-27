@@ -7,7 +7,7 @@ const programSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Es necesario que el programa tenga nombre'],
         },
-        descripcion: {
+        description: {
             type: String,
         },
         imageUrl: {
