@@ -10,9 +10,9 @@ const { user } = require('firebase-functions/v1/auth');
 
 exports.sendToEveryone = catchAsync(async (req, res, next) => {
     const usersToAlert = await User.find({ emailAgreement: true });
-
+    console.log(req.body)
     try {
-        await Email.sendAnnouncementToEveryone(usersToAlert);
+        await Email.sendAnnouncementToEveryone(usersToAlert,'', req.body.imageUrl, req.body.message, req.body.subject);
     } catch (error) {
         console.log(error)
         return next(
@@ -25,9 +25,6 @@ exports.sendToEveryone = catchAsync(async (req, res, next) => {
 
     res.status(201).json({
         status: 'success',
-        data: {
-            document,
-        },
     });
 });
 
