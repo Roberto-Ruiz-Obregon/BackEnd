@@ -86,6 +86,16 @@ exports.formatProgramImage = catchAsync(async (req, res, next) => {
 });
 
 /* A middleware that is used to format the image before it is uploaded to the server. */
+exports.formatEmailImage = catchAsync(async (req, res, next) => {
+    if (!req.file) return next();
+
+    // FORMAT file
+    req.body.imageUrl = await uploadImage(req.file, 'email');
+
+    next();
+});
+
+/* A middleware that is used to format the image before it is uploaded to the server. */
 exports.formatPaymentImage = catchAsync(async (req, res, next) => {
     if (!req.file) return next();
 
@@ -94,10 +104,11 @@ exports.formatPaymentImage = catchAsync(async (req, res, next) => {
 
     next();
 });
-
 /* Creating a multer object that will be used to upload images to the server. */
 exports.uploadCourseImage = createUpload().single('courseImage');
 /* Creating a multer object that will be used to upload images to the server. */
 exports.uploadProgramImage = createUpload().single('programImage');
+/* Creating a multer object that will be used to upload images to the server. */
+exports.uploadEmailImage = createUpload().single('emailImage');
 /* Creating a multer object that will be used to upload images to the server. */
 exports.uploadPaymentImage = createUpload().single('paymentImage');

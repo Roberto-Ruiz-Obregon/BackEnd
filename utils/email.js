@@ -19,12 +19,13 @@ module.exports = class Email {
      * @param [course] - {
      * @param [image] - the image to be displayed in the email
      */
-    constructor(user, url, course = {}, image = '') {
+    constructor(user, url, course = {}, image = '', message = '') {
         this.to = user.email;
         this.firstName = user.name.split(' ')[0];
         this.url = url;
         this.course = course;
         this.image = image;
+        this.message = message;
         this.from = `Asociacion Roberto Ruiz Obregon <${process.env.EMAIL_FROM}>`;
     }
 
@@ -67,6 +68,8 @@ module.exports = class Email {
                 url: this.url,
                 course: this.course,
                 subject,
+                message: this.message,
+                imageUrl: this.image,
             }
         );
 
@@ -165,6 +168,13 @@ module.exports = class Email {
     }
 
     /**
+     * It sends a message to all their users
+     */
+    async sendEmailEveryone(subject) {
+        await this.send('emailToEveryone', subject);
+    }
+
+    /**
      * It takes an array of users, a url, an image, and a message, and sends an email to each user in
      * the array.
      * @param users - an array of user objects
@@ -189,6 +199,28 @@ module.exports = class Email {
         const promises = users.map((user) => {
             const email = new Email(user, '', course);
             return email.sendNewCourse();
+        });
+        await Promise.all(promises);
+    }
+
+    /**
+     * It takes an array of users, a url, an image, and a message, and sends an email to each user in
+     * the array.
+     * @param users - an array of user objects
+     * @param url - The url of the announcement
+     * @param image - the image to be displayed in the email
+     * @param message - The message you want to send to the user
+     */
+    static async sendAnnouncementToEveryone(
+        users,
+        url = '',
+        image = '',
+        message = '',
+        subject = ''
+    ) {
+        const promises = users.map((user) => {
+            const email = new Email(user, url, {}, image, message);
+            return email.sendEmailEveryone(subject);
         });
         await Promise.all(promises);
     }
