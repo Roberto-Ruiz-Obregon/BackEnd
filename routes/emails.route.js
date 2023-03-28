@@ -7,20 +7,13 @@ const {
     sendToEveryone,
     sendByZone,
 } = require(`${__dirname}/../controllers/emails.controller.js`);
+const fileParser = require('../utils/multipartParser');
 
 router
     .route('/emailToEveryone')
-    .post(
-        filesController.uploadEmailImage,
-        filesController.formatEmailImage,
-        sendToEveryone
-    );
+    .post(fileParser, filesController.formatEmailImage, sendToEveryone);
 router
     .route('/emailByZone')
-    .post(
-        filesController.uploadEmailImage,
-        filesController.formatEmailImage,
-        sendByZone
-    );
+    .post(fileParser, filesController.formatEmailImage, sendByZone);
 
 module.exports = router;
