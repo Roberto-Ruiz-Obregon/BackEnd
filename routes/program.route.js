@@ -16,9 +16,9 @@ router
     .route('/')
     .get(getAllPrograms)
     .post(
-        createProgram,
         filesController.uploadProgramImage,
-        filesController.formatProgramImage
+        filesController.formatProgramImage,
+        createProgram
     );
 router.route('/:id').get(getProgram).patch(updateProgram).delete(deleteProgram);
 

@@ -26,7 +26,7 @@ const forgotPassword = async (Model, email, req, userType) => {
     // 3 send it back as an email
     const resetURL = `${req.protocol}://${req.get(
         'host'
-    )}/retrievePassword/${userType}/${resetToken}`;
+    )}/api/retrievePassword/${userType}/${resetToken}`;
 
     // si falla queremos eliminar la token
     try {

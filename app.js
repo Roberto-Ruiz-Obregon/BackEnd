@@ -28,19 +28,12 @@ const emailRouter = require('./routes/emails.route');
 const app = express();
 
 app.enable('trust proxy');
+app.use(cors());
+app.options('*', cors());
 
 // ENGINE IN CASE WE DECIDE TO USE A TEMPLATE ENGINE
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
-
-app.use(
-    cors({
-        origin: true,
-        credentials: true,
-    })
-);
-
-app.options('*', cors());
 
 // SERVING STATIC FILES
 app.use(express.static(path.join(__dirname, 'public')));
