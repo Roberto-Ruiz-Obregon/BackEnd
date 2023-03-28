@@ -16,13 +16,14 @@ const {
     protect,
     restrictTo,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
+const fileParser = require('../utils/multipartParser');
 
 router.use(protect);
 router
     .route('/startPayment')
     .post(
         restrictTo('User'),
-        filesController.uploadPaymentImage,
+        fileParser,
         filesController.formatPaymentImage,
         startPayment
     );
@@ -33,11 +34,7 @@ router.route('/declinePayment').post(declinePayment);
 router
     .route('/')
     .get(getAllPayments)
-    .post(
-        filesController.uploadPaymentImage,
-        filesController.formatPaymentImage,
-        createPayment
-    );
+    .post(fileParser, filesController.formatPaymentImage, createPayment);
 router.route('/:id').get(getPayment);
 
 module.exports = router;

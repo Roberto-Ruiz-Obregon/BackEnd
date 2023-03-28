@@ -22,11 +22,7 @@ router
 router
     .route('/:id')
     .get(getCourse)
-    .patch(
-        filesController.uploadCourseImage,
-        filesController.formatCourseImage,
-        updateCourse
-    )
+    .patch(fileParser, filesController.formatCourseImage, updateCourse)
     .delete(deleteCourse);
 
 module.exports = router;
