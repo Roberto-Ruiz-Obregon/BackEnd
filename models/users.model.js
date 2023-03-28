@@ -144,6 +144,33 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     return false;
 };
 
+userSchema.pre('remove', async function (next){
+    const Course = require('../models/courses.model')
+    const Payment = require('../models/payments.model');
+    const Inscription = require('../models/inscriptions.model');
+    // search the list of pending payments of the user
+    const pendingPayments = await Payment.find({
+        user: this._id,
+        status: 'Pendiente'
+    });
+    // for each one, we look for the corresponding course and update the capacity
+    for(const payment of pendingPayments){
+        const course = await Course.findById(payment.course);
+        if(course){
+            await Course.findOneAndUpdate(
+                { _id: course._id},
+                {capacity: course.capacity + 1}
+            );
+        }
+        // remove the payment
+        await payment.remove();
+    }
+    // remove the inscription
+    await Inscription.deleteMany({
+        user: this._id});
+    return next();
+});
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
