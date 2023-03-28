@@ -57,8 +57,8 @@ app.use(
 );
 
 // BODY PARSER
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extnded: true, limt: '10kb' }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Defend against nossql injection
