@@ -4,6 +4,7 @@ const contentType = require('content-type');
 
 const allowedMethods = ['POST', 'PUT', 'PATCH'];
 const fileParser = ({ rawBodyOptions, busboyOptions } = {}) => [
+    /* A middleware that parses the request body and populates req.body and req.files. */
     (req, res, next) => {
         const type = req.headers['content-type'];
         if (
@@ -54,7 +55,15 @@ const fileParser = ({ rawBodyOptions, busboyOptions } = {}) => [
 
             busboy.on('field', (fieldname, value) => {
                 if (!req.body) req.body = {};
-                req.body[fieldname] = value;
+                if (fieldname.includes('[')) {
+                    const field = fieldname.split('[')[0];
+
+                    if (req.body[field]) {
+                        req.body[field].push(value);
+                    } else {
+                        req.body[field] = [value];
+                    }
+                } else req.body[fieldname] = value;
             });
 
             busboy.on(
@@ -77,6 +86,9 @@ const fileParser = ({ rawBodyOptions, busboyOptions } = {}) => [
             );
 
             busboy.on('finish', () => {
+                if (req.files.length > 0) {
+                    req.file = req.files[0];
+                }
                 next();
             });
 

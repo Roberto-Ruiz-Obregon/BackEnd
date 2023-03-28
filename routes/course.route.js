@@ -11,17 +11,14 @@ const {
     deleteCourse,
     inscriptionByCourse,
 } = require(`${__dirname}/../controllers/course.controller.js`);
+const fileParser = require('../utils/multipartParser');
 
 router.route('/getInscriptions/:id').get(inscriptionByCourse);
 
 router
     .route('/')
     .get(getAllCourses)
-    .post(
-        filesController.uploadCourseImage,
-        filesController.formatCourseImage,
-        createCourse
-    );
+    .post(fileParser, filesController.formatCourseImage, createCourse);
 router
     .route('/:id')
     .get(getCourse)
