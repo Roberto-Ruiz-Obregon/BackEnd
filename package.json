@@ -56,7 +56,10 @@
         "stripe": "^8.199.0",
         "validator": "^13.7.0",
         "xhr2": "^0.2.1",
-        "xss-clean": "^0.1.1"
+        "xss-clean": "^0.1.1",
+        "busboy": "^0.2.14",
+        "content-type": "^1.0.4",
+        "raw-body": "^2.3.2"
     },
     "bugs": {
         "url": "https://github.com/Roberto-Ruiz-Obregon/BackEnd/issues"
