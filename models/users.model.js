@@ -148,6 +148,10 @@ userSchema.pre('remove', async function (next){
     const Course = require('../models/courses.model')
     const Payment = require('../models/payments.model');
     const Inscription = require('../models/inscriptions.model');
+
+    // search the inscriptions of the user 
+    const inscriptions = await Inscription.find({ user: this._id});
+
     // search the list of pending payments of the user
     const pendingPayments = await Payment.find({
         user: this._id,
@@ -165,9 +169,14 @@ userSchema.pre('remove', async function (next){
         // remove the payment
         await payment.remove();
     }
+
+    // remove all the payments related with user inscriptions
+    for(const inscription of inscriptions){
+        await Payment.deleteMany({ inscription: inscription._id});
+    }
+
     // remove the inscription
-    await Inscription.deleteMany({
-        user: this._id});
+    await Inscription.deleteMany({user: this._id});
     return next();
 });
 
