@@ -1,11 +1,12 @@
 const Busboy = require('busboy');
 const getRawBody = require('raw-body');
 const contentType = require('content-type');
+const catchAsync = require('./catchAsync');
 
 const allowedMethods = ['POST', 'PUT', 'PATCH'];
 const fileParser = ({ rawBodyOptions, busboyOptions } = {}) => [
     /* A middleware that parses the request body and populates req.body and req.files. */
-    (req, res, next) => {
+    catchAsync((req, res, next) => {
         const type = req.headers['content-type'];
         if (
             req.rawBody === undefined &&
@@ -34,8 +35,8 @@ const fileParser = ({ rawBodyOptions, busboyOptions } = {}) => [
         } else {
             next();
         }
-    },
-    (req, res, next) => {
+    }),
+    catchAsync((req, res, next) => {
         const type = req.headers['content-type'];
         if (
             allowedMethods.includes(req.method) &&
@@ -96,7 +97,7 @@ const fileParser = ({ rawBodyOptions, busboyOptions } = {}) => [
         } else {
             next();
         }
-    },
+    }),
 ];
 
 module.exports = fileParser();
