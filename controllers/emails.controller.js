@@ -11,13 +11,13 @@ exports.sendToEveryone = catchAsync(async (req, res, next) => {
     const usersToAlert = await User.find({ emailAgreement: true });
 
     try {
-        // await Email.sendAnnouncementToEveryone(
-        //     usersToAlert,
-        //     '',
-        //     req.body.imageUrl,
-        //     req.body.message,
-        //     req.body.subject
-        // );
+        await Email.sendAnnouncementToEveryone(
+            usersToAlert,
+            '',
+            req.body.imageUrl,
+            req.body.message,
+            req.body.subject
+        );
     } catch (error) {
         console.log(error);
         return next(

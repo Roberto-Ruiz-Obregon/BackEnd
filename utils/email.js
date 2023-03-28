@@ -19,7 +19,7 @@ module.exports = class Email {
      * @param [course] - {
      * @param [image] - the image to be displayed in the email
      */
-    constructor(user, url, course = {}, image = '', message='') {
+    constructor(user, url, course = {}, image = '', message = '') {
         this.to = user.email;
         this.firstName = user.name.split(' ')[0];
         this.url = url;
@@ -68,8 +68,8 @@ module.exports = class Email {
                 url: this.url,
                 course: this.course,
                 subject,
-                message : this.message,
-                imageUrl : this.imageUrl,
+                message: this.message,
+                imageUrl: this.image,
             }
         );
 
@@ -173,7 +173,7 @@ module.exports = class Email {
     async sendEmailEveryone(subject) {
         await this.send('emailToEveryone', subject);
     }
-    
+
     /**
      * It takes an array of users, a url, an image, and a message, and sends an email to each user in
      * the array.
@@ -211,12 +211,17 @@ module.exports = class Email {
      * @param image - the image to be displayed in the email
      * @param message - The message you want to send to the user
      */
-    static async sendAnnouncementToEveryone(users, url='', image='', message='', subject='') {
+    static async sendAnnouncementToEveryone(
+        users,
+        url = '',
+        image = '',
+        message = '',
+        subject = ''
+    ) {
         const promises = users.map((user) => {
             const email = new Email(user, url, {}, image, message);
             return email.sendEmailEveryone(subject);
         });
         await Promise.all(promises);
     }
-    
 };

@@ -12,6 +12,7 @@ const programSchema = new mongoose.Schema(
         },
         imageUrl: {
             type: String,
+            required: [true, 'Una beca debe de contar con una portada'],
             validate: {
                 validator: (value) =>
                     /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value),
