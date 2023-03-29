@@ -36,4 +36,3 @@ exports.filterTopics = async (req, res) => {
       });
     }
   };
-  
