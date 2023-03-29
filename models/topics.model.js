@@ -18,13 +18,13 @@ topicsSchema.pre('remove', async function () {
     const topic = this;
 
     await User.updateMany(
-        {topics: topic._id},
+        {topics: { $in: [topic._id] } },
         {$pull: {topics: topic._id}}
     );
 
     await Course.updateMany(
         // search the ones that have this topic
-        {topics: topic._id},
+        {topics: { $in: [topic._id] } },
         // delete the topic from the course
         {$pull: {topics: topic._id}}
     );
