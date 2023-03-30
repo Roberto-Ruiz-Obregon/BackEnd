@@ -108,6 +108,20 @@ courseSchema.pre('validate', function () {
     }
 });
 
+courseSchema.pre('remove', async function (next) {
+    const Inscription = require('../models/inscriptions.model')
+    const Payment = require('../models/payments.model')
+    // delete the payments related with this course
+    await Payment.deleteMany({
+        course: this._id
+    })
+    // delete every inscription related with this course id
+    await Inscription.deleteMany({
+        course: this._id});
+    // then the course is going to be deleted too
+    return next();
+});
+
 const Course = mongoose.model('Course', courseSchema);
 
 module.exports = Course;
