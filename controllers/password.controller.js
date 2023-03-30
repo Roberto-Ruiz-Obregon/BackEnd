@@ -80,9 +80,11 @@ exports.forgotPasswordAdmin = catchAsync(async (req, res, next) => {
     });
 });
 
-/* This is the code that is executed when the user clicks on the link in the email. It is a GET request
-to the server. The server then checks if the token is valid and if it is, it allows the user to
-change their password. */
+/*
+ * This is the code that is executed when the user clicks on the link in the email. It is a GET request
+ * to the server. The server then checks if the token is valid and if it is, it allows the user to
+ * change their password. 
+*/
 exports.resetPasswordAdmin = catchAsync(async (req, res, next) => {
     await resetPassword(
         req.params.id,
@@ -108,9 +110,11 @@ exports.forgotPasswordUser = catchAsync(async (req, res, next) => {
     });
 });
 
-/* This is the code that is executed when the user clicks on the link in the email. It is a GET request
-to the server. The server then checks if the token is valid and if it is, it allows the user to
-change their password. */
+/**
+ *  This is the code that is executed when the user clicks on the link in the email. It is a GET request
+ * to the server. The server then checks if the token is valid and if it is, it allows the user to
+ * change their password. 
+*/
 exports.resetPasswordUser = catchAsync(async (req, res, next) => {
     await resetPassword(
         req.params.id,

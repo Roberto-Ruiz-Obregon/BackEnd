@@ -3,7 +3,10 @@ const AppError = require('../utils/appError');
 const User = require('../models/users.model');
 const Email = require('../utils/email');
 
-/* A function that is being exported. */
+/** 
+ * A function that is being exported. with this function we obtain all the users with the emailAgreement true, then
+ * we can look for the email structure and finally send multiple users 
+*/
 exports.sendToEveryone = catchAsync(async (req, res, next) => {
     const usersToAlert = await User.find({ emailAgreement: true });
 
@@ -30,7 +33,10 @@ exports.sendToEveryone = catchAsync(async (req, res, next) => {
     });
 });
 
-/* A function that is being exported. */
+/** 
+ * A function that is being exported, with this we obtain all the users that have the emailAgreement true
+ * and we search them by postal code, with the data obtained we can send an email to this specific users 
+*/
 exports.sendByZone = catchAsync(async (req, res, next) => {
     const usersToAlert = await User.find({
         emailAgreement: true,
