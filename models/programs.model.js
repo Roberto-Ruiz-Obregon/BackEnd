@@ -10,6 +10,14 @@ const programSchema = new mongoose.Schema(
         description: {
             type: String,
         },
+        modality: {
+            type: String,
+            enum: { values: ['Beca', 'Evento', 'Apoyo', 'Prgrama', 'Otro'] },
+            required: [
+                true,
+                'Es necesaria una categoría',
+            ],
+        },
         imageUrl: {
             type: String,
             required: [true, 'Una beca debe de contar con una portada'],
