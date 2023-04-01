@@ -7,10 +7,10 @@ const AppError = require('../utils/appError');
 const Email = require('../utils/email');
 
 exports.getAllPayments = factory.getAll(Payment, [
-    { path: 'user', select: 'email name postalCode age' },
+    { path: 'user', select: 'email name postalCode age educationLevel' },
     {
         path: 'course',
-        select: 'courseName teachers modality description cost capacity',
+        select: 'courseName teachers modality description cost capacity startDate endDate',
         populate: 'topics',
     },
 ]);
