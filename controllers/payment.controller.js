@@ -10,7 +10,7 @@ exports.getAllPayments = factory.getAll(Payment, [
     { path: 'user', select: 'email name postalCode age' },
     {
         path: 'course',
-        select: 'courseName teachers modality description cost',
+        select: 'courseName teachers modality description cost capacity',
         populate: 'topics',
     },
 ]);
