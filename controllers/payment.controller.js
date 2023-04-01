@@ -6,7 +6,14 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Email = require('../utils/email');
 
-exports.getAllPayments = factory.getAll(Payment);
+exports.getAllPayments = factory.getAll(Payment, [
+    { path: 'user', select: 'email name postalCode age' },
+    {
+        path: 'course',
+        select: 'courseName teachers modality description cost',
+        populate: 'topics',
+    },
+]);
 exports.getPayment = factory.getOne(Payment, ['user', 'course']);
 exports.createPayment = factory.createOne(Payment);
 
