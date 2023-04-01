@@ -10,7 +10,7 @@ const programSchema = new mongoose.Schema(
         description: {
             type: String,
         },
-        modality: {
+        category: {
             type: String,
             enum: { values: ['Beca', 'Evento', 'Apoyo', 'Prgrama', 'Otro'] },
             required: [
