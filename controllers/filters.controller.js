@@ -49,7 +49,7 @@ exports.filterTopics = async (req, res) => {
   }
 };
 
-//filter by zone with most inscriptions added into the same file
+// filter by zone with most inscriptions added into the same file
 exports.getZonesWithMostInscriptions = (req, res, next) => {
   (async () => {
     const result = await Inscription.aggregate([
@@ -79,14 +79,16 @@ exports.getZonesWithMostInscriptions = (req, res, next) => {
       },
     ]);
   
-      res.status(200).json(result);
-    })().catch(next) 
-      console.log(error);
+    res.status(200).json(result);
+  })().catch(err => {
+      console.log(err); // Use 'err' instead of 'error'
       res.status(500).json({ error: 'Error de servidor ' });
-  }
+  });
+};
+
 
 //aggregation zones with more users 
-async function getZonesWithMostUsers() {
+exports.getZonesWithMostUsers = async (req, res) => {
   try {
     const result = await User.aggregate([
       {
@@ -107,10 +109,15 @@ async function getZonesWithMostUsers() {
       },
     ]);
 
-    console.log(result);
+    res.status(200).json({
+      status: 'success',
+      data: result,
+    });
   } catch (error) {
     console.error(error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Server error',
+    });
   }
-}
-
-getZonesWithMostUsers();
+};
