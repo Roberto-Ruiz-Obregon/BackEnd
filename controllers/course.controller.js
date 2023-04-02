@@ -58,7 +58,7 @@ exports.inscriptionByCourse = catchAsync(async (req, res, next) => {
     // there's no course with that id
     // 500 is a server problem, 400 user error
     if (!course) {
-        return next(new AppError('No se encontro un curso con ese ID.', 400));
+        return next(new AppError('No se encontro un curso con ese ID.', 404));
     }
 
     // return all the inscription with the same courseID
