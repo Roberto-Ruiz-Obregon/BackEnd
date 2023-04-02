@@ -85,49 +85,22 @@ exports.getZonesWithMostInscriptions = catchAsync(async (req, res) => {
 });
 
 //zones with most users
-exports.getzonesWithMostUsers= catchAsync(async (req, res) => {
-  const postalCode = req.body.postalCode;
-
+exports.getzonesWithMostUsers = catchAsync(async (req, res) => {
   const result = await User.aggregate([
     {
-      $match: { postalCode: postalCode },
-    },
-    {
-      $lookup: {
-        from: 'inscriptions',
-        localField: '_id',
-        foreignField: 'user',
-        as: 'inscriptions',
-      },
-    },
-    {
-      $unwind: '$inscriptions',
-    },
-    {
-      $lookup: {
-        from: 'courses',
-        localField: 'inscriptions.course',
-        foreignField: '_id',
-        as: 'course',
-      },
-    },
-    {
-      $unwind: '$course',
-    },
-    {
       $group: {
-        _id: '$course.courseName',
-        totalInscriptions: { $sum: 1 },
+        _id: '$postalCode', 
+        totalUsers: { $sum: 1},
       },
     },
     {
-      $sort: { totalInscriptions: -1 },
+      $sort: { totalUsers: -1 },
     },
     {
       $project: {
         _id: 0,
-        courseName: '$_id',
-        totalInscriptions: 1,
+        postalCode: '$_id',
+        totalUsers: 1,
       },
     },
   ]);
