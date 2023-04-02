@@ -2,6 +2,7 @@ const User = require('../models/users.model');
 const Topics = require('../models/topics.model');
 const Inscription = require('../models/inscriptions.model');
 
+//interests by zone
 exports.filterTopics = async (req, res) => {
   const { postalCode, topics } = req.body;
 
@@ -48,7 +49,7 @@ exports.filterTopics = async (req, res) => {
   }
 };
 
-//filter by zone added into the same file
+//filter by zone with most inscriptions added into the same file
 const getZonesWithMostInscriptions = (req, res, next) => {
   (async () => {
     const result = await Inscription.aggregate([
@@ -83,3 +84,33 @@ const getZonesWithMostInscriptions = (req, res, next) => {
       console.log(error);
       res.status(500).json({ error: 'Error de servidor ' });
   }
+
+//aggregation zones with more users 
+async function getZonesWithMostUsers() {
+  try {
+    const result = await User.aggregate([
+      {
+        $group: {
+          _id: '$postalCode',
+          totalUsers: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { totalUsers: -1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          postalCode: '$_id',
+          totalUsers: 1,
+        },
+      },
+    ]);
+
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+getZonesWithMostUsers();
