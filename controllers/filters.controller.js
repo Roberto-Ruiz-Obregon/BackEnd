@@ -50,7 +50,7 @@ exports.filterTopics = async (req, res) => {
 };
 
 //filter by zone with most inscriptions added into the same file
-const getZonesWithMostInscriptions = (req, res, next) => {
+exports.getZonesWithMostInscriptions = (req, res, next) => {
   (async () => {
     const result = await Inscription.aggregate([
       {
