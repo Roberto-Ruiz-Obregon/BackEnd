@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 /*  This is the model for a payment receipt, not an invoice nor a bill
-      invoice: request for payment (contización)
-      receipt: proof that the invoice was fulfilled
-      bill: proof that a payment was made, normally issued by the billing platform
+    * invoice: request for payment (contización)
+    * receipt: proof that the invoice was fulfilled
+    * bill: proof that a payment was made, normally issued by the billing platform
 */
 const paymentSchema = new mongoose.Schema(
     {

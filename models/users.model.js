@@ -80,8 +80,10 @@ const userSchema = new mongoose.Schema({
 });
 
 // MIDDLEWARES
-/* This is a middleware that runs before the save() or create() method. It hashes the password and sets
-the passwordConfirm to undefined. */
+/** 
+ * This is a middleware that runs before the save() or create() method. It hashes the password and sets
+ * the passwordConfirm to undefined. 
+*/
 userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 12);
@@ -91,8 +93,10 @@ userSchema.pre('save', async function (next) {
     return next();
 });
 
-/* This is a middleware that runs before the save() or create() method. Checks if the password has changed
-and updates the passwordChangedAt attribute. */
+/** 
+ * This is a middleware that runs before the save() or create() method. Checks if the password has changed
+ * and updates the passwordChangedAt attribute.
+*/
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password') || this.isNew) return next();
     else {
@@ -144,6 +148,10 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     return false;
 };
 
+/** 
+ * When a user is deleted, their payments as well as course inscriptions are also deleted, 
+ * updating the capacity of the course. 
+*/
 userSchema.pre('remove', async function (next){
     const Course = require('../models/courses.model')
     const Payment = require('../models/payments.model');

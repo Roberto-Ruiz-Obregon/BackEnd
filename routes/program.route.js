@@ -3,7 +3,6 @@ const filesController = require('../controllers/files.controller');
 
 const router = express.Router();
 
-// RUTAS
 const {
     createProgram,
     getProgram,

@@ -4,7 +4,10 @@ const AppError = require('../utils/appError');
 
 const APIFeatures = require(`../utils/apiFeatures`);
 
-/* A function that deletes a document from the database. */
+/**
+ * A function that deletes a document from the database. 
+ * o be able to do this, it is necessary to have the '.id' of what we are looking to delete
+*/
 exports.deleteOne = (Model) =>
     catchAsync(async (req, res, next) => {
         const doc = await Model.findByIdAndDelete(req.params.id);
@@ -19,7 +22,12 @@ exports.deleteOne = (Model) =>
         });
     });
 
-/* A function that updates a document in the database. */
+
+/**
+ * A function that updates a document in the database. 
+ * To be able to do this, it is necessary to have the '.id' of what we are looking to change,
+ * and similarly, we must obtain the '.body' for the update
+*/
 exports.updateOne = (Model) =>
     catchAsync(async (req, res, next) => {
         const document = await Model.findByIdAndUpdate(
@@ -55,7 +63,10 @@ exports.createOne = (Model) =>
         });
     });
 
-/* This is a function that gets a single document from the database. */
+/** 
+ *  This is a function that gets a single document from the database. 
+ * It is necessary to have the '.id' because it is a unique identifier that all data have. 
+*/
 exports.getOne = (Model, popOptions = []) =>
     catchAsync(async (req, res, next) => {
         let query = Model.findOne({ _id: req.params.id });
@@ -77,7 +88,10 @@ exports.getOne = (Model, popOptions = []) =>
         });
     });
 
-/* This is a function that gets all documents from the database. */
+/** 
+ * This is a function that gets all documents from the database. 
+ * It applies filters and other functionalities, and returns the results as a JSON response.
+*/
 exports.getAll = (Model, popOptions) =>
     catchAsync(async (req, res) => {
         let filter = {};
@@ -92,7 +106,6 @@ exports.getAll = (Model, popOptions) =>
             .paginate();
         const documents = await features.query;
 
-        // SEND RESPONSE
         res.status(200).json({
             status: 'success',
             results: documents.length,

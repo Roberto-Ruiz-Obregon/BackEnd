@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const Email = require('../utils/email');
 const AppError = require('../utils/appError');
 
+/*Function that retrieves all course inscriptions */
 exports.getAllInscriptions = factory.getAll(Inscription, [
     { path: 'user', select: 'email name postalCode' },
     {
@@ -13,6 +14,7 @@ exports.getAllInscriptions = factory.getAll(Inscription, [
         populate: 'topics',
     },
 ]);
+
 exports.getInscription = factory.getOne(Inscription, ['user', 'course']);
 
 // TODO: CREATE CUSTOM MIDDLEWARE TO TAKE INTO ACCOUNT BUSINESS RULES
@@ -20,7 +22,11 @@ exports.getInscription = factory.getOne(Inscription, ['user', 'course']);
 exports.createInscription = factory.createOne(Inscription);
 exports.deleteInscription = factory.deleteOne(Inscription);
 
-/* A function that is being exported. */
+/**
+ *  A function that request to inscribe a user to a course. 
+ *  It first extracts the 'courseId' field, this field is necessary to
+ * complete the inscription, alse it checks different areas
+*/
 exports.inscribeTo = catchAsync(async (req, res, next) => {
     const courseId = req.body.courseId;
     if (!courseId) {
@@ -102,7 +108,11 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
     });
 });
 
-/* A function that is being exported. */
+/** 
+* It first searches for inscriptions belonging to the user making the request,
+* and then populates referenced fields for each course. 
+* It also sorts the courses by most recent
+*/ 
 exports.myInscriptions = catchAsync(async (req, res, next) => {
     const inscriptions = await Inscription.find({
         user: req.user._id,

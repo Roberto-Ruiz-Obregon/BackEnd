@@ -17,7 +17,7 @@ global.XMLHttpRequest = require('xhr2');
  * - It uploads a file to storage on Firebase
  * - It accepts an object as an argument with the
  *   "originalname" and "buffer" as keys
- */
+*/
 const uploadImage = async (file, resource) => {
     let { originalname, buffer } = file;
 
@@ -45,7 +45,7 @@ const uploadImage = async (file, resource) => {
 /**
  * This function creates a multer object that will be used to upload images to the server.
  * @returns an object with two properties: storage and filter.
- */
+*/
 const createUpload = () => {
     const multerStorage = multer.memoryStorage();
 

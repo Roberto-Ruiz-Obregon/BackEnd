@@ -15,6 +15,10 @@ exports.getCourse = factory.getOne(Course, ['topics']);
 exports.updateCourse = factory.updateOne(Course);
 exports.deleteCourse = factory.deleteOne(Course);
 
+/** 
+ * A function that creates a course and sends an email to all the users that are interested in the
+ * course.
+*/
 exports.createCourse = catchAsync(async (req, res, next) => {
     const document = await Course.create(req.body);
 
@@ -49,6 +53,7 @@ exports.createCourse = catchAsync(async (req, res, next) => {
     });
 });
 
+/* A function that returns all the inscriptions of a course. */
 exports.inscriptionByCourse = catchAsync(async (req, res, next) => {
     const courseID = req.params.id;
 
