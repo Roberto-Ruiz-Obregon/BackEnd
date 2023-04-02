@@ -3,41 +3,49 @@ const Topics = require('../models/topics.model');
 const Inscription = require('../models/inscriptions.model');
 const catchAsync = require('../utils/catchAsync');
 
-//interests by zone
-exports.filterTopics = catchAsync(async (req, res) => {
-  const { postalCode, topics } = req.body;
+//popular interests by zone
+exports.filterTopics =  catchAsync(async (req, res) => {
+  const { postalCode } = req.body;
 
-  const topicIds = await Topics.find({ topic: { $in: topics } }).distinct('_id');
-
-  const filteredUsers = await User.aggregate([
+  const popularTopics = await User.aggregate([
+    //match by postal code
     {
       $match: {
         postalCode: postalCode,
-        topics: { $in: topicIds },
-      },
-    },
-    {
-      $lookup: {
-        from: 'topics',
-        localField: 'topics',
-        foreignField: '_id',
-        as: 'topics',
       },
     },
     {
       $unwind: '$topics',
     },
     {
+      $lookup: {
+        from: 'topics',
+        localField: 'topics',
+        foreignField: '_id',
+        as: 'topicDetails',
+      },
+    },
+    {
+      $unwind: '$topicDetails',
+    },
+    //group by topics 
+    {
       $group: {
-        _id: '$topics.topic',
+        _id: '$topicDetails.topic',
         count: { $sum: 1 },
+      },
+    },
+    //sort in descending order
+    {
+      $sort: {
+        count: -1,
       },
     },
   ]);
 
   res.status(200).json({
     status: 'success',
-    data: filteredUsers,
+    data: popularTopics,
   });
 }, (error) => {
   console.log(error);
