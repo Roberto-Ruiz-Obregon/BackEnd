@@ -2,7 +2,7 @@ extends baseEmail
 
 block content
   p Hola #{firstName},
-  p Hemos creado un nuevo curso que te podria gustar.
+  p Hemos creado un nuevo curso que te podría gustar.
   h1 #{course.courseName}
   p #{course.description}
   table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
@@ -14,5 +14,5 @@ block content
               tr
                 td
                   img(src=`${course.imageUrl}`, style='width:100%')
-  p Esperamos que este curso sea de tu agrado y aprendas mucho en el!
-  p Este curso ya esta disponible dentro de la aplicacion.
+  p ¡Esperamos que este curso sea de tu agrado y aprendas mucho en él!
+  p Este curso ya está disponible dentro de la aplicación.
