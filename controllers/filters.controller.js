@@ -49,7 +49,12 @@ exports.filterTopics =  catchAsync(async (req, res) => {
   });
 }, (error) => {
   console.log(error);
+  res.status(500).json({
+    status: 'error',
+    message: error.message,
+  });
 });
+
 
 
 // filter by zone with most inscriptions added into the same file
@@ -85,7 +90,7 @@ exports.getZonesWithMostInscriptions = catchAsync(async (req, res) => {
 });
 
 //zones with most users
-exports.getzonesWithMostUsers = catchAsync(async (req, res) => {
+exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
   const result = await User.aggregate([
     {
       $group: {

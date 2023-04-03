@@ -14,7 +14,7 @@ const adminSchema = new mongoose.Schema({
         lowercase: true,
         unique: true,
         trim: true,
-        validate: [validator.isEmail, 'Necesitas un correo vallido.'],
+        validate: [validator.isEmail, 'Necesitas un correo válido.'],
     },
     password: {
         type: String,

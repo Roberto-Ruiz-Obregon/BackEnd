@@ -20,14 +20,14 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     const course = await Course.findById(req.body.courseId);
     if (!course) {
         return next(
-            new AppError('No se encontro ningun curso con esta clave.', 404)
+            new AppError('No se encontró ningún curso con esta clave.', 404)
         );
     }
 
     if (course.cost == 0) {
         return next(
             new AppError(
-                'No necesitas pagar por este curso, inscribete directamente en /inscribeTo.',
+                'No necesitas pagar por este curso, inscríbete directamente en /inscribeTo.',
                 400
             )
         );
@@ -36,7 +36,7 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     if (course.startDate < Date.now()) {
         return next(
             new AppError(
-                'Este curso ya ha empezado, no puedes inscribirte a el.',
+                'Este curso ya ha empezado, no puedes inscribirte a él.',
                 400
             )
         );
@@ -60,7 +60,7 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     if (existingPayment.length > 0) {
         return next(
             new AppError(
-                'Ya haz empezado tu proceso de pago para este curso.',
+                'Ya has empezado tu proceso de pago para este curso.',
                 400
             )
         );
@@ -82,7 +82,7 @@ exports.startPayment = catchAsync(async (req, res, next) => {
     } catch (error) {
         return next(
             new AppError(
-                'Hemos tenido problemas enviando un correo de confirmacion.',
+                'Hemos tenido problemas enviando un correo de confirmación.',
                 500
             )
         );
@@ -105,7 +105,7 @@ exports.acceptPayment = catchAsync(async (req, res, next) => {
     if (!payment) {
         return next(
             new AppError(
-                'No se encontro ninguna solicitud de pago con este id.',
+                'No se encontró ninguna solicitud de pago con este id.',
                 404
             )
         );
@@ -145,7 +145,7 @@ exports.acceptPayment = catchAsync(async (req, res, next) => {
     } catch (error) {
         return next(
             new AppError(
-                'Hemos tenido problemas enviando un correo de confirmacion.',
+                'Hemos tenido problemas enviando un correo de confirmación.',
                 500
             )
         );
@@ -168,7 +168,7 @@ exports.declinePayment = catchAsync(async (req, res, next) => {
     if (!payment) {
         return next(
             new AppError(
-                'No se encontro ninguna solicitud de pago con este id.',
+                'No se encontró ninguna solicitud de pago con este id.',
                 404
             )
         );
@@ -199,7 +199,7 @@ exports.declinePayment = catchAsync(async (req, res, next) => {
     } catch (error) {
         return next(
             new AppError(
-                'Hemos tenido problemas enviando un correo de confirmacion.',
+                'Hemos tenido problemas enviando un correo de confirmación.',
                 500
             )
         );

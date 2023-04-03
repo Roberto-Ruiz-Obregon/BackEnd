@@ -25,7 +25,7 @@ module.exports = class Email {
         this.url = url;
         this.course = course;
         this.image = image;
-        this.from = `Asociacion Roberto Ruiz Obregon <${process.env.EMAIL_FROM}>`;
+        this.from = `Asociación Roberto Ruiz Obregon <${process.env.EMAIL_FROM}>`;
     }
 
     /**
@@ -101,7 +101,7 @@ module.exports = class Email {
     async sendPasswordReset() {
         await this.send(
             'passwordReset',
-            'Recuperar contraseña (valido por solo 10 minutos)'
+            'Recuperar contraseña (válido por solo 10 minutos)'
         );
     }
 
@@ -140,7 +140,7 @@ module.exports = class Email {
     async sendPaymentStartedAlert() {
         await this.send(
             'paymentStartedAlert',
-            'Hemos recibido tu peticion de pago y la estamos revisando!'
+            'Hemos recibido tu petición de pago y la estamos revisando!'
         );
     }
 
@@ -150,7 +150,7 @@ module.exports = class Email {
     async sendPaymentAcceptedAlert() {
         await this.send(
             'paymentAcceptedAlert',
-            'Hemos confirmado tu informacion de pago para el curso!'
+            'Hemos confirmado tu información de pago para el curso!'
         );
     }
 
@@ -160,7 +160,7 @@ module.exports = class Email {
     async sendPaymentRejectedAlert() {
         await this.send(
             'paymentRejectedAlert',
-            'No hemos podido confirmar tu informacion de pago para el curso. Contactanos si crees que es un error.'
+            'No hemos podido confirmar tu información de pago para el curso. Contáctanos si crees que es un error.'
         );
     }
 

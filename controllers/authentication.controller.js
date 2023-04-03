@@ -74,7 +74,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     if (!token) {
         return next(
             new AppError(
-                'No haz iniciado sesion, por favor inicia sesion antes de ingresar.',
+                'No has iniciado sesión, por favor inicia sesión antes de ingresar.',
                 401
             ) //401 means not authorized
         );
@@ -170,7 +170,7 @@ exports.loginUser = catchAsync(async (req, res, next) => {
         // After calling next we want the function to end and send an error.
         return next(
             new AppError(
-                'Por favor ingrese un email y contraseña validos.',
+                'Por favor ingrese un email y contraseña válidos.',
                 400
             )
         );
@@ -197,7 +197,7 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
         // After calling next we want the function to end and send an error.
         return next(
             new AppError(
-                'Por favor ingrese un email y contraseña validos.',
+                'Por favor ingrese un email y contraseña válidos.',
                 400
             )
         );
@@ -215,7 +215,7 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
     if (!user.hasVerification) {
         return next(
             new AppError(
-                'No haz sido verificado, espera a que un administrador verifique tu perfil.',
+                'No has sido verificado, espera a que un administrador verifique tu perfil.',
                 401
             )
         );
@@ -252,7 +252,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     if (!token) {
         return next(
             new AppError(
-                'No haz iniciado sesion, por favor inicia sesion para obtener acceso.',
+                'No has iniciado sesión, por favor inicia sesión para obtener acceso.',
                 401
             )
         );
@@ -267,7 +267,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     if (!user && !admin) {
         return next(
             new AppError(
-                'El usuario con el que intentas ingresar ta no existe.',
+                'El usuario con el que intentas ingresar ya no existe.',
                 401
             )
         );
@@ -282,7 +282,7 @@ exports.protect = catchAsync(async (req, res, next) => {
         // iat - issued at
         return next(
             new AppError(
-                'Haz cambiado recientemente tu contraseña. Inicia sesion de nuevo.',
+                'Has cambiado recientemente tu contraseña. Inicia sesión de nuevo.',
                 401
             )
         );
@@ -313,7 +313,7 @@ exports.editMe = catchAsync(async (req, res, next) => {
     if (req.body.password || req.body.passwordConfirm) {
         return next(
             new AppError(
-                'Para cambiar tu contraseña debes usar otra ruta. Usa esta funcion solo para cabiar tu perfil.',
+                'Para cambiar tu contraseña debes usar otra ruta. Usa esta función solo para cambiar tu perfil.',
                 400
             )
         );
@@ -343,7 +343,7 @@ exports.restrictTo = (...roles) => {
         if (!roles.includes(req.userType)) {
             next(
                 new AppError(
-                    'No cuentas con los permisos para realizar esta accion.',
+                    'No cuentas con los permisos para realizar esta acción.',
                     403
                 )
             );
