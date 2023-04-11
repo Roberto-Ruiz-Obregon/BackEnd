@@ -25,7 +25,13 @@ const programSchema = new mongoose.Schema(
             },
         },
         hasLimit: {
-            type: Boolean,
+            type: String,
+            enum: {
+                values: [
+                    'Sin limite de inscripcion',
+                    'Con limite de inscripcion',
+                ],
+            },
             required: [
                 true,
                 'Debes especificar si este programa tiene fecha limite.',
