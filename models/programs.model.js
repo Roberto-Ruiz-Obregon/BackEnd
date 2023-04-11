@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const AppError = require('../utils/appError');
 
 const programSchema = new mongoose.Schema(
     {
@@ -23,9 +24,25 @@ const programSchema = new mongoose.Schema(
                     /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value),
             },
         },
+        hasLimit: {
+            type: Boolean,
+            required: [
+                true,
+                'Debes especificar si este programa tiene fecha limite.',
+            ],
+        },
+        limitDate: {
+            type: Date,
+        },
     },
     { timestamps: true }
 );
+
+programSchema.pre('validate', function () {
+    if (this.limitDate && this.limitDate < new Date()) {
+        throw new AppError('La fecha limite debe estar en el futuro', 400);
+    }
+});
 
 const Program = mongoose.model('Program', programSchema);
 module.exports = Program;
