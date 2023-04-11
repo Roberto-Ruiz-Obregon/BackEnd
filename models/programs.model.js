@@ -45,7 +45,10 @@ const programSchema = new mongoose.Schema(
 );
 
 programSchema.pre('validate', function () {
-    if (this.limitDate && this.limitDate < new Date()) {
+    if (
+        this.hasLimit == 'Con limite de inscripcion' &&
+        this.limitDate < new Date()
+    ) {
         throw new AppError('La fecha limite debe estar en el futuro', 400);
     }
 });
