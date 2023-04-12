@@ -48,6 +48,7 @@ const courseSchema = new mongoose.Schema(
                     /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i.test(value),
                 message: (props) => `${props.value} no es una URL válida`,
             },
+            default: 'https://zoom.us/',
         },
         // remote, presential, etc.
         modality: {
