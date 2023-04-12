@@ -117,7 +117,7 @@ courseSchema.pre('validate', function () {
  * In this case, when a course is removed, all payments and inscriptions related to it will also be deleted
  * inscriptions related to it will also be deleted
  */
-courseSchema.pre('remove', async function (next) {
+courseSchema.pre('findByIdAndDelete', async function (next) {
     const Inscription = require('../models/inscriptions.model');
     const Payment = require('../models/payments.model');
     // delete the payments related with this course
