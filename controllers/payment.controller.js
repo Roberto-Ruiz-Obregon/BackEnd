@@ -10,7 +10,7 @@ exports.getAllPayments = factory.getAll(Payment, [
     { path: 'user', select: 'email name postalCode age educationLevel' },
     {
         path: 'course',
-        select: 'courseName teachers modality description cost capacity startDate endDate',
+        select: 'courseName teachers modality description cost capacity startDate endDate bankAccount',
         populate: 'topics',
     },
 ]);
@@ -22,7 +22,7 @@ exports.createPayment = factory.createOne(Payment);
  * If payment is rejected, course capacity is augmented by 1
  * When a payment is accepted a confirmation mail is sent and inscription is created
  * When a payment is created email is sent
-*/
+ */
 exports.startPayment = catchAsync(async (req, res, next) => {
     const course = await Course.findById(req.body.courseId);
     if (!course) {

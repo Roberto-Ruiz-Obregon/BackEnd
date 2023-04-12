@@ -71,6 +71,10 @@ const courseSchema = new mongoose.Schema(
             required: [true, 'El curso debe ser gratuito o de pago'],
             enum: { values: ['Gratuito', 'Pagado'] },
         },
+        // bank account that will receive the payment
+        bankAccount: {
+            type: String,
+        },
         // inscription cost for course access
         cost: {
             type: Number,
@@ -111,17 +115,18 @@ courseSchema.pre('validate', function () {
 /**
  * In this case, when a course is removed, all payments and inscriptions related to it will also be deleted
  * inscriptions related to it will also be deleted
-*/
+ */
 courseSchema.pre('remove', async function (next) {
-    const Inscription = require('../models/inscriptions.model')
-    const Payment = require('../models/payments.model')
+    const Inscription = require('../models/inscriptions.model');
+    const Payment = require('../models/payments.model');
     // delete the payments related with this course
     await Payment.deleteMany({
-        course: this._id
-    })
+        course: this._id,
+    });
     // delete every inscription related with this course id
     await Inscription.deleteMany({
-        course: this._id});
+        course: this._id,
+    });
     // then the course is going to be deleted too
     return next();
 });
