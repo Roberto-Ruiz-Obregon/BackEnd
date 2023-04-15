@@ -14,6 +14,7 @@ const {
     signUpUser,
     logout,
     protect,
+    restrictTo,
     getMe,
     editMe,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
@@ -32,6 +33,7 @@ router.get('/auth/me', getMe, getUser);
 router.patch('/auth/updateme', editMe);
 router.get('/auth/logout', logout);
 
+router.use('/auth', protect);
 router.route('/').get(getAllUsers).post(createUser);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 

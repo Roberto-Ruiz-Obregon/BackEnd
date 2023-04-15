@@ -5,7 +5,12 @@ const {
     getOverview,
     resetPassword,
 } = require('../controllers/views.controller');
+const {
+    protect,
+    restrictTo,
+} = require(`${__dirname}/../controllers/authentication.controller.js`);
 
+router.use(protect);
 router.get('/', getOverview);
 router.get('/retrievePassword/:user/:id', resetPassword);
 

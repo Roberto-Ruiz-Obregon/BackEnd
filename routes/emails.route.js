@@ -7,13 +7,20 @@ const {
     sendToEveryone,
     sendByZone,
 } = require(`${__dirname}/../controllers/emails.controller.js`);
+const {
+    protect,
+    restrictTo,
+} = require(`${__dirname}/../controllers/authentication.controller.js`);
+
 const fileParser = require('../utils/multipartParser');
 
+router.use(protect);
+router.use(restrictTo('Admin'));
 router
     .route('/emailToEveryone')
-    .post(fileParser, filesController.formatEmailImage, sendToEveryone);
+    .post(restrictTo('Admin'), fileParser, filesController.formatEmailImage, sendToEveryone);
 router
     .route('/emailByZone')
-    .post(fileParser, filesController.formatEmailImage, sendByZone);
+    .post(restrictTo('Admin'), fileParser, filesController.formatEmailImage, sendByZone);
 
 module.exports = router;
