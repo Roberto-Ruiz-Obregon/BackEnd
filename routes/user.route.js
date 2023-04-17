@@ -32,6 +32,8 @@ router.use('/auth', protect);
 router.get('/auth/me', getMe, getUser);
 router.patch('/auth/updateme', editMe);
 router.get('/auth/logout', logout);
+router.get("/stats/usersByPostalCode", getUserCountsByPostalCode);
+
 
 router.route('/').get(getAllUsers).post(createUser);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);

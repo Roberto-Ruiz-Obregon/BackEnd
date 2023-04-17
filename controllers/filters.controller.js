@@ -116,3 +116,24 @@ exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
   });
 });
 
+exports.getUsersByZone = catchAsync(async (req, res, next) => {
+  const pipeline = [
+    {
+      $group: {
+        _id: '$postalCode',
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const results = await User.aggregate(pipeline);
+
+  res.status(200).json({
+    status: 'success',
+    results: results.length,
+    data: {
+      results,
+    },
+  });
+});
+
