@@ -1,0 +1,165 @@
+[debug] [2023-04-18T23:34:34.277Z] ----------------------------------------------------------------------
+[debug] [2023-04-18T23:34:34.278Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\pablo\OneDrive\Documents\RobertoRuizObregon\BackEnd\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2023-04-18T23:34:34.278Z] CLI Version:   11.24.0
+[debug] [2023-04-18T23:34:34.278Z] Platform:      win32
+[debug] [2023-04-18T23:34:34.278Z] Node Version:  v16.17.1
+[debug] [2023-04-18T23:34:34.279Z] Time:          Tue Apr 18 2023 17:34:34 GMT-0600 (GMT-06:00)
+[debug] [2023-04-18T23:34:34.279Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-04-18T23:34:34.320Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-04-18T23:34:34.321Z] > authorizing via signed-in user (a01703517@tec.mx)
+[debug] [2023-04-18T23:34:34.321Z] [iam] checking project robertoruiz-eca78 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2023-04-18T23:34:34.322Z] > refreshing access token with scopes: []
+[debug] [2023-04-18T23:34:34.323Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-04-18T23:34:34.323Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-04-18T23:34:34.492Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-04-18T23:34:34.492Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-04-18T23:34:34.504Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/robertoruiz-eca78:testIamPermissions [none]
+[debug] [2023-04-18T23:34:34.505Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/robertoruiz-eca78:testIamPermissions x-goog-quota-user=projects/robertoruiz-eca78
+[debug] [2023-04-18T23:34:34.505Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/robertoruiz-eca78:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2023-04-18T23:34:34.869Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/robertoruiz-eca78:testIamPermissions 200
+[debug] [2023-04-18T23:34:34.869Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/robertoruiz-eca78:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2023-04-18T23:34:34.870Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/robertoruiz-eca78/serviceAccounts/robertoruiz-eca78@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2023-04-18T23:34:34.870Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/robertoruiz-eca78/serviceAccounts/robertoruiz-eca78@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2023-04-18T23:34:35.267Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/robertoruiz-eca78/serviceAccounts/robertoruiz-eca78@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2023-04-18T23:34:35.267Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/robertoruiz-eca78/serviceAccounts/robertoruiz-eca78@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'robertoruiz-eca78'...
+[info] 
+[info] i  deploying functions 
+[debug] [2023-04-18T23:34:35.271Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/robertoruiz-eca78 [none]
+[debug] [2023-04-18T23:34:35.560Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/robertoruiz-eca78 200
+[debug] [2023-04-18T23:34:35.560Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/robertoruiz-eca78 {"projectId":"robertoruiz-eca78","projectNumber":"18102753117","displayName":"RobertoRuiz","name":"projects/robertoruiz-eca78","resources":{"hostingSite":"robertoruiz-eca78","storageBucket":"robertoruiz-eca78.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_110c0a74-ff38-4239-bdab-bfe504b46afe"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2023-04-18T23:34:35.563Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/cloudfunctions.googleapis.com [none]
+[debug] [2023-04-18T23:34:35.563Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/robertoruiz-eca78
+[debug] [2023-04-18T23:34:35.564Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/runtimeconfig.googleapis.com [none]
+[debug] [2023-04-18T23:34:35.564Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/robertoruiz-eca78
+[debug] [2023-04-18T23:34:35.564Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/cloudbuild.googleapis.com [none]
+[debug] [2023-04-18T23:34:35.565Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/cloudbuild.googleapis.com x-goog-quota-user=projects/robertoruiz-eca78
+[debug] [2023-04-18T23:34:35.565Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/artifactregistry.googleapis.com [none]
+[debug] [2023-04-18T23:34:35.565Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/artifactregistry.googleapis.com x-goog-quota-user=projects/robertoruiz-eca78
+[debug] [2023-04-18T23:34:36.009Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/runtimeconfig.googleapis.com 200
+[debug] [2023-04-18T23:34:36.009Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2023-04-18T23:34:36.021Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/cloudbuild.googleapis.com 200
+[debug] [2023-04-18T23:34:36.021Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/cloudbuild.googleapis.com [omitted]
+[info] +  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2023-04-18T23:34:36.037Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/artifactregistry.googleapis.com 200
+[debug] [2023-04-18T23:34:36.037Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/artifactregistry.googleapis.com [omitted]
+[info] +  artifactregistry: required API artifactregistry.googleapis.com is enabled 
+[debug] [2023-04-18T23:34:36.042Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/cloudfunctions.googleapis.com 200
+[debug] [2023-04-18T23:34:36.042Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/robertoruiz-eca78/services/cloudfunctions.googleapis.com [omitted]
+[info] +  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2023-04-18T23:34:36.043Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/robertoruiz-eca78/adminSdkConfig [none]
+[debug] [2023-04-18T23:34:36.302Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/robertoruiz-eca78/adminSdkConfig 200
+[debug] [2023-04-18T23:34:36.302Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/robertoruiz-eca78/adminSdkConfig {"projectId":"robertoruiz-eca78","storageBucket":"robertoruiz-eca78.appspot.com","locationId":"us-central"}
+[debug] [2023-04-18T23:34:36.303Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/robertoruiz-eca78/configs [none]
+[debug] [2023-04-18T23:34:36.875Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/robertoruiz-eca78/configs 200
+[debug] [2023-04-18T23:34:36.875Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/robertoruiz-eca78/configs {}
+[debug] [2023-04-18T23:34:36.877Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2023-04-18T23:34:38.107Z] > [functions] package.json contents: {
+  "name": "roberto-ruiz-obregon-server",
+  "version": "1.0.0",
+  "description": "A server for the non-profit org Roberto Ruiz Obregon.",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test && jest --forceExit --runInBand",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "build": "cross-env NODE_ENV=production node index.js",
+    "start:dev": "nodemon index.js",
+    "start:prod": "cross-env NODE_ENV=production nodemon index.js",
+    "debug": "ndb index.js",
+    "deploy": "jest && firebase deploy --only functions",
+    "serve": "firebase emulators:start --only functions",
+    "doc": "jsdoc -c jsconf.json",
+    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js",
+    "build:js": "parcel build ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Roberto-Ruiz-Obregon/BackEnd.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@google-cloud/storage": "^5.8.5",
+    "axios": "^0.24.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "busboy": "^0.2.14",
+    "compression": "^1.7.4",
+    "content-type": "^1.0.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-mongo-sanitize": "^2.1.0",
+    "express-rate-limit": "^3.5.0",
+    "firebase": "^8.6.8",
+    "firebase-admin": "^11.5.0",
+    "firebase-functions": "^4.2.0",
+    "firebase-tools": "^11.24.0",
+    "helmet": "^4.6.0",
+    "hpp": "^0.2.3",
+    "html-to-text": "^9.0.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.13",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.4",
+    "nodemailer": "^6.7.2",
+    "parcel": "^2.8.3",
+    "parcel-bundler": "^1.12.5",
+    "pug": "^3.0.2",
+    "raw-body": "^2.3.2",
+    "sharp": "^0.29.3",
+    "slugify": "^1.6.4",
+    "stripe": "^8.199.0",
+    "validator": "^13.7.0",
+    "xhr2": "^0.2.1",
+    "xss-clean": "^0.1.1"
+  },
+  "bugs": {
+    "url": "https://github.com/Roberto-Ruiz-Obregon/BackEnd/issues"
+  },
+  "homepage": "https://github.com/Roberto-Ruiz-Obregon/BackEnd#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.5.0",
+    "jsdoc": "^4.0.2",
+    "mongodb-memory-server": "^8.12.2",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 60000,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}
+[debug] [2023-04-18T23:34:38.108Z] Building nodejs source
+[debug] [2023-04-18T23:34:38.109Z] Could not find functions.yaml. Must use http discovery
+[debug] [2023-04-18T23:34:38.114Z] Found firebase-functions binary at 'C:\Users\pablo\OneDrive\Documents\RobertoRuizObregon\BackEnd\node_modules\.bin\firebase-functions'
+[debug] [2023-04-18T23:34:38.254Z] Serving at port 8464
+
+[debug] [2023-04-18T23:34:39.113Z] FetchError: request to http://localhost:8464/__/quitquitquit failed, reason: connect ECONNREFUSED 127.0.0.1:8464
+    at ClientRequest.<anonymous> (C:\Users\pablo\OneDrive\Documents\RobertoRuizObregon\BackEnd\node_modules\firebase-tools\node_modules\node-fetch\lib\index.js:1491:11)
+    at ClientRequest.emit (node:events:513:28)
+    at ClientRequest.emit (node:domain:489:12)
+    at Socket.socketErrorListener (node:_http_client:481:9)
+    at Socket.emit (node:events:513:28)
+    at Socket.emit (node:domain:489:12)
+    at emitErrorNT (node:internal/streams/destroy:157:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21)
+[error] 
+[error] Error: An unexpected error has occurred.

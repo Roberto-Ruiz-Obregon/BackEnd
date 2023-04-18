@@ -9,6 +9,7 @@ const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const compression = require('compression');
+const dotenv = require('dotenv');
 
 // APP ERROR
 const AppError = require('./utils/appError');
@@ -26,6 +27,9 @@ const viewRouter = require('./routes/views.route');
 const emailRouter = require('./routes/emails.route');
 
 const app = express();
+
+// Read env variables and save them
+dotenv.config({ path: './config.env' });
 
 app.enable('trust proxy');
 app.use(cors());
