@@ -1,7 +1,15 @@
+
+const express = require('express');
+const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const pug = require('pug');
 const { htmlToText } = require('html-to-text');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 
+const PORT = process.env.PORT || 3000;
+const app = express();
+app.use(bodyParser.json());
 /* The above code is creating a class called Email. The constructor is taking in two parameters, user
 and url. The constructor is also setting the to, firstName, url, and from properties. The
 newTransport method is creating a new transport object based on the environment. The send method is
@@ -9,6 +17,20 @@ rendering the html based on the template and subject. The send method is also de
 options and sending the email. The sendWelcome method is calling the send method and passing in the
 welcome template and subject. The sendPasswordReset method is calling the send method and passing in
 the passwordReset template */
+
+const myOAuth2Client = new OAuth2(
+    process.env.OAUTH_CLIENTID,
+    process.env.OAUTH_CLIENT_SECRET,
+    "https://developers.google.com/oauthplayground"
+    )
+
+myOAuth2Client.setCredentials({
+    refresh_token:process.env.OAUTH_REFRESH_TOKEN
+    });
+
+const myAccessToken = myOAuth2Client.getAccessToken()
+
+
 module.exports = class Email {
     /**
      * It takes in a user object, a url, a course object, and an image, and then sets the to, image,
@@ -29,6 +51,7 @@ module.exports = class Email {
         this.from = `Asociacion Roberto Ruiz Obregon <${process.env.EMAIL_FROM}>`;
     }
 
+   
     /**
      * It creates a new transport object using the nodemailer library.
      *
@@ -47,7 +70,7 @@ module.exports = class Email {
                 pass: process.env.MAIL_PASSWORD,
                 clientId: process.env.OAUTH_CLIENTID,
                 clientSecret: process.env.OAUTH_CLIENT_SECRET,
-                accessToken: process.env.OAUTH_ACCESS_TOKEN,
+                accessToken: myAccessToken, //access token variable we defined earlier
                 refreshToken: process.env.OAUTH_REFRESH_TOKEN,
             },
         });
