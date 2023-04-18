@@ -8,7 +8,7 @@ const firebase = require('../config/db'); // reference to our db
 require('firebase/storage'); // must be required for this to work
 const storage = firebase.storage().ref(); // create a reference to storage
 global.XMLHttpRequest = require('xhr2');
-var limits = {
+const limits = {
 files: 1, // allow only 1 file per request
 fileSize: 10000 * 10000, // 10 MB (max file size)
 };
