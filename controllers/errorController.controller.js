@@ -39,7 +39,7 @@ const sendErrorProduction = (err, req, res) => {
         // 2 send generic response
         res.status(500).json({
             status: 'error',
-            error: 'Lo sentimos, algo salio muy mal. Intenta mas tarde.',
+            error: 'Lo sentimos, algo salió muy mal. Intenta más tarde.',
         });
     }
 };
@@ -50,7 +50,7 @@ const sendErrorProduction = (err, req, res) => {
  * @param err - The error object that was thrown by the JWT library.
 */
 const handleJWTError = (err) =>
-    new AppError('Token invalida. Inicie sesion de nuevo.', 401);
+    new AppError('Token inválida. Inicie sesión de nuevo.', 401);
 
 /**
  * If the error is a JWT error, then return a new AppError with a message of 'Tu sesion ha expirado.
@@ -58,7 +58,7 @@ const handleJWTError = (err) =>
  * @param err - The error object that was thrown.
 */
 const handleJWTExpiredError = (err) =>
-    new AppError('Tu sesion ha expirado. Inicia sesion de nuevo.', 401);
+    new AppError('Tu sesión ha expirado. Inicia sesión de nuevo.', 401);
 
 /**
  * It takes an error object, and returns a new AppError object with a message that is a concatenation
@@ -67,7 +67,7 @@ const handleJWTExpiredError = (err) =>
 */
 const handleBadField = (err) =>
     new AppError(
-        `Parametro de busqueda invalido ${err.sqlMessage.split(' ')[2]}.`,
+        `Parámetro de búsqueda inválido ${err.sqlMessage.split(' ')[2]}.`,
         404
     );
 
@@ -78,7 +78,7 @@ const handleBadField = (err) =>
  * @returns A new instance of AppError with the message and status code.
 */
 const handleCastErrorDB = (err) => {
-    const message = `Invalido ${err.path}: ${err.value}`;
+    const message = `Inválido ${err.path}: ${err.value}`;
     // 400 stands for bad request
     return new AppError(message, 400);
 };
@@ -104,7 +104,7 @@ const handleDuplicateFieldsDB = (err) => {
 const handleValidationErrorDB = (err) => {
     // Mongoose gives us an array of errors to go through
     const errors = Object.values(err.errors).map((err) => err.message);
-    const message = `Datos invalidos: ${errors.join('. ')}`;
+    const message = `Datos inválidos: ${errors.join('. ')}`;
     return new AppError(message, 400);
 };
 
