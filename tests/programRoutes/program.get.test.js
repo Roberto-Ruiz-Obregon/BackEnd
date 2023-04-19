@@ -33,7 +33,7 @@ beforeAll(async () => {
     await connectDB();
 });
 
-describe('Course gets APIFeatures', () => {
+describe('Program gets APIFeatures', () => {
     describe('GET /progran?programName[regex]', () => {
         test('successful', testProgramNameSearch('Amealco'));
         test('successful', testProgramNameSearch('paisajes'));
