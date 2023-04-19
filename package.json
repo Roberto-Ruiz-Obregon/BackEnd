@@ -28,7 +28,9 @@
         "axios": "^0.24.0",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
+        "busboy": "^0.2.14",
         "compression": "^1.7.4",
+        "content-type": "^1.0.4",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "dotenv": "^10.0.0",
@@ -51,15 +53,13 @@
         "parcel": "^2.8.3",
         "parcel-bundler": "^1.12.5",
         "pug": "^3.0.2",
+        "raw-body": "^2.3.2",
         "sharp": "^0.29.3",
         "slugify": "^1.6.4",
         "stripe": "^8.199.0",
         "validator": "^13.7.0",
         "xhr2": "^0.2.1",
-        "xss-clean": "^0.1.1",
-        "busboy": "^0.2.14",
-        "content-type": "^1.0.4",
-        "raw-body": "^2.3.2"
+        "xss-clean": "^0.1.1"
     },
     "bugs": {
         "url": "https://github.com/Roberto-Ruiz-Obregon/BackEnd/issues"
