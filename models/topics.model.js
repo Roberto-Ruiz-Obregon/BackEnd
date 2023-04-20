@@ -10,7 +10,7 @@ const topicsSchema = new mongoose.Schema({
 });
 
 
-topicsSchema.pre('remove', async function () {
+topicsSchema.pre('findByIdAndDelete', async function () {
     const User = require('../models/users.model')
     const Course = require('../models/courses.model')
 
@@ -18,15 +18,15 @@ topicsSchema.pre('remove', async function () {
     const topic = this;
 
     await User.updateMany(
-        {topics: { $in: [topic._id] } },
-        {$pull: {topics: topic._id}}
+        {topics: topic._id },
+        {$pullAll: {topics: topic._id}}
     );
 
     await Course.updateMany(
         // search the ones that have this topic
-        {topics: { $in: [topic._id] } },
+        {topics: topic._id },
         // delete the topic from the course
-        {$pull: {topics: topic._id}}
+        {$pullAll: {topics: topic._id}}
     );
     // delete the topic 
     await Topics.deleteOne({_id: topic._id});

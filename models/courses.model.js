@@ -99,6 +99,10 @@ const courseSchema = new mongoose.Schema(
                 validator: (value) => value >= 0,
             },
         },
+        bank: {
+            type: String,
+            default: 'Sin banco especificado',
+        },
     },
     { timestamps: true }
 );

@@ -53,10 +53,10 @@ const createSendToken = (user, statusCode, req, res) => {
 };
 
 /**
-* The above code is checking if the user is logged in. If the user is logged in, the user is allowed
-* to access the protected route. If the user is not logged in, the user is not allowed to access the
-* protected route. 
-*/
+ * The above code is checking if the user is logged in. If the user is logged in, the user is allowed
+ * to access the protected route. If the user is not logged in, the user is not allowed to access the
+ * protected route.
+ */
 exports.protect = catchAsync(async (req, res, next) => {
     // 1) Getting the token and check if its there
     // We will be receiving the token in a header in the request.
@@ -72,7 +72,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     } else if (req.cookies.jwt) {
         token = req.cookies.jwt;
     }
-
+    console.log(token);
     if (!token) {
         return next(
             new AppError(
@@ -162,11 +162,11 @@ exports.signUpAdmin = catchAsync(async (req, res, next) => {
     });
 });
 
-/** 
-* Checking if the user is logged in. If the user is logged in, the user is allowed
-* to access the protected route. If the user is not logged in, the user is not allowed to access the
-* protected route. 
-*/
+/**
+ * Checking if the user is logged in. If the user is logged in, the user is allowed
+ * to access the protected route. If the user is not logged in, the user is not allowed to access the
+ * protected route.
+ */
 exports.loginUser = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -192,10 +192,10 @@ exports.loginUser = catchAsync(async (req, res, next) => {
 });
 
 /**
-* Checking if the admin is logged in. If the user is logged in, the user is allowed
-* to access the protected route. If the user is not logged in, the user is not allowed to access the
-* protected route. 
-*/
+ * Checking if the admin is logged in. If the user is logged in, the user is allowed
+ * to access the protected route. If the user is not logged in, the user is not allowed to access the
+ * protected route.
+ */
 exports.loginAdmin = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -238,11 +238,11 @@ exports.logout = (req, res, next) => {
     res.status(200).json({ status: 'success' });
 };
 
-/**  
+/**
  * The above code is checking if the user is logged in. If the user is logged in, the user is allowed
  * to access the protected route. If the user is not logged in, the user is not allowed to access the
- * protected route. 
-*/
+ * protected route.
+ */
 exports.protect = catchAsync(async (req, res, next) => {
     // 1) Getting the token and check if its there
     let token;

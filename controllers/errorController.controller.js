@@ -5,7 +5,7 @@ const AppError = require('../utils/appError');
  * @param err - The error object
  * @param req - The request object
  * @param res - The response object
-*/
+ */
 const sendErrorDev = (err, req, res) => {
     res.status(err.statusCode).json({
         status: err.status,
@@ -23,7 +23,7 @@ const sendErrorDev = (err, req, res) => {
  * @param req - The request object
  * @param res - The response object.
  * @returns the response.
-*/
+ */
 const sendErrorProduction = (err, req, res) => {
     // Operational
     if (err.isOperational) {
@@ -48,7 +48,7 @@ const sendErrorProduction = (err, req, res) => {
  * If the error is a JsonWebTokenError, then return a new AppError with a message of 'Token invalida.
  * Inicie sesion de nuevo.' and a status of 401.
  * @param err - The error object that was thrown by the JWT library.
-*/
+ */
 const handleJWTError = (err) =>
     new AppError('Token invalida. Inicie sesion de nuevo.', 401);
 
@@ -56,7 +56,7 @@ const handleJWTError = (err) =>
  * If the error is a JWT error, then return a new AppError with a message of 'Tu sesion ha expirado.
  * Inicia sesion de nuevo.' and a status code of 401.
  * @param err - The error object that was thrown.
-*/
+ */
 const handleJWTExpiredError = (err) =>
     new AppError('Tu sesion ha expirado. Inicia sesion de nuevo.', 401);
 
@@ -64,7 +64,7 @@ const handleJWTExpiredError = (err) =>
  * It takes an error object, and returns a new AppError object with a message that is a concatenation
  * of a string and the second word of the error message.
  * @param err - The error object that was thrown by the database.
-*/
+ */
 const handleBadField = (err) =>
     new AppError(
         `Parametro de busqueda invalido ${err.sqlMessage.split(' ')[2]}.`,
@@ -76,7 +76,7 @@ const handleBadField = (err) =>
  * ${err.value}" and a status code of 400.
  * @param err - The error object that was thrown by Mongoose.
  * @returns A new instance of AppError with the message and status code.
-*/
+ */
 const handleCastErrorDB = (err) => {
     const message = `Invalido ${err.path}: ${err.value}`;
     // 400 stands for bad request
@@ -87,7 +87,7 @@ const handleCastErrorDB = (err) => {
  * It takes an error object and returns a new error object with a custom message
  * @param err - The error object that was thrown by Mongoose.
  * @returns The value of the duplicate field.
-*/
+ */
 const handleDuplicateFieldsDB = (err) => {
     // To remove it we use a regular expression.
     const value = err.errmsg.match(/(["'])(\\?.)*?\1/); // nos matchea todos
@@ -100,7 +100,7 @@ const handleDuplicateFieldsDB = (err) => {
  * status code.
  * @param err - The error object that was thrown
  * @returns A new AppError object with the message and status code.
-*/
+ */
 const handleValidationErrorDB = (err) => {
     // Mongoose gives us an array of errors to go through
     const errors = Object.values(err.errors).map((err) => err.message);
@@ -114,15 +114,20 @@ const handleValidationErrorDB = (err) => {
  * @param {Obj} req - The req object.
  * @param {Obj} res - The res object.
  * @param {function} next - The next function.
-*/
+ */
 module.exports = (err, req, res, next) => {
     res.locals.error = err;
     err.status = err.status || 'error';
     err.statusCode = err.statusCode || 500;
 
     if (process.env.NODE_ENV === 'development') {
+        console.log('Error Name:', err.name);
+        console.log('Error code:', err.code);
         return sendErrorDev(err, req, res);
-    } else if (process.env.NODE_ENV === 'production') {
+    } else if (
+        process.env.NODE_ENV === 'production' ||
+        process.env.NODE_ENV === 'test'
+    ) {
         // con esto identificaremos los errores de validación
         let error = Object.create(err);
         if (err.name === 'CastError') error = handleCastErrorDB(err);

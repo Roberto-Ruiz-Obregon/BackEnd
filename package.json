@@ -4,13 +4,13 @@
     "description": "A server for the non-profit org Roberto Ruiz Obregon.",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "cross-env NODE_ENV=test && jest --forceExit --runInBand",
         "start": "cross-env NODE_ENV=production node index.js",
         "build": "cross-env NODE_ENV=production node index.js",
         "start:dev": "nodemon index.js",
         "start:prod": "cross-env NODE_ENV=production nodemon index.js",
         "debug": "ndb index.js",
-        "deploy": "firebase deploy --only functions",
+        "deploy": "jest && firebase deploy --only functions",
         "serve": "firebase emulators:start --only functions",
         "doc": "jsdoc -c jsconf.json",
         "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js --public-url /js",
@@ -27,7 +27,7 @@
         "@google-cloud/storage": "^5.8.5",
         "axios": "^0.24.0",
         "bcryptjs": "^2.4.3",
-        "body-parser": "^1.20.2",
+        "body-parser": "^1.19.0",
         "busboy": "^0.2.14",
         "compression": "^1.7.4",
         "content-type": "^1.0.4",
@@ -54,7 +54,7 @@
         "parcel-bundler": "^1.12.5",
         "pug": "^3.0.2",
         "raw-body": "^2.3.2",
-        "sharp": "^0.32.0",
+        "sharp": "^0.29.3",
         "slugify": "^1.6.4",
         "stripe": "^8.199.0",
         "validator": "^13.7.0",
@@ -67,9 +67,19 @@
     "homepage": "https://github.com/Roberto-Ruiz-Obregon/BackEnd#readme",
     "devDependencies": {
         "cross-env": "^7.0.3",
-        "jsdoc": "^4.0.2"
+        "jest": "^29.5.0",
+        "jsdoc": "^4.0.2",
+        "mongodb-memory-server": "^8.12.2",
+        "supertest": "^6.3.3"
     },
     "engines": {
         "node": "16"
+    },
+    "jest": {
+        "testEnvironment": "node",
+        "testTimeout": 60000,
+        "coveragePathIgnorePatterns": [
+            "/node_modules/"
+        ]
     }
 }
