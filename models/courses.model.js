@@ -6,14 +6,9 @@ const AppError = require('../utils/appError');
 
 const courseSchema = new mongoose.Schema(
     {
-        courseId: {
-            type: Number,
-            index: true,
-        },
         courseName: {
             type: String,
             required: [true, 'Nombre de curso requerido'],
-            index: true,
         },
         // what is the course about
         description: {
@@ -103,7 +98,12 @@ const courseSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-courseSchema.index({ courseId: 1, courseName: "text" });
+// Indexing course properties for optimized search 
+courseSchema.index({ _id: 1 });
+courseSchema.index({ status: 1 });
+courseSchema.index({ modality: 1 });
+courseSchema.index({ courseName: 1 });
+courseSchema.index({ postalCode: 1 });
 
 // date validation
 courseSchema.pre('validate', function () {
