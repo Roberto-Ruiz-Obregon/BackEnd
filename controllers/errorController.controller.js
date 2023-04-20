@@ -34,7 +34,7 @@ const sendErrorProduction = (err, req, res) => {
         // Programming error
     } else {
         // 1 log error
-        console.error('ErrorLog', err.message);
+        console.error('Error', err);
 
         // Verifies if it is an image file
         if(err.message.toString() == 'Input buffer contains unsupported image format'){
@@ -53,7 +53,7 @@ const sendErrorProduction = (err, req, res) => {
         }
 
         // 2 send generic response
-        res.status(400).json({
+        res.status(500).json({
             status: 'error',
             error: 'Lo sentimos, algo salio muy mal. Intenta mas tarde.',
         });
