@@ -79,6 +79,10 @@ const userSchema = new mongoose.Schema({
     passwordResetExpires: Date,
 });
 
+// Indexing program properties for optimized search 
+userSchema.index({ _id: 1 });
+userSchema.index({ email: 1 });
+
 // MIDDLEWARES
 /** 
  * This is a middleware that runs before the save() or create() method. It hashes the password and sets
