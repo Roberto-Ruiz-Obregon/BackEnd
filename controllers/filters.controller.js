@@ -57,7 +57,7 @@ exports.getInscriptionsByZone = catchAsync(async (req, res) => {
     },
   ]);
 
-  res.status(200).json({
+    res.status(200).json({
     status: 'success',
     data: result,
   });
@@ -67,24 +67,17 @@ exports.getInscriptionsByZone = catchAsync(async (req, res) => {
 
 //zones with most users
 exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
-  const result = await User.aggregate([
-    {
-      $group: {
-        _id: '$postalCode', 
-        totalUsers: { $sum: 1},
-      },
-    },
-    {
-      $sort: { totalUsers: -1 },
-    },
-    {
-      $project: {
-        _id: 0,
-        postalCode: '$_id',
-        totalUsers: 1,
-      },
-    },
-  ]);
+    const result = await User.aggregate([
+        {
+            $group: {
+                _id: '$postalCode',
+                totalUsers: { $sum: 1 },
+            },
+        },
+        {
+            $sort: { totalUsers: -1 },
+        },
+    ]);
 
   res.status(200).json({
     status: 'success',
@@ -137,6 +130,3 @@ exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
 //     message: error.message,
 //   });
 // });
-
-
-

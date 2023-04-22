@@ -31,7 +31,10 @@ router.use('/auth', protect);
 router.get('/auth/me', getMe, getUser);
 router.patch('/auth/updateme', editMe);
 router.get('/auth/logout', logout);
+<<<<<<< HEAD
 
+=======
+>>>>>>> ac3f32d4c32e1ec4503025ebcd5e6322409050e9
 
 router.route('/').get(getAllUsers).post(createUser);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
