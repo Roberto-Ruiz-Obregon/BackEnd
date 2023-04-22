@@ -3,37 +3,67 @@ const Topics = require('../models/topics.model');
 const Inscription = require('../models/inscriptions.model');
 const catchAsync = require('../utils/catchAsync');
 
-// filter by zone with most inscriptions added into the same file
-exports.getZonesWithMostInscriptions = catchAsync(async (req, res) => {
-  const result = await Inscription.aggregate([
+// filter by zone with inscriptions to courses added into the same file
+exports.getInscriptionsByZone = catchAsync(async (req, res) => {
+  const result = await User.aggregate([
     {
       $lookup: {
-        from: 'users',
-        localField: 'user',
+        from: 'inscriptions',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'inscriptions',
+      },
+    },
+    {
+      $unwind: '$inscriptions'
+    },
+    {
+      $lookup: {
+        from: 'courses',
+        localField: 'inscriptions.course',
         foreignField: '_id',
-        as: 'user',
+        as: 'course'
+      }
+    },
+    {
+      $unwind: '$course'
+    },
+    {
+      $match: {
+        'inscriptions.course': { $exists: true, $ne: [] },
       },
     },
     {
       $group: {
-        _id: '$user.postalCode',
-        totalInscriptions: { $sum: 1 },
+        _id: { postalCode: '$postalCode', course: '$course.courseName' },
+        totalUsers: { $sum: 1 },
       },
     },
     {
-      $sort: { totalInscriptions: -1 },
+      $group: {
+        _id: '$_id.postalCode',
+        courses: { $push: '$_id.course' },
+      },
+    },
+    {
+      $sort: { totalUsers: -1 },
     },
     {
       $project: {
         _id: 0,
         postalCode: '$_id',
-        totalInscriptions: 1,
+        courses: 1,
       },
     },
   ]);
 
-  res.status(200).json(result);
+  res.status(200).json({
+    status: 'success',
+    data: result,
+  });
 });
+  
+
 
 //zones with most users
 exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
