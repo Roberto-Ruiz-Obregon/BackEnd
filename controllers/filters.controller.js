@@ -3,60 +3,6 @@ const Topics = require('../models/topics.model');
 const Inscription = require('../models/inscriptions.model');
 const catchAsync = require('../utils/catchAsync');
 
-//popular interests by zone
-exports.filterTopics =  catchAsync(async (req, res) => {
-  const { postalCode } = req.body;
-
-  const popularTopics = await User.aggregate([
-    //match by postal code
-    {
-      $match: {
-        postalCode: postalCode,
-      },
-    },
-    {
-      $unwind: '$topics',
-    },
-    {
-      $lookup: {
-        from: 'topics',
-        localField: 'topics',
-        foreignField: '_id',
-        as: 'topicDetails',
-      },
-    },
-    {
-      $unwind: '$topicDetails',
-    },
-    //group by topics 
-    {
-      $group: {
-        _id: '$topicDetails.topic',
-        count: { $sum: 1 },
-      },
-    },
-    //sort in descending order
-    {
-      $sort: {
-        count: -1,
-      },
-    },
-  ]);
-
-  res.status(200).json({
-    status: 'success',
-    data: popularTopics,
-  });
-}, (error) => {
-  console.log(error);
-  res.status(500).json({
-    status: 'error',
-    message: error.message,
-  });
-});
-
-
-
 // filter by zone with most inscriptions added into the same file
 exports.getZonesWithMostInscriptions = catchAsync(async (req, res) => {
   const result = await Inscription.aggregate([
@@ -116,24 +62,51 @@ exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
   });
 });
 
-exports.getUsersByZone = catchAsync(async (req, res, next) => {
-  const pipeline = [
-    {
-      $group: {
-        _id: '$postalCode',
-        count: { $sum: 1 },
-      },
-    },
-  ];
+// //popular interests by zone
+// exports.filterTopics = catchAsync(async (req, res) => {
 
-  const results = await User.aggregate(pipeline);
+//   const { postalCode } = req.body;
+//   console.log(postalCode)
+ 
+//   const popularTopics = await User.aggregate([
+//     { $match: { postalCode: postalCode } },
+//     { $unwind: "$topics" },
+//     {
+//       $group: {
+//         _id: "$topics",
+//         count: { $sum: 1 }
+//       }
+//     },
+//     {
+//       $group: {
+//         _id: null,
+//         topics: {
+//           $push: {
+//             k: "$_id",
+//             v: "$count"
+//           }
+//         }
+//       }
+//     },
+//     {
+//       $replaceRoot: {
+//         newRoot: {
+//           $arrayToObject: "$topics"
+//         }
+//       }
+//     }
+//   ])
+//   res.status(200).json({
+//     status: 'success',
+//     data: popularTopics,
+//   });
+// }, (error) => {
+//   console.log(error);
+//   res.status(500).json({
+//     status: 'error',
+//     message: error.message,
+//   });
+// });
 
-  res.status(200).json({
-    status: 'success',
-    results: results.length,
-    data: {
-      results,
-    },
-  });
-});
+
 
