@@ -28,17 +28,17 @@ describe('Course post', () => {
             const res = await agent.post('/v1/course').send({
                 courseName: 'Pruebas de backend',
                 description: "esto es una prueba de testing",
+                modality: "Presencial",
+                status: "Gratuito",
                 postalCode: '76060',
-                teacher: "Denisse dOMINGUEZ",
+                teacher: "Denisse Dominguez",
                 startDate: "2023-06-23",
                 endDate: "2023-07-30",
                 schedule: "viernes 10am",
-                modality: "Presencial",
-                status: "Gratuito",
                 imageUrl: "https://www.bbva.com/wp-content/uploads/2017/08/bbva-balon-futbol-2017-08-11.jpg",
             });
             console.log(res.body.message);
-            expect(res.statusCode).toEqual(200);
+            expect(res.statusCode).toEqual(201);
             expect(res.body).toBeTruthy();
         });
     });
