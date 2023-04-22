@@ -49,6 +49,8 @@ const userSchema = new mongoose.Schema({
                 'Secundaria',
                 'Preparatoria',
                 'Universidad',
+                'Maestria',
+                'Doctorado'
             ],
         },
     },
