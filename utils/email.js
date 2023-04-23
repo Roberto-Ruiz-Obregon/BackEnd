@@ -9,7 +9,6 @@ const OAuth2 = google.auth.OAuth2;
 
 dotenv.config({ path: './config.env' });
 
-app.use(bodyParser.json());
 /* The above code is creating a class called Email. The constructor is taking in two parameters, user
 and url. The constructor is also setting the to, firstName, url, and from properties. The
 newTransport method is creating a new transport object based on the environment. The send method is
