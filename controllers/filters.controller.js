@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 
 // filter by zone with inscriptions to courses added into the same file
 exports.getInscriptionsByZone = catchAsync(async (req, res) => {
+  const postalCode = req.params.postalCode;
   const result = await User.aggregate([
     {
       $lookup: {
@@ -29,20 +30,60 @@ exports.getInscriptionsByZone = catchAsync(async (req, res) => {
       $unwind: '$course'
     },
     {
-      $match: {
-        'inscriptions.course': { $exists: true, $ne: [] },
-      },
-    },
-    {
       $group: {
-        _id: { postalCode: '$postalCode', course: '$course.courseName' },
-        totalUsers: { $sum: 1 },
+        _id: {
+          postalCode: '$postalCode',
+          courseId: '$course._id',
+        },
+        courses: { $addToSet: '$course.courseName' },
+        totalUsers: { $sum: 1 }
       },
     },
     {
       $group: {
         _id: '$_id.postalCode',
-        courses: { $push: '$_id.course' },
+        courses: {
+          $addToSet: {
+            courseName: '$_id.courseId.courseName',
+            totalUsers: { $size: '$totalUsers' }
+          }
+        },
+        totalUsers: { $sum: 1 }
+      }
+    },
+    {
+      $match: {
+        _id: postalCode,
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        postalCode: '$_id',
+        courses: 1,
+        totalUsers: 1
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: 'success',
+    data: result[0],
+  });
+});
+
+
+
+
+
+
+//zones with most users
+exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
+  const result = await User.aggregate([
+    {
+      $group: {
+        _id: '$postalCode', 
+        totalUsers: { $sum: 1},
       },
     },
     {
@@ -52,32 +93,10 @@ exports.getInscriptionsByZone = catchAsync(async (req, res) => {
       $project: {
         _id: 0,
         postalCode: '$_id',
-        courses: 1,
+        totalUsers: 1,
       },
     },
   ]);
-
-    res.status(200).json({
-    status: 'success',
-    data: result,
-  });
-});
-  
-
-
-//zones with most users
-exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
-    const result = await User.aggregate([
-        {
-            $group: {
-                _id: '$postalCode',
-                totalUsers: { $sum: 1 },
-            },
-        },
-        {
-            $sort: { totalUsers: -1 },
-        },
-    ]);
 
   res.status(200).json({
     status: 'success',
@@ -130,3 +149,6 @@ exports.getZonesWithMostUsers = catchAsync(async (req, res) => {
 //     message: error.message,
 //   });
 // });
+
+
+
