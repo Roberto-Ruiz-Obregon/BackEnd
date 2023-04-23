@@ -27,18 +27,19 @@ describe('Course post', () => {
         test('successful', async () => {
             const res = await agent.post('/v1/course').send({
                 courseName: 'Pruebas de backend',
-                description: "esto es una prueba de testing",
+                description: 'esto es una prueba de testing',
                 postalCode: '76060',
-                teacher: "Denisse dOMINGUEZ",
-                startDate: "2023-06-23",
-                endDate: "2023-07-30",
-                schedule: "viernes 10am",
-                modality: "Presencial",
-                status: "Gratuito",
-                imageUrl: "https://www.bbva.com/wp-content/uploads/2017/08/bbva-balon-futbol-2017-08-11.jpg",
+                teacher: 'Denisse dOMINGUEZ',
+                startDate: '2023-06-23',
+                endDate: '2023-07-30',
+                schedule: 'viernes 10am',
+                modality: 'Presencial',
+                status: 'Gratuito',
+                imageUrl:
+                    'https://www.bbva.com/wp-content/uploads/2017/08/bbva-balon-futbol-2017-08-11.jpg',
             });
             console.log(res.body.message);
-            expect(res.statusCode).toEqual(200);
+            expect(res.statusCode).toEqual(201);
             expect(res.body).toBeTruthy();
         });
     });
@@ -46,7 +47,8 @@ describe('Course post', () => {
         test('successful', async () => {
             const res = await agent.post('/v1/course').send({
                 postalCode: '76000',
-                imageUrl: "https://www.google.com/search?q=futbol&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjAzN3B-bb-AhVLlWoFHQ2aDS8Q_AUoAXoECAIQAw&biw=1536&bih=810&dpr=1.25",
+                imageUrl:
+                    'https://www.google.com/search?q=futbol&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjAzN3B-bb-AhVLlWoFHQ2aDS8Q_AUoAXoECAIQAw&biw=1536&bih=810&dpr=1.25',
             });
             expect(res.statusCode).toEqual(400);
             expect(res.body).toBeTruthy();
