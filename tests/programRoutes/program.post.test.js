@@ -13,7 +13,7 @@ const agent = request.agent(app);
 
 beforeAll(async() => {
     await connectDB();
-    await createUser();
+    await createAdmin();
     // Da acceso a las rutas protegidas y restringidas
     await loginAdmin(agent, 'dummy_user@gmail.com', 'contra123');
 })
@@ -35,7 +35,6 @@ describe('Program post', () => {
                 hasLimit: "Con limite de inscripcion",
                 limitDate: "2023-06-23",
             });
-            console.log(res.body.message);
             expect(res.statusCode).toEqual(201);
             expect(res.body).toBeTruthy();
         });
