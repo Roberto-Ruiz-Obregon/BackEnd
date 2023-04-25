@@ -124,7 +124,7 @@ exports.filterTopics = catchAsync(async (req, res) => {
         {
             $group: {
                 _id: '$topics.topic',
-                count: { $sum: 1 },
+                totalUsers: { $sum: 1 },
             },
         },
     ]);
