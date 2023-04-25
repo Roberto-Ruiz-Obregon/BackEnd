@@ -13,6 +13,10 @@ const inscriptionSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+// Indexing inscription properties for optimized search 
+inscriptionSchema.index({ user: 1 });
+inscriptionSchema.index({ course: 1 });
+
 const Inscription = mongoose.model('Inscription', inscriptionSchema);
 
 module.exports = Inscription;

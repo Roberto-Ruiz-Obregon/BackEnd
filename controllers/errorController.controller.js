@@ -36,6 +36,22 @@ const sendErrorProduction = (err, req, res) => {
         // 1 log error
         console.error('Error', err);
 
+        // Verifies if it is an image file
+        if(err.message.toString() == 'Input buffer contains unsupported image format'){
+            res.status(400).json({
+                status: 'error',
+                error: 'El archivo no es una imagen. Intenta de nuevo.',
+            });
+        }
+
+        // Verifies if the file is an image larger than 10MB
+        if(err.message.toString() == 'request entity too large'){
+            res.status(400).json({
+                status: 'error',
+                error: 'El archivo pesa más de 10 MB. Intenta de nuevo.',
+            });
+        }
+
         // 2 send generic response
         res.status(500).json({
             status: 'error',
