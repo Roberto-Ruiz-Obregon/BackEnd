@@ -29,6 +29,4 @@ const dropCollections = async () => {
     }
 };
 
-const createDummyUsers = async () => {};
-
 module.exports = { connectDB, dropDB, dropCollections };
