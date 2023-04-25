@@ -34,7 +34,7 @@ beforeAll(async () => {
 });
 
 describe('Program gets APIFeatures', () => {
-    describe('GET /progran?programName[regex]', () => {
+    describe('GET /program?programName[regex]', () => {
         test('successful', testProgramNameSearch('Amealco'));
         test('successful', testProgramNameSearch('paisajes'));
         test('successful', testProgramNameSearch(''));
