@@ -38,7 +38,6 @@ describe('Course post', () => {
                 imageUrl:
                     'https://www.bbva.com/wp-content/uploads/2017/08/bbva-balon-futbol-2017-08-11.jpg',
             });
-            console.log(res.body.message);
             expect(res.statusCode).toEqual(201);
             expect(res.body).toBeTruthy();
         });

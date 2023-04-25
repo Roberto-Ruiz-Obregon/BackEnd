@@ -107,8 +107,7 @@ const courseSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// Indexing course properties for optimized search 
-courseSchema.index({ _id: 1 });
+// Indexing course properties for optimized search
 courseSchema.index({ status: 1 });
 courseSchema.index({ modality: 1 });
 courseSchema.index({ courseName: 1 });

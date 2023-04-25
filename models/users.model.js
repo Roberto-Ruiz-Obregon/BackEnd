@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
                 'Preparatoria',
                 'Universidad',
                 'Maestria',
-                'Doctorado'
+                'Doctorado',
             ],
         },
     },
@@ -81,15 +81,14 @@ const userSchema = new mongoose.Schema({
     passwordResetExpires: Date,
 });
 
-// Indexing program properties for optimized search 
-userSchema.index({ _id: 1 });
+// Indexing program properties for optimized search
 userSchema.index({ email: 1 });
 
 // MIDDLEWARES
-/** 
+/**
  * This is a middleware that runs before the save() or create() method. It hashes the password and sets
- * the passwordConfirm to undefined. 
-*/
+ * the passwordConfirm to undefined.
+ */
 userSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 12);
@@ -99,10 +98,10 @@ userSchema.pre('save', async function (next) {
     return next();
 });
 
-/** 
+/**
  * This is a middleware that runs before the save() or create() method. Checks if the password has changed
  * and updates the passwordChangedAt attribute.
-*/
+ */
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password') || this.isNew) return next();
     else {
@@ -154,30 +153,30 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     return false;
 };
 
-/** 
- * When a user is deleted, their payments as well as course inscriptions are also deleted, 
- * updating the capacity of the course. 
-*/
-userSchema.pre('remove', async function (next){
-    const Course = require('../models/courses.model')
+/**
+ * When a user is deleted, their payments as well as course inscriptions are also deleted,
+ * updating the capacity of the course.
+ */
+userSchema.pre('remove', async function (next) {
+    const Course = require('../models/courses.model');
     const Payment = require('../models/payments.model');
     const Inscription = require('../models/inscriptions.model');
 
-    // search the inscriptions of the user 
-    const inscriptions = await Inscription.find({ user: this._id});
+    // search the inscriptions of the user
+    const inscriptions = await Inscription.find({ user: this._id });
 
     // search the list of pending payments of the user
     const pendingPayments = await Payment.find({
         user: this._id,
-        status: 'Pendiente'
+        status: 'Pendiente',
     });
     // for each one, we look for the corresponding course and update the capacity
-    for(const payment of pendingPayments){
+    for (const payment of pendingPayments) {
         const course = await Course.findById(payment.course);
-        if(course){
+        if (course) {
             await Course.findOneAndUpdate(
-                { _id: course._id},
-                {capacity: course.capacity + 1}
+                { _id: course._id },
+                { capacity: course.capacity + 1 }
             );
         }
         // remove the payment
@@ -185,12 +184,12 @@ userSchema.pre('remove', async function (next){
     }
 
     // remove all the payments related with user inscriptions
-    for(const inscription of inscriptions){
-        await Payment.deleteMany({ inscription: inscription._id});
+    for (const inscription of inscriptions) {
+        await Payment.deleteMany({ inscription: inscription._id });
     }
 
     // remove the inscription
-    await Inscription.deleteMany({user: this._id});
+    await Inscription.deleteMany({ user: this._id });
     return next();
 });
 

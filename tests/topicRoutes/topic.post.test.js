@@ -28,7 +28,6 @@ afterAll(async () => {
 
 describe('Topic post', () => {
     describe('Successful POST /v1/topics', () => {
-        console.log(process.env.NODE_ENV);
         test('successful', async () => {
             const res = await agent.post('/v1/topics').send({ topic: 'Test' });
             expect(res.statusCode).toEqual(201);

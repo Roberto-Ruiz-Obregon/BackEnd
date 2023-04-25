@@ -44,8 +44,7 @@ const programSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// Indexing program properties for optimized search 
-programSchema.index({ _id: 1 });
+// Indexing program properties for optimized search
 programSchema.index({ programName: 1 });
 programSchema.index({ category: 1 });
 
