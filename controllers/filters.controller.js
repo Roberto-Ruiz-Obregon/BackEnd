@@ -136,3 +136,45 @@ exports.filterTopics = catchAsync(async (req, res) => {
         },
     });
 });
+
+exports.filterInscriptions = catchAsync(async (req, res) => {
+    const postalCode = req.body.postalCode;
+
+    const result = await User.aggregate([
+        {
+            $match: { postalCode: postalCode },
+        },
+        {
+            $lookup: {
+                from: 'inscriptions',
+                localField: '_id',
+                foreignField: 'user',
+                as: 'inscriptions',
+            },
+        },
+        {
+            $lookup: {
+                from: 'courses',
+                localField: 'inscriptions.course',
+                foreignField: '_id',
+                as: 'course',
+            },
+        },
+        {
+            $unwind: '$course',
+        },
+        {
+            $group: {
+                _id: '$course.courseName',
+                totalUsers: { $sum: 1 },
+            },
+        },
+    ]);
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            result,
+        },
+    });
+});
