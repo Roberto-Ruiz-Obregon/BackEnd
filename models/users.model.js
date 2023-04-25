@@ -49,6 +49,8 @@ const userSchema = new mongoose.Schema({
                 'Secundaria',
                 'Preparatoria',
                 'Universidad',
+                'Maestria',
+                'Doctorado'
             ],
         },
     },
@@ -78,6 +80,10 @@ const userSchema = new mongoose.Schema({
     passwordResetToken: String,
     passwordResetExpires: Date,
 });
+
+// Indexing program properties for optimized search 
+userSchema.index({ _id: 1 });
+userSchema.index({ email: 1 });
 
 // MIDDLEWARES
 /** 

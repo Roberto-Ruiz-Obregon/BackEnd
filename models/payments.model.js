@@ -38,6 +38,11 @@ const paymentSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Indexing payment properties for optimized search 
+paymentSchema.index({ status: 1 });
+paymentSchema.index({ course: 1 });
+paymentSchema.index({ user: 1 });
+
 const Payment = mongoose.model('Payment', paymentSchema);
 
 module.exports = Payment;

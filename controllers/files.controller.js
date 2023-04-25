@@ -8,6 +8,11 @@ const firebase = require('../config/db'); // reference to our db
 require('firebase/storage'); // must be required for this to work
 const storage = firebase.storage().ref(); // create a reference to storage
 global.XMLHttpRequest = require('xhr2');
+const limits = {
+files: 1, // allow only 1 file per request
+fileSize: 10000 * 10000, // 10 MB (max file size)
+};
+
 
 /**
  *
@@ -61,8 +66,20 @@ const createUpload = () => {
                 false
             );
         }
+        if (file.size <= limits.fileSize){
+            cb(null, true);
+        } else {
+            cb(
+                new AppError(
+                    'La imagen pesa más de 10 MB. Intenta de nuevo.',
+                    404
+                ),
+                false
+            );
+        }
     };
-    return multer({ storage: multerStorage, filter: multerFilter });
+
+    return multer({ storage: multerStorage, filter: multerFilter, limits: limits });
 };
 
 /* A middleware that is used to format the image before it is uploaded to the server. */

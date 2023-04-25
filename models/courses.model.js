@@ -107,6 +107,13 @@ const courseSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+// Indexing course properties for optimized search 
+courseSchema.index({ _id: 1 });
+courseSchema.index({ status: 1 });
+courseSchema.index({ modality: 1 });
+courseSchema.index({ courseName: 1 });
+courseSchema.index({ postalCode: 1 });
+
 // date validation
 courseSchema.pre('validate', function () {
     if (this.endDate < this.startDate) {

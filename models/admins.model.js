@@ -44,6 +44,9 @@ const adminSchema = new mongoose.Schema({
     passwordResetExpires: Date,
 });
 
+// Indexing admin properties for optimized search 
+adminSchema.index({ email: 1 });
+
 // MIDDLEWARES
 /* This is a middleware that runs before the save() or create() method. It hashes the password and sets
 the passwordConfirm to undefined. */
