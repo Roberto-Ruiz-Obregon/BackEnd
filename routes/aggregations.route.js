@@ -7,7 +7,7 @@ const {
 
 const router = express.Router();
 
-// router.post('/filter-topics', filterTopics);
+router.post('/filter-topics', filterTopics);
 router.get('/inscriptions-by-zone', getInscriptionsByZone);
 router.get('/zones-most-users', getZonesWithMostUsers);
 
