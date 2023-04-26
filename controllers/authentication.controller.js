@@ -345,6 +345,33 @@ exports.editMe = catchAsync(async (req, res, next) => {
     });
 });
 
+/* Deletes the user by its id*/
+exports.deleteMe = catchAsync(async (req, res, next) => {
+    
+    let userActive = req.userType == 'User' ? req.user : req.admin;
+    let Model = req.userType == 'User' ? User : Admin;
+
+    if (req.userType != 'User') {
+        return next(
+            new AppError(
+                'Esta función es sólo para borrar usuarios.',
+                400
+            )
+        );
+    }
+
+    // 2 Update document
+    const user = await Model.findByIdAndDelete(userActive._id);
+
+    // 3 respond with update
+    res.status(200).json({
+        status: 'success',
+        data: {
+            user,
+        },
+    });
+});
+
 /* Restricting the user to a certain role. */
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
