@@ -6,7 +6,6 @@ const {
     dropCollections,
 } = require('../config/databaseTest');
 const { createUser, createAdmin } = require('../config/dataBaseTestSetUp');
-
 const {loginAdmin, loginUser} = require('../config/authSetUp');
 
 const agent = request.agent(app);

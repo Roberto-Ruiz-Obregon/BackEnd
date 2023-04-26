@@ -16,6 +16,7 @@ beforeAll(async () => {
     // Will set headder to allow acces to protected and restricted roues
     await loginUser(agent, 'dummy_user@gmail.com', 'contra123');
 });
+
 afterAll(async () => {
     await dropCollections();
     await dropDB();
