@@ -1,15 +1,15 @@
 {
-    "functions": [
-        {
-            "source": ".",
-            "codebase": "default",
-            "ignore": [
-                "node_modules",
-                ".git",
-                "firebase-debug.log",
-                "firebase-debug.*.log",
-                "docs"
-            ]
-        }
-    ]
+  "functions": [
+    {
+      "name": "robertoruizapi",
+      "source": ".",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ]
 }
