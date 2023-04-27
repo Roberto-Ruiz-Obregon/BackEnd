@@ -2,6 +2,7 @@ const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 const User = require('./../models/users.model');
 const Admin = require('./../models/admins.model');
+const Inscription = require('./../models/inscriptions.model');
 
 const catchAsync = require('./../utils/catchAsync');
 const Email = require('./../utils/email');
@@ -315,6 +316,41 @@ exports.getMe = catchAsync(async (req, res, next) => {
     next();
 });
 
+/* Setting the user id to the params id. */
+exports.getMyCourses = catchAsync(async (req, res, next) => {
+    const userId = req.user._id;
+
+    const results = await Inscription.aggregate([
+        {
+            $match: {
+                user: userId,
+            },
+        },
+        {
+            $lookup: {
+                from: 'courses',
+                localField: 'course',
+                foreignField: '_id',
+                as: 'course',
+            },
+        },
+        {
+            $unwind: '$course',
+        },
+    ]);
+
+    const courses = results.map((ins) => ins.course);
+
+    // 3 respond with update
+    res.status(200).json({
+        status: 'success',
+        results: courses.length,
+        data: {
+            documents: courses,
+        },
+    });
+});
+
 /* Updating the user or admin. */
 exports.editMe = catchAsync(async (req, res, next) => {
     // 1 Check for password
@@ -347,16 +383,12 @@ exports.editMe = catchAsync(async (req, res, next) => {
 
 /* Deletes the user by its id*/
 exports.deleteMe = catchAsync(async (req, res, next) => {
-    
     let userActive = req.userType == 'User' ? req.user : req.admin;
     let Model = req.userType == 'User' ? User : Admin;
 
     if (req.userType != 'User') {
         return next(
-            new AppError(
-                'Esta función es sólo para borrar usuarios.',
-                400
-            )
+            new AppError('Esta función es sólo para borrar usuarios.', 400)
         );
     }
 

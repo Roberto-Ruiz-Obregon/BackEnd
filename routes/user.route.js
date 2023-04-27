@@ -17,6 +17,7 @@ const {
     getMe,
     editMe,
     deleteMe,
+    getMyCourses,
 } = require(`${__dirname}/../controllers/authentication.controller.js`);
 const {
     forgotPasswordUser,
@@ -30,6 +31,7 @@ router.patch('/resetpassword/:id', resetPasswordUser);
 
 router.use('/auth', protect);
 router.get('/auth/me', getMe, getUser);
+router.get('/auth/mycourses', getMyCourses);
 router.patch('/auth/updateme', editMe);
 router.get('/auth/deleteme', deleteMe);
 router.get('/auth/logout', logout);
