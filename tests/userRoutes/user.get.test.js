@@ -47,6 +47,4 @@ describe('User gets APIFeatures', () => {
         test('successful', testUserAgeSearch('20'));
         test('successful', testUserAgeSearch(''));
     });
-
-
 });
