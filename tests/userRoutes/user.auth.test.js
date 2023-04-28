@@ -17,7 +17,7 @@ afterAll(async () => {
     await dropDB();
 });
 
-describe('User sign up me', () => {
+describe('User sign up', () => {
     describe('Successful user sign up /v1/user/auth/signup', () => {
         test('successful', async () => {
             const res = await agent.post('/v1/user/auth/signup').send({
