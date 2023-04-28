@@ -47,7 +47,7 @@ describe('User get me', () => {
             );
         });
     });
-    describe('Successful user edit me /v1/user/auth/me', () => {
+    describe('Successful user edit me /v1/user/auth/updateme', () => {
         test('successful', userUpdateTest('name', 'Carlos'));
         test('successful', userUpdateTest('age', 25));
         test('successful', userUpdateTest('postalCode', 24300));
