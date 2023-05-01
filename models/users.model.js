@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         unique: [true, 'Este correo ya esta en uso. Elige otro.'],
         trim: true,
-        validate: [validator.isEmail, 'Necesitas un correo vallido.'],
+        validate: [validator.isEmail, 'Necesitas un correo válido.'],
     },
     topics: [
         {
@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema({
     },
     postalCode: {
         type: Number,
-        required: [true, 'Por favor ingresa un codigo postal.'],
+        required: [true, 'Por favor ingresa un código postal.'],
     },
     password: {
         type: String,

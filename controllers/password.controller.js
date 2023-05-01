@@ -36,7 +36,7 @@ const forgotPassword = async (Model, email, req, userType) => {
         user.passwordResetToken = undefined;
         await user.save({ validateBeforeSave: false });
         throw new AppError(
-            'Hubo un error enviando el correo de confirmacion. Intenta de nuevo',
+            'Hubo un error enviando el correo de confirmación. Intenta de nuevo',
             500
         );
     }
@@ -96,7 +96,7 @@ exports.resetPasswordAdmin = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         message:
-            'Contraseña cambiada con exito. Quiza debas iniciar sesion de nuevo',
+            'Contraseña cambiada con éxito. Quizá debas iniciar sesión de nuevo',
     });
 });
 
@@ -126,6 +126,6 @@ exports.resetPasswordUser = catchAsync(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         message:
-            'Contraseña cambiada con exito. Quiza debas iniciar sesion de nuevo',
+            'Contraseña cambiada con éxito. Quizá debas iniciar sesión de nuevo',
     });
 });

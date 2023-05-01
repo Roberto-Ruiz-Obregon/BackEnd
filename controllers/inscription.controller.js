@@ -32,7 +32,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
     if (!courseId) {
         return next(
             new AppError(
-                'Envia la clave del curso para poderte inscribir.',
+                'Envía la clave del curso para poderte inscribir.',
                 400
             )
         );
@@ -41,7 +41,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
     const course = await Course.findById(courseId);
     if (!course) {
         return next(
-            new AppError('No se encontro ningun curso con esta clave.', 404)
+            new AppError('No se encontró ningún curso con esta clave.', 404)
         );
     }
 
@@ -75,7 +75,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
         user: req.user._id,
     });
     if (inscription.length > 0) {
-        return next(new AppError('Ya te haz inscrito a este curso.', 400));
+        return next(new AppError('Ya te has inscrito a este curso.', 400));
     }
 
     // Update course capacity
@@ -96,7 +96,7 @@ exports.inscribeTo = catchAsync(async (req, res, next) => {
     } catch (error) {
         return next(
             new AppError(
-                'Hemos tenido problemas enviando un correo de confirmacion.',
+                'Hemos tenido problemas enviando un correo de confirmación.',
                 500
             )
         );
