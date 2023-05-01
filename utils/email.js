@@ -56,8 +56,9 @@ module.exports = class Email {
 
         // Configura las credenciales del cliente OAuth2, que incluyen un token de actualización (refresh token)
         myOAuth2Client.setCredentials({
-            refresh_token: process.env.OAUTH_REFRESH_TOKEN,              // Token de actualización (refresh token)
-            expiry_date: true
+            access_token: process.env.OAUTH_ACCESS_TOKEN, // Token de acceso (access token)
+            refresh_token: process.env.OAUTH_REFRESH_TOKEN,  // Token de actualización (refresh token)
+            token_type: "Bearer"
 
         });
 
