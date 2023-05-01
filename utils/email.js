@@ -56,12 +56,29 @@ module.exports = class Email {
 
         // Configura las credenciales del cliente OAuth2, que incluyen un token de actualización (refresh token)
         myOAuth2Client.setCredentials({
-            refresh_token: process.env.OAUTH_REFRESH_TOKEN, // Token de actualización (refresh token)
+            access_token: process.env.OAUTH_ACCESS_TOKEN, // Token de acceso (access token)
+            refresh_token: process.env.OAUTH_REFRESH_TOKEN,  // Token de actualización (refresh token)
+            token_type: "Bearer"
+
         });
 
-        // Obtiene un nuevo token de acceso (access token) usando el objeto OAuth2 configurado anteriormente
-        const myAccessToken = myOAuth2Client.getAccessToken();
+        // verifica si la token ha expirado o esta por expirar dentro de 5 minutos
+        if (myOAuth2Client.credentials.expiry_date - Date.now() < 1000 * 60 * 5) {
+            // si la token está por expirar, la renovamos con el refresh token
+            myOAuth2Client.refreshAccessToken((err, tokens) => {
+                if (err) {
+                    console.log('Error al refrescar el token:', err);
+                } else {
+                    console.log('Token actualizado:', tokens);
+                    myOAuth2Client.setCredentials(tokens);
+                }
+            });
+        }
 
+        const accessToken = myOAuth2Client.getAccessToken();
+
+
+        
         return nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -70,12 +87,18 @@ module.exports = class Email {
                 pass: process.env.MAIL_PASSWORD,
                 clientId: process.env.OAUTH_CLIENTID,
                 clientSecret: process.env.OAUTH_CLIENT_SECRET,
-                accessToken: myAccessToken, //access token variable we defined earlier
+                accessToken: accessToken, //access token variable we defined earlier
                 refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+                expires: Date.now() + 3600 // establece la expiración de la token en 1 hora
+
             },
         });
+
+        
     }
 
+
+    
     /**
      * The function takes in a template and a subject, renders the template using the data from the
      * object, defines the email options, creates a new transport and sends the email.

@@ -222,7 +222,7 @@ exports.loginAdmin = catchAsync(async (req, res, next) => {
     if (!user.hasVerification) {
         return next(
             new AppError(
-                'No has sido verificado, espera a que un administrador verifique tu perfil.',
+                'No haz sido verificado, espera a que un administrador verifique tu perfil.',
                 401
             )
         );
