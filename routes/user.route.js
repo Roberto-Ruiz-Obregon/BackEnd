@@ -14,6 +14,7 @@ const {
     signUpUser,
     logout,
     protect,
+    restrictTo,
     getMe,
     editMe,
     deleteMe,
@@ -36,6 +37,7 @@ router.patch('/auth/updateme', editMe);
 router.get('/auth/deleteme', deleteMe);
 router.get('/auth/logout', logout);
 
+router.use('/auth', protect);
 router.route('/').get(getAllUsers).post(createUser);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
