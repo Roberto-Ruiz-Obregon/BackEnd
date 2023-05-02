@@ -7,25 +7,23 @@ const agent = request.agent(app);
 
 const testUserNameSearch = (nameTest) => async () => {
     const res = await agent
-        .get(`/v1/user?username[regex]=${nameTest}&limit=8`)
+        .get(`/v1/user?name[regex]=${nameTest}&limit=8`)
         .send();
 
     expect(res.statusCode).toEqual(200);
 
-    res.body.data.documents.forEach((user) => {
-        expect(true).toEqual(user.username.includes(nameTest));
+    res.body.data.users.forEach((user) => {
+        expect(true).toEqual(user.name.includes(nameTest));
     });
 };
 
 const testUserAgeSearch = (ageTest) => async () => {
-    const res = await agent
-        .get(`/v1/user?userage[regex]=${ageTest}&limit=8`)
-        .send();
+    const res = await agent.get(`/v1/user?${ageTest}&limit=8`).send();
 
     expect(res.statusCode).toEqual(200);
 
-    res.body.data.documents.forEach((user) => {
-        expect(true).toEqual(user.userage.includes(ageTest));
+    res.body.data.users.forEach((user) => {
+        expect(ageTest).toEqual(user.age.includes(ageTest));
     });
 };
 
@@ -42,9 +40,9 @@ describe('User gets APIFeatures', () => {
     });
 
     describe('GET /user?age[regex]', () => {
-        test('successful', testUserAgeSearch('18'));
-        test('successful', testUserAgeSearch('19'));
-        test('successful', testUserAgeSearch('20'));
-        test('successful', testUserAgeSearch(''));
+        test('successful', testUserAgeSearch(18));
+        test('successful', testUserAgeSearch(19));
+        test('successful', testUserAgeSearch(20));
+        test('successful', testUserAgeSearch(0));
     });
 });
