@@ -12,9 +12,9 @@ const agent = request.agent(app);
 
 beforeAll(async () => {
     await connectDB();
-    await createUser();
+    await createAdmin();
     // Will set header to allow access to protected and restricted routes
-    await loginUser(agent, 'dummy_user@gmail.com', 'contra123');
+    await loginAdmin(agent, 'dummy_admin@gmail.com', 'contra123');
 });
 
 afterAll(async () => {
