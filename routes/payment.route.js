@@ -30,6 +30,7 @@ router.use(restrictTo('Admin'));
 router.route('/acceptPayment').post(acceptPayment);
 router.route('/declinePayment').post(declinePayment);
 
+router.use(restrictTo('Admin'));
 router
     .route('/')
     .get(getAllPayments)

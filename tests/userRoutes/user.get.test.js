@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../app');
-const db = require('../config/databaseTest');
 const { connectDB } = require('../config/databaseProd');
+const { loginAdmin, loginUser } = require('../config/authSetUp');
 
 const agent = request.agent(app);
 
@@ -29,6 +29,11 @@ const testUserAgeSearch = (ageTest) => async () => {
 
 beforeAll(async () => {
     await connectDB();
+    await loginAdmin(
+        agent,
+        'robertoruizobregonorg@gmail.com',
+        'robertoruizobregon23'
+    );
 });
 
 describe('User gets APIFeatures', () => {

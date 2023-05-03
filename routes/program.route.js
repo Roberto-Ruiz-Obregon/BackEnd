@@ -10,16 +10,32 @@ const {
     updateProgram,
     deleteProgram,
 } = require(`${__dirname}/../controllers/program.controller.js`);
+const {
+    protect,
+    restrictTo,
+} = require(`${__dirname}/../controllers/authentication.controller.js`);
 const fileParser = require('../utils/multipartParser');
 
 router
     .route('/')
     .get(getAllPrograms)
-    .post(fileParser, filesController.formatProgramImage, createProgram);
+    .post(
+        protect,
+        restrictTo('Admin'),
+        fileParser,
+        filesController.formatProgramImage,
+        createProgram
+    );
 router
     .route('/:id')
     .get(getProgram)
-    .patch(fileParser, filesController.formatProgramImage, updateProgram)
-    .delete(deleteProgram);
+    .patch(
+        protect,
+        restrictTo('Admin'),
+        fileParser,
+        filesController.formatProgramImage,
+        updateProgram
+    )
+    .delete(protect, restrictTo('Admin'), deleteProgram);
 
 module.exports = router;
