@@ -18,9 +18,9 @@ router.use(protect);
 router.use(restrictTo('Admin'));
 router
     .route('/emailToEveryone')
-    .post(restrictTo('Admin'), fileParser, filesController.formatEmailImage, sendToEveryone);
+    .post(fileParser, filesController.formatEmailImage, sendToEveryone);
 router
     .route('/emailByZone')
-    .post(restrictTo('Admin'), fileParser, filesController.formatEmailImage, sendByZone);
+    .post(fileParser, filesController.formatEmailImage, sendByZone);
 
 module.exports = router;

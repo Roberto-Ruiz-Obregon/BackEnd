@@ -18,15 +18,27 @@ const {
 const fileParser = require('../utils/multipartParser');
 
 router.use(protect);
-router.route('/getInscriptions/:id').get(restrictTo('Admin'), inscriptionByCourse);
+router
+    .route('/getInscriptions/:id')
+    .get(restrictTo('Admin'), inscriptionByCourse);
 router
     .route('/')
     .get(getAllCourses)
-    .post(restrictTo('Admin'), fileParser, filesController.formatCourseImage, createCourse);
+    .post(
+        restrictTo('Admin'),
+        fileParser,
+        filesController.formatCourseImage,
+        createCourse
+    );
 router
     .route('/:id')
     .get(getCourse)
-    .patch(restrictTo('Admin'), fileParser, filesController.formatCourseImage, updateCourse)
+    .patch(
+        restrictTo('Admin'),
+        fileParser,
+        filesController.formatCourseImage,
+        updateCourse
+    )
     .delete(restrictTo('Admin'), deleteCourse);
 
 module.exports = router;
