@@ -61,8 +61,6 @@ module.exports = class Email {
             expiry_date: true,
         });
 
-        // Obtiene un nuevo token de acceso (access token) usando el objeto OAuth2 configurado anteriormente
-        const myAccessToken = myOAuth2Client.getAccessToken();
         // verifica si la token ha expirado o esta por expirar dentro de 5 minutos
         if (
             myOAuth2Client.credentials.expiry_date - Date.now() <

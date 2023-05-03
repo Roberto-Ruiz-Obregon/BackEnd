@@ -1,7 +1,12 @@
 const request = require('supertest');
 const app = require('../../app');
-const { connectDB } = require('../config/databaseProd');
+const {
+    connectDB,
+    dropDB,
+    dropCollections,
+} = require('../config/databaseTest');
 const { createUser, createAdmin } = require('../config/dataBaseTestSetUp');
+const { loginAdmin } = require('../config/authSetUp');
 
 const agent = request.agent(app);
 
@@ -11,6 +16,11 @@ beforeAll(async () => {
     await createUser();
     // Da acceso a las rutas protegidas y restringidas
     await loginAdmin(agent, 'dummy_admin@gmail.com', 'contra123');
+});
+
+afterAll(async () => {
+    await dropCollections();
+    await dropDB();
 });
 
 describe('Program gets APIFeatures', () => {
