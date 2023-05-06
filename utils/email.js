@@ -7,7 +7,34 @@ const { htmlToText } = require('html-to-text');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
+
 dotenv.config({ path: './config.env' });
+
+const oauth2Client = new OAuth2(
+    process.env.OAUTH_CLIENTID,
+    process.env.OAUTH_CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
+);
+
+oauth2Client.setCredentials({
+    refresh_token: process.env.OAUTH_REFRESH_TOKEN,
+    access_token: process.env.OAUTH_ACCESS_TOKEN,
+});
+
+function renewCredentials() {
+    oauth2Client.refreshAccessToken((err, tokens) => {
+        if (err) {
+            console.log('Error refreshing access token: ', err);    
+        } else {
+            console.log('Access token refreshed.');
+            oauth2Client.setCredentials(tokens);
+}
+    });
+}
+
+renewCredentials();
+
+setInterval(renewCredentials, 30 * 60 * 1000);
 
 /* The above code is creating a class called Email. The constructor is taking in two parameters, user
 and url. The constructor is also setting the to, firstName, url, and from properties. The
@@ -55,7 +82,7 @@ module.exports = class Email {
                 pass: process.env.MAIL_PASSWORD,
                 clientId: process.env.OAUTH_CLIENTID,
                 clientSecret: process.env.OAUTH_CLIENT_SECRET,
-                accessToken: process.env.OAUTH_ACCESS_TOKEN, //access token variable we defined earlier
+                accessToken: oauth2Client.getAccessToken(), //access token variable we defined earlier
                 refreshToken: process.env.OAUTH_REFRESH_TOKEN,
             },
         });
