@@ -7,7 +7,34 @@ const { htmlToText } = require('html-to-text');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
+
 dotenv.config({ path: './config.env' });
+
+const oauth2Client = new OAuth2(
+    process.env.OAUTH_CLIENTID,
+    process.env.OAUTH_CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground'
+);
+
+oauth2Client.setCredentials({
+    refresh_token: process.env.OAUTH_REFRESH_TOKEN,
+    access_token: process.env.OAUTH_ACCESS_TOKEN,
+});
+
+function renewCredentials() {
+    oauth2Client.refreshAccessToken((err, tokens) => {
+        if (err) {
+            console.log('Error refreshing access token: ', err);    
+        } else {
+            console.log('Access token refreshed.');
+            oauth2Client.setCredentials(tokens);
+}
+    });
+}
+
+renewCredentials();
+
+setInterval(renewCredentials, 30 * 60 * 1000);
 
 /* The above code is creating a class called Email. The constructor is taking in two parameters, user
 and url. The constructor is also setting the to, firstName, url, and from properties. The
@@ -47,38 +74,6 @@ module.exports = class Email {
      * @returns A new instance of the nodemailer transport object.
      */
     newTransport() {
-        // Crea un nuevo objeto OAuth2
-        const myOAuth2Client = new OAuth2(
-            process.env.OAUTH_CLIENTID, // Identificador del cliente (Client ID)
-            process.env.OAUTH_CLIENT_SECRET, // Secreto del cliente (Client Secret)
-            'https://developers.google.com/oauthplayground' // URI de redireccionamiento
-        );
-
-        // Configura las credenciales del cliente OAuth2, que incluyen un token de actualización (refresh token)
-        myOAuth2Client.setCredentials({
-            refresh_token: process.env.OAUTH_REFRESH_TOKEN, // Token de actualización (refresh token)
-            refresh_token: process.env.OAUTH_REFRESH_TOKEN, // Token de actualización (refresh token)
-            expiry_date: true,
-        });
-
-        // verifica si la token ha expirado o esta por expirar dentro de 5 minutos
-        if (
-            myOAuth2Client.credentials.expiry_date - Date.now() <
-            1000 * 60 * 5
-        ) {
-            // si la token está por expirar, la renovamos con el refresh token
-            myOAuth2Client.refreshAccessToken((err, tokens) => {
-                if (err) {
-                    console.log('Error al refrescar el token:', err);
-                } else {
-                    console.log('Token actualizado:', tokens);
-                    myOAuth2Client.setCredentials(tokens);
-                }
-            });
-        }
-
-        const accessToken = myOAuth2Client.getAccessToken();
-
         return nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -87,12 +82,11 @@ module.exports = class Email {
                 pass: process.env.MAIL_PASSWORD,
                 clientId: process.env.OAUTH_CLIENTID,
                 clientSecret: process.env.OAUTH_CLIENT_SECRET,
-                accessToken: accessToken, //access token variable we defined earlier
+                accessToken: oauth2Client.getAccessToken(), //access token variable we defined earlier
                 refreshToken: process.env.OAUTH_REFRESH_TOKEN,
             },
         });
     }
-
     /**
      * The function takes in a template and a subject, renders the template using the data from the
      * object, defines the email options, creates a new transport and sends the email.
